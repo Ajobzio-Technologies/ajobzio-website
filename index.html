@@ -559,12 +559,13 @@
       display: none;
       position: fixed;
       inset: 0;
+      z-index: 1100;
       background: rgba(15, 23, 42, 0.55);
       backdrop-filter: blur(4px);
       align-items: center;
       justify-content: center;
-      z-index: 1100;
-      padding: 20px;
+      padding: 16px;
+      box-sizing: border-box;
     }
     .enquire-modal.open { display: flex; }
     .enquire-dialog {
@@ -572,12 +573,20 @@
       grid-template-columns: 1.1fr 0.9fr;
       width: 100%;
       max-width: 820px;
+      max-height: calc(100vh - 32px);
+      max-height: calc(100dvh - 32px);
+      margin: 0;
       background: #fff;
       border-radius: 24px;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
       position: relative;
       box-shadow: 0 28px 64px rgba(15, 23, 42, 0.22);
       border: 1px solid rgba(226, 232, 240, 0.9);
+      flex: 0 1 auto;
+      min-height: 0;
     }
     .enquire-close {
       position: absolute;
@@ -755,16 +764,46 @@
     }
 
     @media (max-width: 700px) {
-      .enquire-dialog { grid-template-columns: 1fr; }
+      .enquire-modal {
+        padding: 12px;
+        align-items: center;
+        justify-content: center;
+      }
+      .enquire-dialog {
+        grid-template-columns: 1fr;
+        width: 100%;
+        max-width: 420px;
+        max-height: calc(100vh - 24px);
+        max-height: calc(100dvh - 24px);
+        border-radius: 18px;
+        border: 1px solid #e2e8f0;
+      }
       .enquire-info-panel {
         order: -1;
-        padding: 28px 24px 24px;
+        padding: 20px 18px 16px;
         border-left: none;
         border-bottom: 1px solid #e2e8f0;
+        gap: 8px;
       }
-      .enquire-info-panel img { height: 56px; }
-      .enquire-form-panel { padding: 28px 24px; }
-      .enquire-close { color: #475569; }
+      .enquire-info-panel img { height: 40px; }
+      .enquire-info-panel h3 { font-size: 1.05rem; margin: 0; }
+      .enquire-info-panel p { font-size: 0.82rem; margin: 0; }
+      .enquire-points { display: none; }
+      .enquire-info-panel .enquire-email {
+        padding: 8px 12px;
+        font-size: 0.82rem;
+        margin-top: 4px;
+      }
+      .enquire-form-panel { padding: 18px 18px 24px; }
+      .enquire-form-panel h2 { font-size: 1.25rem; margin-bottom: 4px; }
+      .enquire-form-panel > p { margin-bottom: 16px; font-size: 0.88rem; }
+      .enquire-field { margin-bottom: 12px; }
+      .enquire-field textarea { min-height: 72px; }
+      .enquire-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
     }
   </style>
 </head>
@@ -937,17 +976,20 @@
 
   /* ---------------- Enquire modal ---------------- */
   const enquireModal = document.getElementById('enquireModal');
+  const enquireDialog = enquireModal.querySelector('.enquire-dialog');
   const enquireForm = document.getElementById('enquireForm');
   const enquireStatus = document.getElementById('enquireStatus');
   const enquireSend = document.getElementById('enquireSend');
   const SUPPORT_EMAIL = 'support@ajobzio.com';
+  // Live Server is on 127.0.0.1 — match that host for the API
+  const ENQUIRE_API = window.ENQUIRE_API_URL || 'http://127.0.0.1:3001/api/enquire';
 
   function openEnquireModal() {
     enquireModal.classList.add('open');
     document.body.style.overflow = 'hidden';
     enquireStatus.textContent = '';
     enquireStatus.className = 'enquire-status';
-    setTimeout(() => document.getElementById('enquireName').focus(), 50);
+    enquireDialog.scrollTop = 0;
   }
 
   function closeEnquireModal() {
@@ -982,36 +1024,27 @@
     enquireStatus.className = 'enquire-status';
 
     try {
-      const res = await fetch(`https://formsubmit.co/ajax/${SUPPORT_EMAIL}`, {
+      const res = await fetch(ENQUIRE_API, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
         },
-        body: JSON.stringify({
-          name,
-          email,
-          message: reason,
-          _subject: `Ajobzio enquiry from ${name}`,
-          _replyto: email,
-          _template: 'table'
-        })
+        body: JSON.stringify({ name, email, reason })
       });
 
-      if (!res.ok) throw new Error('Send failed');
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || 'Send failed');
 
       enquireStatus.textContent = 'Thanks! Your enquiry was sent to support@ajobzio.com.';
       enquireStatus.className = 'enquire-status ok';
       enquireForm.reset();
     } catch (err) {
-      // Fallback: open the user's email client so the query still reaches support
-      const subject = encodeURIComponent(`Ajobzio enquiry from ${name}`);
-      const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\n\nQuestion:\n${reason}`
-      );
-      window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
-      enquireStatus.textContent = 'Opening your email app to send to support@ajobzio.com…';
-      enquireStatus.className = 'enquire-status ok';
+      const offline = err && (err.message === 'Failed to fetch' || err.name === 'TypeError');
+      enquireStatus.textContent = offline
+        ? 'Email server is not running. Start it with: npm start'
+        : (err.message || 'Could not send enquiry. Please try again.');
+      enquireStatus.className = 'enquire-status err';
     } finally {
       enquireSend.disabled = false;
       enquireSend.textContent = 'Send';
