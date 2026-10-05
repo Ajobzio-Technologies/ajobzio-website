@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/careers", "destination": "/careers.html" },
+    { "source": "/support", "destination": "/support.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/terms", "destination": "/terms.html" }
+  ]
+}

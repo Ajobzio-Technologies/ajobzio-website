@@ -3,1151 +3,1759 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ajobzio – Find Work. Earn Daily.</title>
+  <title>Ajobzio</title>
   <link rel="icon" type="image/x-icon" href="/images/ajobzio_icon_4x4_bg.png">
-  <meta name="description" content="Ajobzio connects jobless and skilled people with local and online work opportunities. Earn daily with flexible jobs." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif; }
-    body { color: #1f2937; line-height: 1.6; }
-
-    /* Site header / nav */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: #fff;
-      border-bottom: 1px solid #e5e7eb;
-      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+    :root {
+      --bg: #F7FAF8;
+      --ink: #082D36;
+      --nav: #173F48;
+      --line: #D8E5E2;
+      --blue: #1666D8;
+      --green: #087B69;
+      --mint: #DDF7EF;
     }
-    .site-header .nav { position: relative; }
-    .nav {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 10px 20px;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: Poppins, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    a { color: inherit; text-decoration: none; }
+    main { flex: 1; }
+
+    header {
+      height: 68px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 64px;
+    }
+    .logo { height: 36px; width: auto; display: block; }
+    footer .logo {
+      height: 58px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 8px 14px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 34px; }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 17px;
+      color: var(--nav);
+    }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-btn {
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 12px;
+      background: var(--mint);
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: none;
+    }
+    .menu-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--nav);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex: none;
+    }
+    .menu-toggle .close-icon { display: none; }
+    .menu-toggle[aria-expanded="true"] .open-icon { display: none; }
+    .menu-toggle[aria-expanded="true"] .close-icon { display: block; }
+
+    footer {
+      background: var(--ink);
+      padding: 64px 96px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 52px;
+    }
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .foot-brand { width: 300px; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+    .foot-brand p { color: #AFC4C5; font-size: 14px; font-weight: 400; line-height: 1.55; }
+    .social { display: flex; gap: 10px; }
+    .social a {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      display: grid;
+      place-items: center;
+    }
+    .cols { display: flex; gap: 48px; }
+    .cols h2 {
+      font-family: Poppins, sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 15px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #FFB45C;
+      margin-bottom: 13px;
+    }
+    .cols a {
+      display: block;
+      margin-top: 13px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 17px;
+      color: #D5E2E2;
+    }
+    .cols a:first-of-type { margin-top: 0; }
+    .legal {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 12px;
+      line-height: 15px;
+    }
+    .legal span { color: #8FA7A9; }
+    .legal nav, .region { display: flex; align-items: center; gap: 24px; }
+    .region { gap: 7px; color: #AFC4C5; }
+    .legal a { color: #AFC4C5; }
+
+    .hero {
+      position: relative;
+      padding: 10px 32px 16px;
+      min-height: calc(100svh - 68px);
+      background-color: #F7FAF8;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-color: transparent;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.55s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    .hero-bg-parcel {
+      background-image: url("images/Modern Delivery Hero Banner.png");
+      background-position: right center;
+      background-size: cover;
+      transform: translateX(12px);
+    }
+    .hero-bg-service {
+      background-image: url("images/Modern Service Platform Collage.png");
+      background-position: left center;
+      background-size: 1600px auto;
+      transform: translateX(-12px);
+    }
+    .hero.mode-parcel .hero-bg-parcel {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .hero.mode-service .hero-bg-service {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .hero-modes {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-modes::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(480px, 90%);
+      height: 56px;
+      transform: translate(-50%, -50%);
+      border-radius: 24px;
+      background: radial-gradient(ellipse at center, rgba(22, 102, 216, 0.45) 0%, rgba(22, 102, 216, 0.18) 45%, rgba(22, 102, 216, 0) 72%);
+      filter: blur(16px);
+      pointer-events: none;
+      z-index: 0;
+      animation: mode-glow 2.4s ease-in-out infinite;
+    }
+    @keyframes mode-glow {
+      0%, 100% { opacity: 0.75; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+    }
+    .hero-modes .modes {
+      width: min(400px, 100%);
+      padding: 4px;
+      background: #F3F6F5;
+      border-radius: 14px;
+      position: relative;
+      z-index: 1;
+      box-shadow:
+        0 0 0 1px rgba(22, 102, 216, 0.22),
+        0 0 18px rgba(22, 102, 216, 0.35),
+        0 0 42px rgba(22, 102, 216, 0.28),
+        0 10px 30px rgba(8, 45, 54, 0.08);
+    }
+    .hero-stage {
+      display: flex;
+      width: 100%;
+      flex: 1;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      padding: 0 40px;
+    }
+    .hero-stage::before,
+    .hero-stage::after {
+      content: "";
+      flex: 0.001 1 0;
+      transition: flex-grow 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .hero.mode-parcel .hero-stage::before { flex-grow: 0.001; }
+    .hero.mode-parcel .hero-stage::after { flex-grow: 1; }
+    .hero.mode-service .hero-stage::before { flex-grow: 1; }
+    .hero.mode-service .hero-stage::after { flex-grow: 0.001; }
+    .hero-grid {
+      max-width: 520px;
+      width: 100%;
+      flex: 0 1 520px;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+    .hero-grid.is-switching {
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+    }
+    .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 0; position: relative; }
+    .modes button {
+      height: 38px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--nav);
+      font-weight: 600;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+      transition: color 0.25s ease;
+    }
+    .modes button.active { background: transparent; color: #fff; }
+    .modes-pill {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      left: 4px;
+      width: calc((100% - 8px) / 2);
+      border-radius: 10px;
+      background: var(--blue);
+      z-index: 0;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+    .hero.mode-service .modes-pill {
+      transform: translateX(100%);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFF0D9;
+      color: #8A5A12;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .badge i { width: 7px; height: 7px; border-radius: 50%; background: #FFB45C; display: block; }
+    .hero h1 {
+      margin-top: 8px;
+      font-size: clamp(26px, 3vw, 38px);
+      line-height: 1.08;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      max-width: 10.4em;
+    }
+    .lede {
+      margin-top: 6px;
+      max-width: 460px;
+      color: #6D8386;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+    .quote {
+      margin-top: 10px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 14px 40px rgba(8, 45, 54, 0.08);
+    }
+    .quote-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 0;
+      align-items: start;
+    }
+    .quote-body.parcel-mode {
+      display: block;
+      margin-top: 0;
+    }
+    .parcel-flip {
+      perspective: 1400px;
+    }
+    .parcel-flip-inner {
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.55s ease;
+    }
+    .parcel-flip.is-flipped .parcel-flip-inner {
+      transform: rotateY(180deg);
+    }
+    .parcel-face {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+    .parcel-face.back {
+      position: absolute;
+      inset: 0;
+      transform: rotateY(180deg);
+      overflow: auto;
+    }
+    .center-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      gap: 6px;
+      text-align: center;
+    }
+    .center-block .block-label {
+      text-align: center;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .center-block .field {
+      width: min(100%, 360px);
+      margin-inline: auto;
+      text-align: left;
+    }
+    .address-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+    }
+    .quote-col { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+    .block-label {
+      margin: 0 2px 2px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #8AA0A4;
+    }
+    .vehicles {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: stretch;
+      gap: 8px;
+      width: min(100%, 360px);
+      margin-inline: auto;
+    }
+    .vehicles button {
+      min-height: 36px;
+      flex: 1 1 0;
+      min-width: 0;
+      border: 1px solid #E4ECEA;
+      border-radius: 10px;
+      background: #F3F6F5;
+      color: var(--nav);
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 11px;
+      padding: 4px 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      text-align: center;
+    }
+    .vehicles button.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .step-meta {
+      margin: 0;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #8AA0A4;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .dim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .parcel-note {
+      margin: 0;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .parcel-note.upgrade { background: #FFF0D9; color: #8A5A12; }
+    .parcel-note.error { background: #FDECEA; color: #9C2F2F; }
+    .total-line {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--nav);
+    }
+    .total-line span { color: #6D8386; font-weight: 500; }
+    .compare:disabled { opacity: 0.45; cursor: not-allowed; }
+    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0; }
+    .field {
+      border: 1px solid #E4ECEA;
+      border-radius: 12px;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+    }
+    .field > span { display: block; flex: 1; min-width: 0; }
+    .field > span > span:first-child {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: #8AA0A4;
+    }
+    .field input {
+      width: 100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--nav);
+      margin-top: 1px;
+    }
+    .field input[hidden], .when-pick[hidden], .date-field[hidden], .date-menu[hidden], .date-pickers[hidden],
+    .vehicle-pick[hidden], .parcel-mode[hidden], .service-mode[hidden], .when-field[hidden], .dims[hidden], .parcel-note[hidden], .total-line[hidden],
+    .compare.ghost[hidden] { display: none !important; }
+    .when-pick { position: static; width: 100%; }
+    .when-btn {
+      width: 100%;
+      margin-top: 2px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--nav);
+      cursor: pointer;
+    }
+    .when-btn span {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0;
+      color: var(--nav);
+    }
+    .when-btn svg { flex: none; transition: transform 0.15s ease; }
+    .when-field, .date-field { position: relative; }
+    .when-field.open, .date-field.open {
+      border-color: #1666D8;
+      box-shadow: 0 0 0 3px rgba(22, 102, 216, 0.12);
+    }
+    .when-field.open .when-btn svg, .date-field.open .when-btn svg { transform: rotate(180deg); }
+    .when-menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 8px);
+      bottom: auto;
+      margin: 0;
+      padding: 6px;
+      list-style: none;
+      background: #fff;
+      border: 1px solid #E4ECEA;
+      border-radius: 14px;
+      box-shadow: 0 16px 40px rgba(8, 45, 54, 0.12);
+      z-index: 20;
+    }
+    .when-menu[hidden] { display: none; }
+    .when-menu button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+    .when-menu button > span { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .when-menu b {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--nav);
+    }
+    .when-menu small {
+      font-weight: 500;
+      font-size: 12px;
+      color: #8AA0A4;
+    }
+    .when-menu button:hover,
+    .when-menu button.on { background: #F3F6F5; }
+    .when-menu button.on::after,
+    .date-choice.on::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #1666D8;
+      flex: none;
+    }
+    .date-field { margin-top: 10px; }
+    .date-menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 8px);
+      bottom: auto;
+      margin: 0;
+      padding: 6px;
+      background: #fff;
+      border: 1px solid #E4ECEA;
+      border-radius: 14px;
+      box-shadow: 0 16px 40px rgba(8, 45, 54, 0.12);
+      z-index: 30;
+      max-height: min(420px, 70vh);
+      overflow: auto;
+    }
+    .date-choice {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+    .date-choice > span { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .date-choice b { font-weight: 600; font-size: 15px; color: var(--nav); }
+    .date-choice small { font-weight: 500; font-size: 12px; color: #8AA0A4; }
+    .date-choice:hover, .date-choice.on { background: #F3F6F5; }
+    .date-pickers { margin-top: 6px; padding: 8px 8px 10px; border-top: 1px solid #E4ECEA; }
+    .date-step { margin: 8px 4px 6px; font-size: 13px; font-weight: 600; color: var(--nav); }
+    .date-step small { display: block; margin-top: 2px; font-size: 12px; font-weight: 500; color: #8AA0A4; }
+    .cal-head { display: flex; align-items: center; justify-content: space-between; padding: 2px 4px 8px; }
+    .cal-head b { font-size: 14px; font-weight: 600; }
+    .cal-head button {
+      width: 28px;
+      height: 28px;
+      border: 0;
+      border-radius: 8px;
+      background: #F3F6F5;
+      color: var(--nav);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .cal-head button:disabled { opacity: 0.35; cursor: default; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cal-grid span { text-align: center; font-size: 11px; font-weight: 600; color: #8AA0A4; padding: 2px 0; }
+    .cal-grid button {
+      height: 34px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--nav);
+      cursor: pointer;
+    }
+    .cal-grid button:hover:not(:disabled) { background: #F3F6F5; }
+    .cal-grid button:disabled { color: #C5D2D4; cursor: default; }
+    .cal-grid button.on, .cal-grid button.on:hover { background: #1666D8; color: #fff; }
+    .backup-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .backup-days button {
+      border: 1px solid #E4ECEA;
+      border-radius: 10px;
+      background: #fff;
+      padding: 7px 2px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .backup-days b { display: block; font-size: 13px; font-weight: 600; color: var(--nav); }
+    .backup-days small { display: block; margin-top: 1px; font-size: 10px; font-weight: 500; color: #8AA0A4; }
+    .backup-days button.on { background: #1666D8; border-color: #1666D8; }
+    .backup-days button.on b, .backup-days button.on small { color: #fff; }
+    .parcel-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .parcel-row.solo { grid-template-columns: 1fr; }
+    .parcel-row.with-back { grid-template-columns: auto 1fr; }
+    .parcel-row.solo .compare,
+    .parcel-row.with-back .compare:last-child { width: 100%; height: 40px; }
+    .compare {
+      border: 0;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 12px;
+      padding: 0 18px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .compare.ghost {
+      background: #F3F6F5;
+      color: var(--nav);
+      padding: 0 18px;
+    }
+    .checks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+      padding: 0 2px;
+      color: #6D8386;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .checks span { display: inline-flex; align-items: center; gap: 6px; }
+    .checks svg { flex: none; }
+
+    .map-card {
+      background: #EAF3FF;
+      border-radius: 28px;
+      min-height: 460px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(8, 45, 54, 0.06);
+    }
+    .block {
+      position: absolute;
+      background: #fff;
+      border-radius: 18px;
+    }
+    .b1 { width: 92px; height: 78px; top: 28px; right: 36px; }
+    .b2 { width: 78px; height: 64px; top: 118px; right: 28px; }
+    .b3 { width: 70px; height: 58px; top: 86px; left: 46px; }
+    .b4 { width: 86px; height: 70px; bottom: 118px; left: 34px; }
+    .b5 { width: 64px; height: 52px; bottom: 150px; right: 48px; }
+    .route {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .pin {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--blue);
+      border: 4px solid #fff;
+      box-shadow: 0 4px 10px rgba(22, 102, 216, 0.35);
+      top: 54px;
+      left: 58px;
+    }
+    .drop {
+      position: absolute;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #12A37A;
+      display: grid;
+      place-items: center;
+      right: 54px;
+      bottom: 132px;
+      box-shadow: 0 8px 18px rgba(18, 163, 122, 0.35);
+    }
+    .courier {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 18px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 24px rgba(8, 45, 54, 0.08);
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #D7EDE4;
+      display: grid;
+      place-items: center;
+      flex: none;
+    }
+    .courier strong { display: block; font-size: 14px; font-weight: 700; }
+    .courier small { color: #6D8386; font-size: 12px; font-weight: 500; }
+    .live {
+      margin-left: auto;
+      background: #DDF7EF;
+      color: #087B69;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+
+    .services { background: #fff; padding: 72px 96px 88px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #DDF7EF;
+      color: #087B69;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .pill i { width: 7px; height: 7px; border-radius: 50%; background: #10A88B; display: block; }
+    .services h2 {
+      margin-top: 16px;
+      font-size: clamp(32px, 3.4vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+    .services-line {
+      margin-top: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-      position: relative;
     }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-    .nav-brand img {
-      height: 76px;
-      width: auto;
-      display: block;
-      object-fit: contain;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .nav-links a {
-      color: #334155;
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-    .nav-links a:hover { color: #1e40af; }
-    .nav-menu {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-    }
-    .nav-enquire {
-      display: inline-block;
-      padding: 10px 22px;
-      border-radius: 8px;
-      background: #1e40af;
-      color: #fff !important;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.95rem;
-      white-space: nowrap;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .nav-enquire:hover { background: #1e3a8a; color: #fff !important; }
-    .nav-toggle {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-      width: 40px;
-      height: 40px;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-    }
-    .nav-toggle span {
-      display: block;
-      height: 2px;
-      width: 22px;
-      background: #1e40af;
-      border-radius: 2px;
-    }
-
-    .hero {
-      width: 100%;
-      max-width: none;
-      margin: 0;
-      padding: 0;
-      color: #0f172a;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      background:
-        radial-gradient(ellipse at 15% 20%, rgba(45, 212, 191, 0.28), transparent 42%),
-        radial-gradient(ellipse at 88% 75%, rgba(37, 99, 235, 0.2), transparent 48%),
-        linear-gradient(165deg, #f0f9ff 0%, #eef2ff 42%, #f8fafc 100%);
-    }
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(120deg, transparent 40%, rgba(15, 118, 110, 0.06) 50%, transparent 60%);
-      pointer-events: none;
-    }
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 88px 24px 96px;
-    }
-    .hero h1 {
-      font-size: clamp(2.4rem, 5vw, 3.4rem);
-      margin-bottom: 16px;
-      letter-spacing: -0.03em;
-      color: #0f172a;
-      font-weight: 800;
-      background: linear-gradient(135deg, #0f766e, #1e3a8a);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .hero-lead {
-      font-size: 1.15rem;
-      max-width: 620px;
-      margin: 0 auto 36px;
-      color: #475569;
-      line-height: 1.65;
-    }
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-      align-items: center;
-    }
-    .btn {
-      display: inline-block;
-      padding: 14px 28px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #0f766e, #1e3a8a);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 1rem;
-      box-shadow: 0 8px 20px rgba(30, 58, 138, 0.22);
-      transition: filter 0.15s ease, box-shadow 0.15s ease;
-    }
-    .btn:hover {
-      filter: brightness(1.05);
-      box-shadow: 0 10px 24px rgba(30, 58, 138, 0.3);
-    }
-    .btn.secondary {
-      background: #fff;
-      color: #1e3a8a;
-      margin-left: 0;
-      border: 1.5px solid #e2e8f0;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-    }
-    .btn.secondary:hover {
-      border-color: #0ea5a4;
-      color: #0f766e;
-      filter: none;
-    }
-    .btn.ghost {
-      background: rgba(15, 118, 110, 0.1);
-      color: #0f766e;
-      box-shadow: none;
-      border: 1.5px solid rgba(15, 118, 110, 0.35);
-      pointer-events: none;
-      opacity: 1;
-      font-weight: 800;
-      font-size: 1rem;
-      letter-spacing: 0.01em;
-      padding: 14px 22px;
-    }
-
-    section { padding: 70px 20px; max-width: 1100px; margin: auto; }
-    section.hero { max-width: none; width: 100%; padding: 0; }
-    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
-    .card { border: 1px solid #e5e7eb; border-radius: 16px; padding: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-    .card h3 { margin-bottom: 10px; color: #1e40af; }
-
-    /* Why Ajobzio */
-    .about-section {
-      padding-top: 36px;
-      padding-bottom: 64px;
-    }
-    .about-section .section-heading {
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: clamp(1.75rem, 3vw, 2.2rem);
-      letter-spacing: -0.02em;
-      color: #0f172a;
-      font-weight: 800;
-    }
-    .about-section .section-sub {
-      text-align: center;
-      max-width: 520px;
-      margin: 0 auto 32px;
-      color: #64748b;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-    .about-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 18px;
-    }
-    .feature-card {
-      position: relative;
-      overflow: hidden;
-      background: #fff;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 18px;
-      padding: 26px 22px;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: featureFadeIn 0.6s ease forwards;
-    }
-    .feature-card:nth-child(1) { animation-delay: 0.08s; }
-    .feature-card:nth-child(2) { animation-delay: 0.16s; }
-    .feature-card:nth-child(3) { animation-delay: 0.24s; }
-    .feature-card:nth-child(4) { animation-delay: 0.32s; }
-    @keyframes featureFadeIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .feature-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #0f766e, #1e3a8a);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.35s ease;
-    }
-    .feature-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.1);
-      border-color: rgba(14, 165, 164, 0.4);
-    }
-    .feature-card:hover::before {
-      transform: scaleX(1);
-    }
-    .feature-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(30, 58, 138, 0.12));
-      color: #0f766e;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 16px;
-      transition: transform 0.3s ease, background 0.3s ease;
-    }
-    .feature-card:hover .feature-icon {
-      transform: scale(1.08) rotate(-4deg);
-      background: linear-gradient(135deg, #0f766e, #1e3a8a);
-      color: #fff;
-    }
-    .feature-card h3 {
-      margin-bottom: 10px;
-      color: #0f172a;
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-    .feature-card p {
-      color: #475569;
-      font-size: 0.94rem;
-      line-height: 1.6;
-    }
-
-    /* How It Works */
-    .how-section {
-      max-width: none;
-      width: 100%;
-      margin: 0;
-      padding: 56px 20px 72px;
-      background: transparent;
-    }
-    .how-section-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .how-section .section-heading {
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: clamp(1.75rem, 3vw, 2.2rem);
-      letter-spacing: -0.02em;
-      color: #0f172a;
-      font-weight: 800;
-    }
-    .how-section .section-sub {
-      text-align: center;
-      max-width: 560px;
-      margin: 0 auto 40px;
-      color: #64748b;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-    .steps {
+    .services-line p { color: #6D8386; font-size: 15px; font-weight: 400; }
+    .browse { color: var(--blue); font-weight: 600; font-size: 15px; white-space: nowrap; }
+    .svc-grid {
+      margin-top: 28px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-      position: relative;
+      gap: 16px;
     }
-    .steps::before {
-      content: "";
-      position: absolute;
-      top: 42px;
-      left: 12%;
-      right: 12%;
-      height: 2px;
-      background: linear-gradient(90deg, #0f766e, #1e3a8a);
-      opacity: 0.25;
-      z-index: 0;
-    }
-    .step-card {
-      position: relative;
-      z-index: 1;
+    .svc {
+      display: block;
       background: #fff;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 20px;
-      padding: 28px 22px 26px;
-      text-align: center;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-      opacity: 0;
-      transform: translateY(22px);
-      animation: stepFadeIn 0.6s ease forwards;
+      border: 1px solid #E7EFED;
+      border-radius: 22px;
+      padding: 22px 22px 20px;
+      min-height: 168px;
+      box-shadow: 0 10px 28px rgba(8, 45, 54, 0.04);
+      position: relative;
     }
-    .step-card:nth-child(1) { animation-delay: 0.1s; }
-    .step-card:nth-child(2) { animation-delay: 0.22s; }
-    .step-card:nth-child(3) { animation-delay: 0.34s; }
-    @keyframes stepFadeIn {
-      to { opacity: 1; transform: translateY(0); }
+    .svc:hover { border-color: #D3E2DE; }
+    .svc-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
     }
-    .step-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.1);
-      border-color: rgba(14, 165, 164, 0.45);
-    }
-    .step-num {
-      width: 56px;
-      height: 56px;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #0f766e, #1e3a8a);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      font-weight: 800;
-      box-shadow: 0 8px 20px rgba(30, 58, 138, 0.25);
-      transition: transform 0.35s ease;
-    }
-    .step-card:hover .step-num {
-      transform: scale(1.08);
-    }
-    .step-card h3 {
-      margin-bottom: 10px;
-      color: #0f172a;
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-    .step-card p {
-      color: #475569;
-      font-size: 0.94rem;
-      line-height: 1.6;
-      max-width: 280px;
-      margin: 0 auto;
+    .svc h3 { margin-top: 22px; font-size: 18px; font-weight: 700; }
+    .svc p { margin-top: 4px; color: #6D8386; font-size: 14px; line-height: 1.45; }
+    .svc b { display: block; margin-top: 10px; font-size: 14px; font-weight: 700; }
+    .svc .go {
+      position: absolute;
+      top: 22px;
+      right: 20px;
+      color: #8AA0A4;
+      font-size: 18px;
     }
 
-    @media (max-width: 768px) {
-      .steps {
-        grid-template-columns: 1fr;
-        gap: 16px;
+    @media (prefers-reduced-motion: reduce) {
+      .hero-bg,
+      .hero-grid,
+      .modes-pill,
+      .hero-stage::before,
+      .hero-stage::after {
+        transition: none !important;
       }
-      .steps::before { display: none; }
-      .step-card { text-align: left; padding: 22px 20px; }
-      .step-num { margin: 0 0 14px; }
-      .step-card p { max-width: none; margin: 0; }
+      .hero-grid.is-switching {
+        opacity: 1;
+        transform: none;
+      }
     }
 
-    .cta { text-align: center; background: #1e40af; color: #fff; border-radius: 24px; padding: 60px 20px; }
-    .cta h2 { font-size: 2.2rem; margin-bottom: 16px; }
-
-    .site-footer {
-      background: #0f172a;
-      padding: 18px 24px;
-      border-top: 3px solid #0f766e;
+    @media (max-width: 980px) {
+      header, footer { padding-left: 24px; padding-right: 24px; }
+      .foot, .legal { flex-direction: column; align-items: flex-start; }
+      .foot-brand { width: 100%; }
+      .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 16px; width: 100%; }
+      .legal nav { flex-wrap: wrap; gap: 12px 16px; }
+      .services { padding: 48px 24px 64px; }
+      .services-line { flex-direction: column; align-items: flex-start; }
+      .svc-grid { grid-template-columns: 1fr 1fr; }
     }
-    .site-footer-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px 28px;
-    }
-    .footer-copy {
-      margin: 0;
-      color: #94a3b8;
-      font-size: 0.85rem;
-      white-space: nowrap;
-    }
-    .footer-links {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 6px 4px;
-    }
-    .footer-links a {
-      color: #e2e8f0;
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
-    }
-    .footer-links a:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.08);
-    }
-    .footer-links a[href*="privacy"] {
-      margin-left: 6px;
-      padding-left: 14px;
-      border-left: 1px solid #334155;
-      border-radius: 0 6px 6px 0;
-    }
-
-      @media (max-width: 768px) {
-      .hero-inner { padding: 64px 20px 72px; }
-      .hero h1 { font-size: 2.2rem; }
-      .nav-brand img { height: 60px; }
-      .nav-toggle { display: flex; }
-      .nav-menu {
+    @media (max-width: 760px) {
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        height: 64px;
+        padding: 0 16px;
+        gap: 8px;
+        justify-content: flex-start;
+      }
+      .nav-btn { margin-left: auto; }
+      .logo { height: 32px; }
+      .menu-toggle { display: inline-flex; }
+      .nav-links {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        background: #fff;
-        border-bottom: 1px solid #e5e7eb;
-        padding: 16px 20px 24px;
         flex-direction: column;
         align-items: stretch;
+        gap: 0;
+        padding: 6px 16px 12px;
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+        box-shadow: 0 16px 40px rgba(8, 45, 54, 0.08);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 14px 2px; border-top: 1px solid #EEF3F2; font-size: 15px; }
+      .nav-btn { height: 42px; padding: 0 12px; }
+      .hero {
+        padding: 20px 16px 0;
+        padding-bottom: calc((100% + 32px) * 881 / 1600 + 18px);
         gap: 16px;
+        overflow: visible;
       }
-      .nav-menu.open { display: flex; }
-      .nav-links {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-      .nav-enquire { text-align: center; }
-      .site-footer-inner {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-      }
-      .footer-links {
-        justify-content: center;
-      }
-      .footer-links a[href*="privacy"] {
-        margin-left: 0;
-        padding-left: 10px;
-        border-left: none;
-      }
-    }
-  
-    /* Job Categories */
-    .jobs-section {
-      max-width: none;
-      width: 100%;
-      margin: 0;
-      padding: 56px 20px 40px;
-      background: transparent;
-    }
-    .jobs-section-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .jobs-section .section-heading {
-      text-align: center;
-      margin-bottom: 12px;
-      font-size: clamp(1.75rem, 3vw, 2.2rem);
-      letter-spacing: -0.02em;
-      color: #0f172a;
-      font-weight: 800;
-    }
-    .jobs-section .section-sub {
-      text-align: center;
-      max-width: 520px;
-      margin: 0 auto 40px;
-      color: #64748b;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-    .job-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 18px;
-    }
-    .job-item {
-      background: #fff;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 18px;
-      padding: 22px 20px;
-      text-align: left;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
-      transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-      opacity: 0;
-      transform: translateY(18px);
-      animation: jobFadeIn 0.55s ease forwards;
-    }
-    .job-item:nth-child(1) { animation-delay: 0.05s; }
-    .job-item:nth-child(2) { animation-delay: 0.1s; }
-    .job-item:nth-child(3) { animation-delay: 0.15s; }
-    .job-item:nth-child(4) { animation-delay: 0.2s; }
-    .job-item:nth-child(5) { animation-delay: 0.25s; }
-    .job-item:nth-child(6) { animation-delay: 0.3s; }
-    .job-item:nth-child(7) { animation-delay: 0.35s; }
-    .job-item:nth-child(8) { animation-delay: 0.4s; }
-    @keyframes jobFadeIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .job-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.1);
-      border-color: rgba(14, 165, 164, 0.45);
-    }
-    .job-item:hover .job-badge {
-      transform: scale(1.06) rotate(-3deg);
-    }
-    .job-item-top {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .job-badge {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #0f766e, #1e3a8a);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.55rem;
-      flex-shrink: 0;
-      transition: transform 0.3s ease;
-    }
-    .job-meta {
-      flex: 1;
-      min-width: 0;
-    }
-    .job-meta strong {
-      display: block;
-      font-size: 1.05rem;
-      color: #0f172a;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-    .job-detail {
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px solid #e2e8f0;
-    }
-    .job-detail p {
-      margin: 0;
-      color: #475569;
-      font-size: 0.92rem;
-      line-height: 1.6;
-    }
-
-    /* Enquire modal */
-    .enquire-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 1100;
-      background: rgba(15, 23, 42, 0.55);
-      backdrop-filter: blur(4px);
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      box-sizing: border-box;
-    }
-    .enquire-modal.open { display: flex; }
-    .enquire-dialog {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      width: 100%;
-      max-width: 820px;
-      max-height: calc(100vh - 32px);
-      max-height: calc(100dvh - 32px);
-      margin: 0;
-      background: #fff;
-      border-radius: 24px;
-      overflow-x: hidden;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      position: relative;
-      box-shadow: 0 28px 64px rgba(15, 23, 42, 0.22);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      flex: 0 1 auto;
-      min-height: 0;
-    }
-    .enquire-close {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      z-index: 2;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      font-size: 22px;
-      line-height: 1;
-      cursor: pointer;
-      color: #475569;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
-    }
-    .enquire-close:hover {
-      background: #f8fafc;
-      color: #0f172a;
-    }
-    .enquire-form-panel {
-      padding: 40px 36px;
-      background: #fff;
-    }
-    .enquire-form-panel h2 {
-      color: #0f172a;
-      font-size: 1.65rem;
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
-    .enquire-form-panel > p {
-      color: #64748b;
-      font-size: 0.95rem;
-      margin-bottom: 26px;
-      line-height: 1.5;
-    }
-    .enquire-field { margin-bottom: 16px; }
-    .enquire-field label {
-      display: block;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #334155;
-      margin-bottom: 7px;
-      letter-spacing: 0.01em;
-    }
-    .enquire-field input,
-    .enquire-field textarea {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      color: #0f172a;
-      outline: none;
-      resize: vertical;
-      background: #f8fafc;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-    .enquire-field input:focus,
-    .enquire-field textarea:focus {
-      border-color: #0ea5a4;
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(14, 165, 164, 0.18);
-    }
-    .enquire-field textarea { min-height: 110px; }
-    .enquire-send {
-      width: 100%;
-      margin-top: 10px;
-      padding: 14px 20px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #0f766e, #1e3a8a);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-      box-shadow: 0 8px 20px rgba(30, 58, 138, 0.25);
-    }
-    .enquire-send:hover {
-      filter: brightness(1.05);
-      box-shadow: 0 10px 24px rgba(30, 58, 138, 0.3);
-    }
-    .enquire-send:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
-    }
-    .enquire-status {
-      margin-top: 12px;
-      font-size: 0.9rem;
-      min-height: 1.2em;
-    }
-    .enquire-status.ok { color: #15803d; }
-    .enquire-status.err { color: #b91c1c; }
-    .enquire-info-panel {
-      background:
-        radial-gradient(ellipse at 20% 10%, rgba(45, 212, 191, 0.18), transparent 50%),
-        radial-gradient(ellipse at 90% 80%, rgba(37, 99, 235, 0.12), transparent 45%),
-        linear-gradient(165deg, #f0f9ff 0%, #eef2ff 45%, #f8fafc 100%);
-      color: #0f172a;
-      padding: 44px 36px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 18px;
-      border-left: 1px solid #e2e8f0;
-    }
-    .enquire-info-panel img {
-      height: 72px;
-      width: auto;
-      align-self: flex-start;
-      display: block;
-      object-fit: contain;
-    }
-    .enquire-info-panel h3 {
-      font-size: 1.4rem;
-      line-height: 1.3;
-      color: #0f172a;
-      letter-spacing: -0.02em;
-    }
-    .enquire-info-panel p {
-      color: #475569;
-      font-size: 0.95rem;
-      line-height: 1.55;
-    }
-    .enquire-info-panel .enquire-email {
-      margin-top: 4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      color: #1e3a8a;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.92rem;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-      width: fit-content;
-    }
-    .enquire-info-panel .enquire-email:hover {
-      border-color: #0ea5a4;
-      color: #0f766e;
-    }
-    .enquire-points {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin: 4px 0 0;
-      padding: 0;
-    }
-    .enquire-points li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      color: #334155;
-      font-size: 0.9rem;
-      line-height: 1.4;
-    }
-    .enquire-points li::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      margin-top: 6px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #14b8a6, #1e40af);
-    }
-
-    @media (max-width: 700px) {
-      .enquire-modal {
-        padding: 12px;
-        align-items: center;
-        justify-content: center;
-      }
-      .enquire-dialog {
-        grid-template-columns: 1fr;
-        width: 100%;
-        max-width: 420px;
-        max-height: calc(100vh - 24px);
-        max-height: calc(100dvh - 24px);
-        border-radius: 18px;
-        border: 1px solid #e2e8f0;
-      }
-      .enquire-info-panel {
-        order: -1;
-        padding: 20px 18px 16px;
-        border-left: none;
-        border-bottom: 1px solid #e2e8f0;
-        gap: 8px;
-      }
-      .enquire-info-panel img { height: 40px; }
-      .enquire-info-panel h3 { font-size: 1.05rem; margin: 0; }
-      .enquire-info-panel p { font-size: 0.82rem; margin: 0; }
-      .enquire-points { display: none; }
-      .enquire-info-panel .enquire-email {
-        padding: 8px 12px;
-        font-size: 0.82rem;
-        margin-top: 4px;
-      }
-      .enquire-form-panel { padding: 18px 18px 24px; }
-      .enquire-form-panel h2 { font-size: 1.25rem; margin-bottom: 4px; }
-      .enquire-form-panel > p { margin-bottom: 16px; font-size: 0.88rem; }
-      .enquire-field { margin-bottom: 12px; }
-      .enquire-field textarea { min-height: 72px; }
-      .enquire-close {
+      .hero-bg {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        left: -16px;
+        right: -16px;
+        bottom: 0;
+        top: auto;
+        width: auto;
+        height: auto;
+        aspect-ratio: 1600 / 881;
+        margin: 0;
+        opacity: 0;
+        transform: none !important;
+        transition: opacity 0.45s ease;
       }
+      .hero.mode-parcel .hero-bg-parcel,
+      .hero.mode-service .hero-bg-service {
+        opacity: 1;
+      }
+      .hero-bg-parcel {
+        background-position: right center;
+        background-size: cover;
+      }
+      .hero-bg-service {
+        background-position: center bottom;
+        background-size: 1600px auto;
+      }
+      .hero-stage {
+        padding: 0;
+      }
+      .hero.mode-parcel .hero-stage::before,
+      .hero.mode-parcel .hero-stage::after,
+      .hero.mode-service .hero-stage::before,
+      .hero.mode-service .hero-stage::after {
+        flex-grow: 0.001;
+        display: none;
+      }
+      .hero-modes .modes { width: 100%; }
+      .hero-grid { max-width: none; flex-basis: auto; }
+      .hero h1 { font-size: 34px; max-width: none; }
+      .lede { font-size: 15px; }
+      .quote { margin-top: 20px; padding: 12px; }
+      .quote-body { grid-template-columns: 1fr; }
+      .address-row, .fields, .parcel-row, .parcel-row.with-back, .dim-grid { grid-template-columns: 1fr; }
+      .modes { grid-template-columns: 1fr 1fr; }
+      .vehicles { width: 100%; }
+      .vehicles button { flex: 1 1 calc(33.333% - 8px); min-width: 0; }
+      .parcel-face.back { position: relative; transform: none; }
+      .parcel-flip.is-flipped .parcel-flip-inner { transform: none; }
+      .parcel-flip.is-flipped .parcel-face.front { display: none; }
+      .parcel-flip:not(.is-flipped) .parcel-face.back { display: none; }
+      .field input, .when-btn, .when-btn span { font-size: 16px; }
+      .compare { width: 100%; height: 52px; }
+      .when-menu, .date-menu {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        top: auto;
+        max-height: 78vh;
+        z-index: 60;
+      }
+      .backup-days { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+      .cal-grid button { height: 40px; }
+      .services { padding: 40px 16px 56px; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .cols { grid-template-columns: 1fr 1fr; }
+      footer { padding: 40px 16px 24px; gap: 32px; }
+      footer .logo { height: 48px; }
+    }
+    @media (max-width: 380px) {
+      .track-label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      .nav-btn { width: 42px; padding: 0; justify-content: center; }
     }
   </style>
 </head>
 <body>
-
-  <!-- Site Header -->
-  <header class="site-header">
-    <nav class="nav" aria-label="Main">
-      <a href="/" class="nav-brand" aria-label="Ajobzio home">
-        <img src="/images/ajobzio_icon_with_name_16x4_nbg.png" alt="Ajobzio" />
-      </a>
-      <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" id="navToggle">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="nav-menu" id="navMenu">
-        <ul class="nav-links">
-          <li><a href="#about">About</a></li>
-          <li><a href="#career">Career</a></li>
-          <li><a href="#locations">Locations</a></li>
-        </ul>
-        <button type="button" class="nav-enquire" id="enquireOpen">Enquire</button>
-      </div>
+  <header>
+    <a class="brand" href="index.html" aria-label="Ajobzio">
+      <img class="logo" src="images/ajobzio_icon_with_name_16x4_nbg.png" alt="Ajobzio">
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="index.html">Services</a>
+      <a href="index.html">How it works</a>
+      <a href="index.html">Providers</a>
+      <a href="support.html">Help</a>
     </nav>
+    <a class="nav-btn" href="support.html">
+      <span class="track-label">Track order</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#087B69" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </a>
+    <button type="button" class="menu-toggle" aria-expanded="false" aria-label="Open menu">
+      <svg class="open-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="close-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-inner">
-      <h1>Find work. Earn daily.</h1>
-      <p class="hero-lead">Connecting jobless and skilled people with real local and online opportunities. Work freely on your schedule.</p>
-      <div class="hero-actions">
-        <a href="#about" class="btn secondary">Learn More</a>
-        <span class="btn ghost">Platform launching soon</span>
+  <main>
+    <section class="hero mode-parcel" id="hero">
+      <div class="hero-bg hero-bg-parcel" aria-hidden="true"></div>
+      <div class="hero-bg hero-bg-service" aria-hidden="true"></div>
+      <div class="hero-modes">
+        <div class="modes" role="tablist" aria-label="Choose a service">
+          <span class="modes-pill" aria-hidden="true"></span>
+          <button type="button" class="active" data-mode="parcel" role="tab" aria-selected="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z"/><path d="M3 7.5V16.5L12 21l9-4.5V7.5"/><path d="M12 12v9"/></svg>
+            Parcel delivery
+          </button>
+          <button type="button" data-mode="service" role="tab" aria-selected="false">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            Local service
+          </button>
+        </div>
+      </div>
+      <div class="hero-stage">
+        <div class="hero-grid" id="heroGrid">
+          <div>
+            <div class="badge"><i></i><span id="heroBadge">Parcel delivery, made simple</span></div>
+            <h1 id="heroTitle">Send it. Track it. Get it delivered.</h1>
+            <p class="lede" id="heroLede">Compare trusted local delivery partners, choose the right vehicle for your parcel, and see clear pricing — all in minutes.</p>
+            <form class="quote" id="quote">
+            <div class="quote-body parcel-mode" id="parcelMode">
+              <div class="parcel-flip" id="parcelFlip">
+                <div class="parcel-flip-inner">
+                  <div class="parcel-face front" id="parcelStep1">
+                    <p class="step-meta">Step 1 of 2</p>
+                    <div class="center-block vehicle-pick" id="vehiclePick">
+                      <p class="block-label">Vehicle type</p>
+                      <div class="vehicles" id="vehicleList" role="radiogroup" aria-label="Vehicle type"></div>
+                    </div>
+                    <div class="center-block" id="typeCenter">
+                      <p class="block-label">Parcel type</p>
+                      <div class="field when-field" id="typeField">
+                        <span>
+                          <span>Choose parcel type</span>
+                          <button type="button" class="when-btn" id="typeBtn" aria-haspopup="listbox" aria-expanded="false">
+                            <span id="typeValue">Non-Document</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                          </button>
+                        </span>
+                        <ul class="when-menu" id="typeMenu" role="listbox" hidden>
+                          <li><button type="button" data-value="DOCUMENT">Document</button></li>
+                          <li><button type="button" class="on" data-value="NON_DOCUMENT">Non-Document</button></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="address-row">
+                      <label class="field">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
+                        <span><span id="fromLabel">Pickup location</span><input id="from" value="Brixton, London"></span>
+                      </label>
+                      <label class="field">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
+                        <span><span id="toLabel">Delivery location</span><input id="to" value="Camden, London"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="parcel-face back" id="parcelStep2">
+                    <p class="step-meta">Step 2 of 2</p>
+                    <div class="fields">
+                      <div class="field when-field" id="weightField">
+                        <span>
+                          <span>Parcel weight</span>
+                          <button type="button" class="when-btn" id="weightBtn" aria-haspopup="listbox" aria-expanded="false">
+                            <span id="weightValue">1 kg</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                          </button>
+                        </span>
+                        <ul class="when-menu" id="weightMenu" role="listbox" hidden></ul>
+                      </div>
+                      <label class="field">
+                        <span><span>Quantity</span><input id="parcelQty" type="number" min="1" step="1" inputmode="numeric" value="1"></span>
+                      </label>
+                    </div>
+                    <p class="total-line" id="totalWeightLine"><span>Total weight:</span> 1 kg</p>
+                    <div class="dims" id="parcelDims">
+                      <p class="block-label">Dimensions</p>
+                      <div class="dim-grid">
+                        <label class="field"><span><span>Length (cm)</span><input id="dimL" type="number" min="1" step="1" inputmode="numeric"></span></label>
+                        <label class="field"><span><span>Width (cm)</span><input id="dimW" type="number" min="1" step="1" inputmode="numeric"></span></label>
+                        <label class="field"><span><span>Height (cm)</span><input id="dimH" type="number" min="1" step="1" inputmode="numeric"></span></label>
+                      </div>
+                    </div>
+                    <p class="parcel-note upgrade" id="upgradeNote" hidden></p>
+                    <p class="parcel-note error" id="capacityError" hidden></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quote-body service-mode" id="serviceMode" hidden>
+              <div class="quote-col">
+                <label class="field">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
+                  <span><span>Area</span><input id="serviceArea" value="Brixton, London"></span>
+                </label>
+                <label class="field">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
+                  <span><span>Service</span><input id="serviceNeed" value="Home cleaning"></span>
+                </label>
+              </div>
+              <div class="quote-col">
+                <div class="field when-field" id="whenField">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z"/><path d="M3 7.5V16.5L12 21l9-4.5V7.5"/></svg>
+                  <span><span id="extraLabel">When</span><input id="extra" value="Medium box · up to 10 kg" hidden>
+                    <span class="when-pick" id="whenPick">
+                      <button type="button" class="when-btn" id="whenBtn" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="whenValue">Morning, 6 AM – 11 AM</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                      </button>
+                    </span>
+                  </span>
+                  <ul class="when-menu" id="whenMenu" role="listbox" hidden>
+                    <li><button type="button" class="on" data-value="Morning, 6 AM – 11 AM" aria-label="Morning, 6 AM to 11 AM"><span><b>Morning</b><small>6 AM to 11 AM</small></span></button></li>
+                    <li><button type="button" data-value="Afternoon, 11 AM – 4 PM" aria-label="Afternoon, 11 AM to 4 PM"><span><b>Afternoon</b><small>11 AM to 4 PM</small></span></button></li>
+                    <li><button type="button" data-value="Evening, 4 PM – 9 PM" aria-label="Evening, 4 PM to 9 PM"><span><b>Evening</b><small>4 PM to 9 PM</small></span></button></li>
+                    <li><button type="button" data-value="Night, after 9 PM" aria-label="Night, after 9 PM"><span><b>Night</b><small>After 9 PM</small></span></button></li>
+                  </ul>
+                </div>
+                <div class="field date-field" id="dateField">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+                  <span>
+                    <span>Date</span>
+                    <button type="button" class="when-btn" id="dateBtn" aria-haspopup="dialog" aria-expanded="false">
+                      <span id="dateValue">Immediate requirement</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                  </span>
+                  <div class="date-menu" id="dateMenu" role="dialog" aria-label="Choose a date" hidden>
+                    <button type="button" class="date-choice on" data-kind="immediate">
+                      <span><b>Immediate requirement</b><small>A worker can come as soon as possible</small></span>
+                    </button>
+                    <button type="button" class="date-choice" data-kind="dates">
+                      <span><b>Choose dates</b><small>A preferred start day, plus one backup within 7 days</small></span>
+                    </button>
+                    <div class="date-pickers" id="datePickers" hidden>
+                      <p class="date-step">Preferred date<small>The day you most want the worker to start</small></p>
+                      <div id="prefCal"></div>
+                      <p class="date-step">Backup date<small id="backupHint">Choose the preferred date first. The backup has to be within the next 7 days.</small></p>
+                      <div class="backup-days" id="backupDays"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="parcel-row solo" id="parcelRow">
+              <button type="button" class="compare ghost" id="backBtn" hidden>← Back</button>
+              <button class="compare" id="compareBtn" type="button">Next →</button>
+            </div>
+            <div class="checks" id="heroChecks">
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10A88B" stroke-width="2.4"><path d="m5 12 5 5L20 7"/></svg> No account required</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10A88B" stroke-width="2.4"><path d="m5 12 5 5L20 7"/></svg> Clear pricing</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10A88B" stroke-width="2.4"><path d="m5 12 5 5L20 7"/></svg> Reliable delivery</span>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="services" id="services">
+      <div class="pill"><i></i> One search, plenty of help</div>
+      <h2>What can we help with?</h2>
+      <div class="services-line">
+        <p>Search practical local services and compare providers without forms, phone tag or an account.</p>
+        <a class="browse" href="#services">Browse all services →</a>
+      </div>
+      <div class="svc-grid">
+        <a class="svc" href="#services">
+          <span class="svc-icon" style="background:#EAF4FF;color:#1666D8"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z"/><path d="M3 7.5V16.5L12 21l9-4.5V7.5"/><path d="M12 12v9"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Courier &amp; parcels</h3>
+          <p>Same-day, next-day and scheduled delivery.</p>
+          <b style="color:#1666D8">From ₹149</b>
+        </a>
+        <a class="svc" href="#services">
+          <span class="svc-icon" style="background:#DDF7EF;color:#087B69"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Moving help</h3>
+          <p>Vans, lifting help and small home moves.</p>
+          <b style="color:#087B69">42 nearby</b>
+        </a>
+        <a class="svc" href="#services">
+          <span class="svc-icon" style="background:#FFF0D9;color:#C4842A"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v2M12 19v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M3 12h2M19 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Cleaning</h3>
+          <p>Trusted help for homes, offices and end-of-tenancy.</p>
+          <b style="color:#C4842A">From ₹399/hr</b>
+        </a>
+        <a class="svc" href="#services">
+          <span class="svc-icon" style="background:#F1EBFF;color:#6C4CCF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.6L4 17l3 3 5.1-5.1a4 4 0 0 0 5.6-5.6l-2.2 2.2-1.6-1.6 2.2-2.2Z"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Repairs</h3>
+          <p>Handypeople for fixes, fitting and maintenance.</p>
+          <b style="color:#6C4CCF">31 nearby</b>
+        </a>
+        <a class="svc" href="#services">
+          <span class="svc-icon" style="background:#FDECEA;color:#C75B44"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Errands</h3>
+          <p>Collections, shopping, returns and local tasks.</p>
+          <b style="color:#C75B44">From ₹199</b>
+        </a>
+        <a class="svc" href="#services">
+          <span class="svc-icon" style="background:#E5F7F3;color:#0E9B86"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 11V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/><path d="M4 14h16v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4Z"/><path d="M4 14a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Furniture assembly</h3>
+          <p>Flat-pack assembly by rated local experts.</p>
+          <b style="color:#0E9B86">From ₹499</b>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot">
+      <div class="foot-brand">
+        <a class="brand" href="index.html" aria-label="Ajobzio">
+          <img class="logo" src="images/ajobzio_icon_with_name_16x4_nbg.png" alt="Ajobzio">
+        </a>
+        <p>Parcel delivery and local services, requested from one place.</p>
+        <div class="social">
+          <a href="https://instagram.com" aria-label="Instagram">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="#fff" stroke="none"/></svg>
+          </a>
+          <a href="https://facebook.com" aria-label="Facebook">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M14 8h3V4h-3c-2.8 0-5 2.2-5 5v2H6v4h3v7h4v-7h3l1-4h-4V9c0-.6.4-1 1-1Z"/></svg>
+          </a>
+          <a href="https://linkedin.com" aria-label="LinkedIn">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v7M8 7h.01M12 17v-4.5a2.5 2.5 0 0 1 5 0V17"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="cols">
+        <div>
+          <h2>Services</h2>
+          <a href="index.html">Parcel delivery</a>
+          <a href="index.html">Local services</a>
+          <a href="index.html">Home cleaning</a>
+          <a href="index.html">Repairs</a>
+        </div>
+        <div>
+          <h2>Company</h2>
+          <a href="index.html">About</a>
+          <a href="careers.html">Careers</a>
+          <a href="support.html">Support</a>
+          <a href="mailto:support@ajobzio.com">Contact</a>
+        </div>
+        <div>
+          <h2>Legal</h2>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms of use</a>
+          <a href="privacy-policy.html">Privacy policy</a>
+          <a href="support.html">Help center</a>
+        </div>
       </div>
     </div>
-  </section>
-
-  <!-- Job Categories -->
-  <section class="jobs-section" id="categories">
-    <div class="jobs-section-inner">
-      <h2 class="section-heading">Popular Job Categories</h2>
-      <p class="section-sub">Browse skills you can hire — or offer — on Ajobzio.</p>
-      <div class="job-list" id="jobList"></div>
-    </div>
-  </section>
-
-  <section id="about" class="about-section">
-    <h2 class="section-heading">Why Ajobzio?</h2>
-    <p class="section-sub">One platform to find work, hire skilled people, and earn on your terms.</p>
-    <div class="about-grid">
-      <article class="feature-card">
-        <div class="feature-icon" aria-hidden="true">👷</div>
-        <h3>For Job Seekers</h3>
-        <p>Find flexible jobs like online teaching, delivery, driving, plumbing, electrician work, and more.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon" aria-hidden="true">🤝</div>
-        <h3>Hire Workers Easily</h3>
-        <p>Search and hire workers by job type — electrician, plumber, driver, delivery partner, or online tutor — when you need them.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon" aria-hidden="true">💰</div>
-        <h3>Daily Income</h3>
-        <p>Work today and earn quickly. Ideal for people looking for side income or full‑time work.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon" aria-hidden="true">🔒</div>
-        <h3>Simple & Secure</h3>
-        <p>Easy registration, verified users, and transparent communication.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- How it Works -->
-  <section class="how-section" id="career">
-    <div class="how-section-inner">
-      <h2 class="section-heading">How It Works</h2>
-      <p class="section-sub">Need someone to get a job done? Search workers by category and connect instantly — three simple steps.</p>
-      <div class="steps">
-        <article class="step-card">
-          <div class="step-num">1</div>
-          <h3>Sign Up</h3>
-          <p>Create a free account as a worker or service requester.</p>
-        </article>
-        <article class="step-card">
-          <div class="step-num">2</div>
-          <h3>Post or Apply</h3>
-          <p>Post a job or apply for available work that matches your skills.</p>
-        </article>
-        <article class="step-card">
-          <div class="step-num">3</div>
-          <h3>Work & Earn</h3>
-          <p>Complete the job and get paid. Build your profile and reputation.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section>
-    <div class="cta">
-      <h2>Start Earning with Ajobzio Today</h2>
-      <p style="margin-bottom:24px;">Whether you need work or need workers, Ajobzio is the place to start.</p>
-      <a href="#" class="btn" style="pointer-events:none; opacity:0.7;">Coming Soon</a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="site-footer-inner">
-      <p class="footer-copy">© 2026 Ajobzio. All rights reserved.</p>
-      <nav class="footer-links" aria-label="Footer">
-        <a href="#about">About</a>
-        <a href="#career">Career</a>
-        <a href="mailto:support@ajobzio.com" class="js-open-enquire">Contact</a>
-        <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+    <div class="legal">
+      <span>© 2026 Ajobzio</span>
+      <nav aria-label="Legal">
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="privacy-policy.html">Cookies</a>
+        <a href="support.html">Support</a>
       </nav>
+      <div class="region">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#AFC4C5" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.8 3.8 5.8 3.8 9s-1.3 6.2-3.8 9c-2.5-2.8-3.8-5.8-3.8-9S9.5 5.8 12 3Z"/></svg>
+        <span>India</span>
+      </div>
     </div>
   </footer>
-
-<!-- Enquire Modal -->
-<div class="enquire-modal" id="enquireModal" role="dialog" aria-modal="true" aria-labelledby="enquireTitle">
-  <div class="enquire-dialog">
-    <button type="button" class="enquire-close" id="enquireClose" aria-label="Close">&times;</button>
-    <div class="enquire-form-panel">
-      <h2 id="enquireTitle">Enquire</h2>
-      <p>Send us your question and we’ll get back to you.</p>
-      <form id="enquireForm" novalidate>
-        <div class="enquire-field">
-          <label for="enquireName">Name</label>
-          <input id="enquireName" name="name" type="text" autocomplete="name" required placeholder="Your name" />
-        </div>
-        <div class="enquire-field">
-          <label for="enquireEmail">Email ID</label>
-          <input id="enquireEmail" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
-        </div>
-        <div class="enquire-field">
-          <label for="enquireReason">Your question</label>
-          <textarea id="enquireReason" name="message" required placeholder="What would you like to know?"></textarea>
-        </div>
-        <button type="submit" class="enquire-send" id="enquireSend">Send</button>
-        <p class="enquire-status" id="enquireStatus" aria-live="polite"></p>
-      </form>
-    </div>
-    <div class="enquire-info-panel">
-      <img src="/images/ajobzio_icon_with_name_16x4_nbg.png" alt="Ajobzio" />
-      <h3>We’re here to help</h3>
-      <p>Share your name, email, and question. Our team will reply at the earliest.</p>
-      <ul class="enquire-points">
-        <li>Quick response from our support team</li>
-        <li>Partnership, careers &amp; product questions welcome</li>
-      </ul>
-      <a class="enquire-email" href="mailto:support@ajobzio.com">support@ajobzio.com</a>
-    </div>
-  </div>
-</div>
-
-<script>
-  /* ---------------- Nav (mobile) ---------------- */
-  const navToggle = document.getElementById('navToggle');
-  const navMenu = document.getElementById('navMenu');
-  navToggle.addEventListener('click', () => {
-    const open = navMenu.classList.toggle('open');
-    navToggle.setAttribute('aria-expanded', open);
-  });
-  navMenu.querySelectorAll('a, button').forEach(link => {
-    link.addEventListener('click', () => {
-      navMenu.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-
-  /* ---------------- Enquire modal ---------------- */
-  const enquireModal = document.getElementById('enquireModal');
-  const enquireDialog = enquireModal.querySelector('.enquire-dialog');
-  const enquireForm = document.getElementById('enquireForm');
-  const enquireStatus = document.getElementById('enquireStatus');
-  const enquireSend = document.getElementById('enquireSend');
-  const SUPPORT_EMAIL = 'support@ajobzio.com';
-  // Live Server is on 127.0.0.1 — match that host for the API
-  const ENQUIRE_API = window.ENQUIRE_API_URL || 'http://127.0.0.1:3001/api/enquire';
-
-  function openEnquireModal() {
-    enquireModal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    enquireStatus.textContent = '';
-    enquireStatus.className = 'enquire-status';
-    enquireDialog.scrollTop = 0;
-  }
-
-  function closeEnquireModal() {
-    enquireModal.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.getElementById('enquireOpen').addEventListener('click', openEnquireModal);
-  document.querySelectorAll('.js-open-enquire').forEach((el) => {
-    el.addEventListener('click', (e) => {
-      e.preventDefault();
-      openEnquireModal();
-    });
-  });
-  if (new URLSearchParams(window.location.search).has('enquire')) {
-    openEnquireModal();
-  }
-  document.getElementById('enquireClose').addEventListener('click', closeEnquireModal);
-  enquireModal.addEventListener('click', e => {
-    if (e.target === enquireModal) closeEnquireModal();
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && enquireModal.classList.contains('open')) closeEnquireModal();
-  });
-
-  enquireForm.addEventListener('submit', async e => {
-    e.preventDefault();
-    const name = document.getElementById('enquireName').value.trim();
-    const email = document.getElementById('enquireEmail').value.trim();
-    const reason = document.getElementById('enquireReason').value.trim();
-
-    if (!name || !email || !reason) {
-      enquireStatus.textContent = 'Please fill in all fields.';
-      enquireStatus.className = 'enquire-status err';
-      return;
+  <script src="parcel-capacity.js"></script>
+  <script>
+    const fromLabel = document.getElementById('fromLabel');
+    const toLabel = document.getElementById('toLabel');
+    const extraLabel = document.getElementById('extraLabel');
+    const fromInput = document.getElementById('from');
+    const toInput = document.getElementById('to');
+    const extraInput = document.getElementById('extra');
+    const whenPick = document.getElementById('whenPick');
+    const whenBtn = document.getElementById('whenBtn');
+    const whenMenu = document.getElementById('whenMenu');
+    const whenValue = document.getElementById('whenValue');
+    const whenField = document.getElementById('whenField');
+    function setWhenOpen(open) {
+      whenMenu.hidden = !open;
+      whenBtn.setAttribute('aria-expanded', String(open));
+      whenField.classList.toggle('open', open);
     }
-
-    enquireSend.disabled = true;
-    enquireSend.textContent = 'Sending…';
-    enquireStatus.textContent = '';
-    enquireStatus.className = 'enquire-status';
-
-    try {
-      const res = await fetch(ENQUIRE_API, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
-        },
-        body: JSON.stringify({ name, email, reason })
+    whenBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setDateOpen(false);
+      setWhenOpen(whenMenu.hidden);
+    });
+    whenMenu.addEventListener('click', (event) => {
+      const option = event.target.closest('button');
+      if (!option) return;
+      event.stopPropagation();
+      whenValue.textContent = option.dataset.value;
+      whenMenu.querySelectorAll('button').forEach((item) => item.classList.toggle('on', item === option));
+      setWhenOpen(false);
+    });
+    const dateField = document.getElementById('dateField');
+    const dateBtn = document.getElementById('dateBtn');
+    const dateMenu = document.getElementById('dateMenu');
+    const dateValue = document.getElementById('dateValue');
+    const datePickers = document.getElementById('datePickers');
+    const prefCal = document.getElementById('prefCal');
+    const backupDays = document.getElementById('backupDays');
+    const backupHint = document.getElementById('backupHint');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let view = new Date(today.getFullYear(), today.getMonth(), 1);
+    let pref = null;
+    let backup = null;
+    let dateKind = 'immediate';
+    function startOfDay(date) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+    function addDays(date, count) {
+      const next = startOfDay(date);
+      next.setDate(next.getDate() + count);
+      return next;
+    }
+    function sameDay(a, b) {
+      return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    }
+    function formatDay(date) {
+      return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    }
+    function setDateOpen(open) {
+      dateMenu.hidden = !open;
+      dateBtn.setAttribute('aria-expanded', String(open));
+      dateField.classList.toggle('open', open);
+    }
+    function updateDateLabel() {
+      if (dateKind === 'immediate') {
+        dateValue.textContent = 'Immediate requirement';
+        return;
+      }
+      if (pref && backup) {
+        dateValue.textContent = formatDay(pref) + ' preferred · ' + formatDay(backup) + ' backup';
+        return;
+      }
+      if (pref) {
+        dateValue.textContent = formatDay(pref) + ' preferred · pick a backup';
+        return;
+      }
+      dateValue.textContent = 'Choose dates';
+    }
+    function renderPrefCal() {
+      const year = view.getFullYear();
+      const month = view.getMonth();
+      const first = new Date(year, month, 1);
+      const startPad = (first.getDay() + 6) % 7;
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const label = first.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+      const minMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const maxMonth = new Date(today.getFullYear(), today.getMonth() + 6, 1);
+      let html = '<div class="cal-head"><button type="button" data-nav="-1"' + (view <= minMonth ? ' disabled' : '') + ' aria-label="Previous month">‹</button><b>' + label + '</b><button type="button" data-nav="1"' + (view >= maxMonth ? ' disabled' : '') + ' aria-label="Next month">›</button></div><div class="cal-grid">';
+      ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].forEach((day) => { html += '<span>' + day + '</span>'; });
+      for (let i = 0; i < startPad; i += 1) html += '<span></span>';
+      for (let day = 1; day <= daysInMonth; day += 1) {
+        const date = new Date(year, month, day);
+        const disabled = date < today;
+        html += '<button type="button" data-pref="' + date.getTime() + '"' + (disabled ? ' disabled' : '') + (sameDay(date, pref) ? ' class="on"' : '') + '>' + day + '</button>';
+      }
+      prefCal.innerHTML = html + '</div>';
+    }
+    function renderBackup() {
+      if (!pref) {
+        backupHint.textContent = 'Choose the preferred date first. The backup has to be within the next 7 days.';
+        backupDays.innerHTML = '';
+        return;
+      }
+      const last = addDays(pref, 7);
+      backupHint.textContent = 'If ' + formatDay(pref) + ' isn\u2019t possible, the worker can come on another day up to ' + formatDay(last) + '.';
+      let html = '';
+      for (let i = 1; i <= 7; i += 1) {
+        const date = addDays(pref, i);
+        const name = date.toLocaleDateString('en-IN', { weekday: 'short' });
+        html += '<button type="button" data-backup="' + date.getTime() + '"' + (sameDay(date, backup) ? ' class="on"' : '') + '><b>' + date.getDate() + '</b><small>' + name + '</small></button>';
+      }
+      backupDays.innerHTML = html;
+      dateMenu.scrollTop = Math.max(0, backupHint.offsetTop - 12);
+    }
+    dateBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setWhenOpen(false);
+      const open = dateMenu.hidden;
+      setDateOpen(open);
+      if (open && dateKind === 'dates') {
+        renderPrefCal();
+        renderBackup();
+      }
+    });
+    dateMenu.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const choice = event.target.closest('.date-choice');
+      if (choice) {
+        dateKind = choice.dataset.kind;
+        dateMenu.querySelectorAll('.date-choice').forEach((item) => item.classList.toggle('on', item === choice));
+        datePickers.hidden = dateKind !== 'dates';
+        updateDateLabel();
+        if (dateKind === 'immediate') {
+          setDateOpen(false);
+          return;
+        }
+        renderPrefCal();
+        renderBackup();
+        return;
+      }
+      const nav = event.target.closest('[data-nav]');
+      if (nav) {
+        if (nav.disabled) return;
+        view = new Date(view.getFullYear(), view.getMonth() + Number(nav.dataset.nav), 1);
+        renderPrefCal();
+        return;
+      }
+      const prefBtn = event.target.closest('[data-pref]');
+      if (prefBtn) {
+        if (prefBtn.disabled) return;
+        pref = startOfDay(new Date(Number(prefBtn.dataset.pref)));
+        if (backup) {
+          const earliest = addDays(pref, 1).getTime();
+          const latest = addDays(pref, 7).getTime();
+          if (backup.getTime() < earliest || backup.getTime() > latest) backup = null;
+        }
+        updateDateLabel();
+        renderPrefCal();
+        renderBackup();
+        return;
+      }
+      const backupBtn = event.target.closest('[data-backup]');
+      if (!backupBtn || !pref) return;
+      backup = startOfDay(new Date(Number(backupBtn.dataset.backup)));
+      updateDateLabel();
+      renderBackup();
+      setDateOpen(false);
+    });
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    function setMenuOpen(open) {
+      navLinks.classList.toggle('open', open);
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+    menuToggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setMenuOpen(!navLinks.classList.contains('open'));
+    });
+    navLinks.addEventListener('click', (event) => event.stopPropagation());
+    document.addEventListener('click', () => {
+      setWhenOpen(false);
+      setDateOpen(false);
+      setMenuOpen(false);
+      setTypeOpen(false);
+      setWeightOpen(false);
+    });
+    const hero = document.getElementById('hero');
+    const heroGrid = document.getElementById('heroGrid');
+    const heroBadge = document.getElementById('heroBadge');
+    const heroTitle = document.getElementById('heroTitle');
+    const heroLede = document.getElementById('heroLede');
+    const parcelMode = document.getElementById('parcelMode');
+    const serviceMode = document.getElementById('serviceMode');
+    let activeMode = 'parcel';
+    let modeSwitchTimer = null;
+    const heroCopy = {
+      parcel: {
+        badge: 'Parcel delivery, made simple',
+        title: 'Send it. Track it. Get it delivered.',
+        lede: 'Compare trusted local delivery partners, choose the right vehicle for your parcel, and see clear pricing — all in minutes.',
+        checks: ['No account required', 'Clear pricing', 'Reliable delivery']
+      },
+      service: {
+        badge: 'Local help, ready when you are',
+        title: 'Book help. Get it done.',
+        lede: 'Find trusted local professionals nearby — clear prices, flexible timing, no account required.',
+        checks: ['No account needed', 'Free instant quotes', 'Verified providers']
+      }
+    };
+    function applyQuoteMode(mode) {
+      activeMode = mode;
+      const parcel = mode === 'parcel';
+      const copy = heroCopy[mode];
+      document.querySelectorAll('.modes button').forEach((item) => {
+        const on = item.dataset.mode === mode;
+        item.classList.toggle('active', on);
+        item.setAttribute('aria-selected', String(on));
       });
-
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) throw new Error(data.error || 'Send failed');
-
-      enquireStatus.textContent = 'Thanks! Your enquiry was sent to support@ajobzio.com.';
-      enquireStatus.className = 'enquire-status ok';
-      enquireForm.reset();
-    } catch (err) {
-      const offline = err && (err.message === 'Failed to fetch' || err.name === 'TypeError');
-      enquireStatus.textContent = offline
-        ? 'Email server is not running. Start it with: npm start'
-        : (err.message || 'Could not send enquiry. Please try again.');
-      enquireStatus.className = 'enquire-status err';
-    } finally {
-      enquireSend.disabled = false;
-      enquireSend.textContent = 'Send';
+      hero.classList.toggle('mode-parcel', parcel);
+      hero.classList.toggle('mode-service', !parcel);
+      heroBadge.textContent = copy.badge;
+      heroTitle.textContent = copy.title;
+      heroLede.textContent = copy.lede;
+      document.querySelectorAll('#heroChecks span').forEach((item, index) => {
+        const svg = item.querySelector('svg');
+        item.replaceChildren(svg, document.createTextNode(' ' + copy.checks[index]));
+      });
+      parcelMode.hidden = !parcel;
+      serviceMode.hidden = parcel;
+      setWhenOpen(false);
+      setDateOpen(false);
+      setTypeOpen(false);
+      setWeightOpen(false);
+      if (parcel) {
+        setParcelStep(1);
+        syncParcel();
+      } else {
+        backBtn.hidden = true;
+        parcelRow.classList.remove('with-back');
+        parcelRow.classList.add('solo');
+        compareBtn.type = 'submit';
+        compareBtn.textContent = 'Compare quotes →';
+        compareBtn.disabled = false;
+      }
     }
-  });
-
-  /* ---------------- Job Categories ---------------- */
-  const jobs = [
-    { icon: '🔧', title: 'Electrician', desc: 'Handles electrical installations, repairs, wiring, switches, fans, and power issues.' },
-    { icon: '🚿', title: 'Plumber', desc: 'Fixes water leaks, pipelines, taps, bathrooms, and drainage systems.' },
-    { icon: '🚗', title: 'Driver', desc: 'Provides driving services for personal trips, offices, and commercial vehicles.' },
-    { icon: '🛵', title: 'Delivery', desc: 'Delivers food, groceries, and parcels for local businesses and platforms.' },
-    { icon: '💻', title: 'Online Tutor', desc: 'Teaches students online in academics, languages, or professional skills.' },
-    { icon: '🧹', title: 'Cleaning', desc: 'Provides home, office, and commercial cleaning services.' },
-    { icon: '🛠️', title: 'Mechanic', desc: 'Repairs and maintains bikes, cars, and other vehicles.' },
-    { icon: '🏗️', title: 'Construction', desc: 'Includes masonry, labor work, painting, and construction support.' }
-  ];
-
-  const jobList = document.getElementById('jobList');
-  jobs.forEach(job => {
-    const item = document.createElement('article');
-    item.className = 'job-item';
-    item.innerHTML = `
-      <div class="job-item-top">
-        <div class="job-badge" aria-hidden="true">${job.icon}</div>
-        <div class="job-meta">
-          <strong>${job.title}</strong>
-        </div>
-      </div>
-      <div class="job-detail">
-        <p>${job.desc}</p>
-      </div>
-    `;
-    jobList.appendChild(item);
-  });
-</script>
+    function setQuoteMode(mode) {
+      if (mode === activeMode) return;
+      clearTimeout(modeSwitchTimer);
+      heroGrid.classList.add('is-switching');
+      hero.classList.toggle('mode-parcel', mode === 'parcel');
+      hero.classList.toggle('mode-service', mode !== 'parcel');
+      document.querySelectorAll('.modes button').forEach((item) => {
+        const on = item.dataset.mode === mode;
+        item.classList.toggle('active', on);
+        item.setAttribute('aria-selected', String(on));
+      });
+      modeSwitchTimer = setTimeout(() => {
+        applyQuoteMode(mode);
+        requestAnimationFrame(() => {
+          heroGrid.classList.remove('is-switching');
+        });
+      }, 220);
+    }
+    document.querySelectorAll('.modes button').forEach((button) => {
+      button.addEventListener('click', () => setQuoteMode(button.dataset.mode));
+    });
+    const capacity = window.AjobzioParcel;
+    const vehicleList = document.getElementById('vehicleList');
+    const parcelFlip = document.getElementById('parcelFlip');
+    const parcelStep1 = document.getElementById('parcelStep1');
+    const parcelRow = document.getElementById('parcelRow');
+    const backBtn = document.getElementById('backBtn');
+    const compareBtn = document.getElementById('compareBtn');
+    const typeBtn = document.getElementById('typeBtn');
+    const typeMenu = document.getElementById('typeMenu');
+    const typeValue = document.getElementById('typeValue');
+    const typeField = document.getElementById('typeField');
+    const weightBtn = document.getElementById('weightBtn');
+    const weightMenu = document.getElementById('weightMenu');
+    const weightValue = document.getElementById('weightValue');
+    const weightField = document.getElementById('weightField');
+    const parcelQty = document.getElementById('parcelQty');
+    const parcelDims = document.getElementById('parcelDims');
+    const dimL = document.getElementById('dimL');
+    const dimW = document.getElementById('dimW');
+    const dimH = document.getElementById('dimH');
+    const totalWeightLine = document.getElementById('totalWeightLine');
+    const upgradeNote = document.getElementById('upgradeNote');
+    const capacityError = document.getElementById('capacityError');
+    let vehicleId = 'TWO_WHEELER';
+    let parcelType = 'NON_DOCUMENT';
+    let weightKg = 1;
+    let parcelStep = 1;
+    function vehicleById(id) {
+      return capacity.VEHICLE_CAPACITY.find((item) => item.vehicleType === id);
+    }
+    function vehicleIndex(id) {
+      return capacity.VEHICLE_CAPACITY.findIndex((item) => item.vehicleType === id);
+    }
+    function setTypeOpen(open) {
+      typeMenu.hidden = !open;
+      typeBtn.setAttribute('aria-expanded', String(open));
+      typeField.classList.toggle('open', open);
+    }
+    function setWeightOpen(open) {
+      weightMenu.hidden = !open;
+      weightBtn.setAttribute('aria-expanded', String(open));
+      weightField.classList.toggle('open', open);
+    }
+    function readQuantity() {
+      const value = Number(parcelQty.value);
+      return Number.isInteger(value) && value >= 1 ? value : null;
+    }
+    function readDim(input) {
+      if (input.value.trim() === '') return null;
+      const value = Number(input.value);
+      return value > 0 ? value : null;
+    }
+    function syncFlipHeight() {
+      const visible = parcelStep === 1 ? parcelStep1 : document.getElementById('parcelStep2');
+      const inner = parcelFlip.querySelector('.parcel-flip-inner');
+      if (!visible || !inner) return;
+      inner.style.minHeight = visible.scrollHeight + 'px';
+    }
+    function setParcelStep(step) {
+      parcelStep = step;
+      parcelFlip.classList.toggle('is-flipped', step === 2);
+      backBtn.hidden = step !== 2;
+      parcelRow.classList.toggle('with-back', step === 2);
+      parcelRow.classList.toggle('solo', step !== 2);
+      if (step === 1) {
+        compareBtn.type = 'button';
+        compareBtn.textContent = 'Next →';
+        compareBtn.disabled = !fromInput.value.trim() || !toInput.value.trim();
+      } else {
+        compareBtn.type = 'submit';
+        compareBtn.textContent = 'Confirm Quote →';
+        syncParcel();
+      }
+      requestAnimationFrame(syncFlipHeight);
+    }
+    function renderVehicles() {
+      vehicleList.innerHTML = capacity.VEHICLE_CAPACITY.map((item) => {
+        const on = item.vehicleType === vehicleId ? ' active' : '';
+        return '<button type="button" class="' + on.trim() + '" data-vehicle="' + item.vehicleType + '" role="radio" aria-checked="' + (on ? 'true' : 'false') + '">' + item.icon + ' ' + item.displayName + '</button>';
+      }).join('');
+    }
+    function renderWeights() {
+      const vehicle = vehicleById(vehicleId);
+      const options = vehicle.weightOptionsKg.slice();
+      if (options.indexOf(weightKg) === -1) options.push(weightKg);
+      options.sort((a, b) => a - b);
+      weightMenu.innerHTML = options.map((kg) => {
+        const on = kg === weightKg ? ' class="on"' : '';
+        return '<li><button type="button" data-kg="' + kg + '"' + on + '>' + kg + ' kg</button></li>';
+      }).join('');
+      weightValue.textContent = weightKg + ' kg';
+    }
+    function syncParcel() {
+      const quantity = readQuantity();
+      const before = vehicleId;
+      const result = capacity.evaluateShipment({
+        weightKg: weightKg,
+        quantity: quantity || 0,
+        lengthCm: readDim(dimL),
+        widthCm: readDim(dimW),
+        heightCm: readDim(dimH),
+        checkDimensions: parcelType === 'NON_DOCUMENT'
+      });
+      parcelDims.hidden = parcelType !== 'NON_DOCUMENT';
+      if (result.vehicle && quantity) vehicleId = result.vehicle.vehicleType;
+      if (!result.supported && quantity) vehicleId = 'FOUR_WHEELER';
+      const previous = vehicleById(before);
+      renderVehicles();
+      renderWeights();
+      totalWeightLine.innerHTML = quantity
+        ? '<span>Total weight:</span> ' + result.totalWeightKg + ' kg'
+        : '<span>Total weight:</span> —';
+      const dims = result.dimensions;
+      const blocked = !quantity || result.incompleteDimensions || !result.supported;
+      upgradeNote.hidden = true;
+      capacityError.hidden = true;
+      if (quantity && result.vehicle && result.vehicle.vehicleType !== before) {
+        const upward = vehicleIndex(result.vehicle.vehicleType) > vehicleIndex(before);
+        if (upward) {
+          const why = [];
+          if (result.totalWeightKg > previous.maxWeightKg) why.push(previous.maxWeightKg + ' kg');
+          if (dims && (dims.lengthCm > previous.maxLengthCm || dims.widthCm > previous.maxWidthCm || dims.heightCm > previous.maxHeightCm)) {
+            why.push(capacity.limitsText(previous));
+          }
+          const limitLine = why.length ? previous.displayName + ' supports a maximum of ' + why.join(' and ') + '. ' : '';
+          upgradeNote.textContent = limitLine + 'Vehicle upgraded to ' + result.vehicle.displayName + ' because the parcel exceeds the maximum capacity of a ' + previous.displayName + '.';
+          upgradeNote.hidden = false;
+        } else {
+          upgradeNote.textContent = 'Vehicle set to ' + result.vehicle.displayName + ', the smallest vehicle that can carry this parcel.';
+          upgradeNote.hidden = false;
+        }
+      }
+      if (quantity && !result.incompleteDimensions && !result.supported) {
+        capacityError.textContent = 'This parcel exceeds the maximum supported capacity for Ajobzio parcel delivery. Please reduce the parcel quantity/size or contact support for a suitable delivery option.';
+        capacityError.hidden = false;
+      }
+      if (activeMode === 'parcel' && parcelStep === 2) compareBtn.disabled = blocked;
+      else if (activeMode === 'parcel' && parcelStep === 1) {
+        compareBtn.disabled = !fromInput.value.trim() || !toInput.value.trim();
+      } else {
+        compareBtn.disabled = false;
+      }
+      syncFlipHeight();
+    }
+    vehicleList.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-vehicle]');
+      if (!button) return;
+      const next = vehicleById(button.dataset.vehicle);
+      if (weightKg > next.maxWeightKg) {
+        weightKg = next.weightOptionsKg[next.weightOptionsKg.length - 1];
+      }
+      vehicleId = next.vehicleType;
+      syncParcel();
+    });
+    typeBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setWeightOpen(false);
+      setWhenOpen(false);
+      setDateOpen(false);
+      setTypeOpen(typeMenu.hidden);
+    });
+    typeMenu.addEventListener('click', (event) => {
+      const option = event.target.closest('button');
+      if (!option) return;
+      event.stopPropagation();
+      parcelType = option.dataset.value;
+      typeValue.textContent = option.textContent;
+      typeMenu.querySelectorAll('button').forEach((item) => item.classList.toggle('on', item === option));
+      setTypeOpen(false);
+      syncParcel();
+    });
+    weightBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setTypeOpen(false);
+      setWhenOpen(false);
+      setDateOpen(false);
+      setWeightOpen(weightMenu.hidden);
+    });
+    weightMenu.addEventListener('click', (event) => {
+      const option = event.target.closest('button');
+      if (!option) return;
+      event.stopPropagation();
+      weightKg = Number(option.dataset.kg);
+      setWeightOpen(false);
+      syncParcel();
+    });
+    [parcelQty, dimL, dimW, dimH].forEach((input) => {
+      input.addEventListener('input', syncParcel);
+    });
+    [fromInput, toInput].forEach((input) => {
+      input.addEventListener('input', () => {
+        if (activeMode === 'parcel' && parcelStep === 1) {
+          compareBtn.disabled = !fromInput.value.trim() || !toInput.value.trim();
+        }
+      });
+    });
+    backBtn.addEventListener('click', () => setParcelStep(1));
+    compareBtn.addEventListener('click', (event) => {
+      if (activeMode !== 'parcel') return;
+      if (parcelStep === 1) {
+        event.preventDefault();
+        if (!fromInput.value.trim() || !toInput.value.trim()) return;
+        setParcelStep(2);
+      }
+    });
+    document.getElementById('quote').addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (activeMode === 'parcel') {
+        if (parcelStep !== 2) return;
+        syncParcel();
+      }
+    });
+    setParcelStep(1);
+    syncParcel();
+  </script>
 </body>
 </html>
-
-
