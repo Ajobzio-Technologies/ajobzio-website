@@ -170,7 +170,7 @@
       transform: translateX(12px);
     }
     .hero-bg-service {
-      background-image: url("images/Skilled Professionals in a Pastel Cityscape.png");
+      background-image: url("images/Professional Service Team Banner.png");
       background-position: left center;
       background-size: 1600px auto;
       transform: translateX(-12px);
@@ -334,31 +334,17 @@
       display: block;
       margin-top: 0;
     }
-    .parcel-flip {
-      perspective: 1400px;
-    }
-    .parcel-flip-inner {
-      position: relative;
-      width: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.55s ease;
-    }
-    .parcel-flip.is-flipped .parcel-flip-inner {
-      transform: rotateY(180deg);
-    }
     .parcel-face {
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       gap: 8px;
       width: 100%;
     }
-    .parcel-face.back {
-      position: absolute;
-      inset: 0;
-      transform: rotateY(180deg);
-      overflow: auto;
+    .parcel-face[hidden] { display: none; }
+    .parcel-face.entering { animation: step-in 0.28s ease; }
+    @keyframes step-in {
+      from { opacity: 0; transform: translateX(12px); }
+      to { opacity: 1; transform: none; }
     }
     .center-block {
       display: flex;
@@ -433,7 +419,65 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
-    .dim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .dims { display: flex; flex-direction: column; gap: 6px; }
+    .dims-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .dims-head .block-label { margin-bottom: 0; }
+    .copy-dims {
+      border: 0;
+      background: none;
+      padding: 0;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--blue);
+      cursor: pointer;
+    }
+    .copy-dims[hidden] { display: none; }
+    .box-cols, .box-row {
+      display: grid;
+      grid-template-columns: 56px repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      align-items: center;
+    }
+    .box-cols {
+      padding: 0 6px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #8AA0A4;
+    }
+    .box-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 78px;
+      padding: 6px;
+      border-radius: 12px;
+      background: #F3F6F5;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .box-list > * { flex-shrink: 0; }
+    .box-row b { padding-left: 2px; font-size: 13px; font-weight: 600; color: var(--nav); }
+    .box-row input {
+      width: 100%;
+      min-width: 0;
+      height: 40px;
+      border: 1px solid #E4ECEA;
+      border-radius: 10px;
+      padding: 0 10px;
+      background: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--nav);
+      outline: none;
+    }
+    .box-row input:focus { border-color: var(--blue); }
+    .box-row input::placeholder { color: #B3C2C4; font-weight: 500; }
+    .dims-hint { margin: 0 2px; font-size: 12px; color: #6D8386; }
+    .dims-hint[hidden] { display: none; }
     .parcel-note {
       margin: 0;
       border-radius: 12px;
@@ -846,8 +890,23 @@
         opacity: 1;
         transform: none;
       }
+      .parcel-face.entering { animation: none; }
     }
 
+    /* Keep the service team clear of the booking card on mid-size screens. */
+    @media (min-width: 761px) and (max-width: 1440px) {
+      .hero-bg-service { background-position: -140px center; }
+    }
+    /* Narrower desktops: the card sits over the team, so fade the image behind the copy. */
+    @media (min-width: 761px) and (max-width: 1100px) {
+      .hero-bg-service {
+        background-image:
+          linear-gradient(to right, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.88) 46%),
+          url("images/Professional Service Team Banner.png");
+        background-size: 100% 100%, 1600px auto;
+        background-position: 0 0, -140px center;
+      }
+    }
     @media (max-width: 980px) {
       header, footer { padding-left: 24px; padding-right: 24px; }
       .foot, .legal { flex-direction: column; align-items: flex-start; }
@@ -917,8 +976,8 @@
         background-size: cover;
       }
       .hero-bg-service {
-        background-position: center bottom;
-        background-size: 1600px auto;
+        background-position: left bottom;
+        background-size: cover;
       }
       .hero-stage {
         padding: 0;
@@ -936,14 +995,15 @@
       .lede { font-size: 15px; }
       .quote { margin-top: 20px; padding: 12px; }
       .quote-body { grid-template-columns: 1fr; }
-      .address-row, .fields, .parcel-row, .parcel-row.with-back, .dim-grid { grid-template-columns: 1fr; }
+      .address-row, .fields, .parcel-row { grid-template-columns: 1fr; }
+      .parcel-row.with-back { grid-template-columns: auto 1fr; }
+      .parcel-row .compare,
+      .parcel-row.with-back .compare:last-child { height: 48px; }
+      .box-cols, .box-row { grid-template-columns: 48px repeat(3, minmax(0, 1fr)); }
+      .box-row input { font-size: 16px; }
       .modes { grid-template-columns: 1fr 1fr; }
       .vehicles { width: 100%; }
       .vehicles button { flex: 1 1 calc(33.333% - 8px); min-width: 0; }
-      .parcel-face.back { position: relative; transform: none; }
-      .parcel-flip.is-flipped .parcel-flip-inner { transform: none; }
-      .parcel-flip.is-flipped .parcel-face.front { display: none; }
-      .parcel-flip:not(.is-flipped) .parcel-face.back { display: none; }
       .field input, .when-btn, .when-btn span { font-size: 16px; }
       .compare { width: 100%; height: 52px; }
       .when-menu, .date-menu {
@@ -1025,10 +1085,8 @@
             <p class="lede" id="heroLede">Compare trusted local delivery partners, choose the right vehicle for your parcel, and see clear pricing — all in minutes.</p>
             <form class="quote" id="quote">
             <div class="quote-body parcel-mode" id="parcelMode">
-              <div class="parcel-flip" id="parcelFlip">
-                <div class="parcel-flip-inner">
-                  <div class="parcel-face front" id="parcelStep1">
-                    <p class="step-meta">Step 1 of 2</p>
+                  <div class="parcel-face" id="parcelStep1">
+                    <p class="step-meta" id="stepMeta1">Step 1 of 2</p>
                     <div class="center-block vehicle-pick" id="vehiclePick">
                       <p class="block-label">Vehicle type</p>
                       <div class="vehicles" id="vehicleList" role="radiogroup" aria-label="Vehicle type"></div>
@@ -1052,20 +1110,20 @@
                     <div class="address-row">
                       <label class="field">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
-                        <span><span id="fromLabel">Pickup location</span><input id="from" value="Brixton, London"></span>
+                        <span><span id="fromLabel">Pickup location</span><input id="from" value="Edappally, Kochi"></span>
                       </label>
                       <label class="field">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
-                        <span><span id="toLabel">Delivery location</span><input id="to" value="Camden, London"></span>
+                        <span><span id="toLabel">Delivery location</span><input id="to" value="Kakkanad, Kochi"></span>
                       </label>
                     </div>
                   </div>
-                  <div class="parcel-face back" id="parcelStep2">
+                  <div class="parcel-face" id="parcelStep2" hidden>
                     <p class="step-meta">Step 2 of 2</p>
                     <div class="fields">
                       <div class="field when-field" id="weightField">
                         <span>
-                          <span>Parcel weight</span>
+                          <span>Weight per box</span>
                           <button type="button" class="when-btn" id="weightBtn" aria-haspopup="listbox" aria-expanded="false">
                             <span id="weightValue">1 kg</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -1073,31 +1131,37 @@
                         </span>
                         <ul class="when-menu" id="weightMenu" role="listbox" hidden></ul>
                       </div>
-                      <label class="field">
-                        <span><span>Quantity</span><input id="parcelQty" type="number" min="1" step="1" inputmode="numeric" value="1"></span>
-                      </label>
+                      <div class="field when-field" id="qtyField">
+                        <span>
+                          <span>Quantity</span>
+                          <button type="button" class="when-btn" id="qtyBtn" aria-haspopup="listbox" aria-expanded="false">
+                            <span id="qtyValue">1 box</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                          </button>
+                        </span>
+                        <ul class="when-menu" id="qtyMenu" role="listbox" hidden></ul>
+                      </div>
                     </div>
                     <p class="total-line" id="totalWeightLine"><span>Total weight:</span> 1 kg</p>
                     <div class="dims" id="parcelDims">
-                      <p class="block-label">Dimensions</p>
-                      <div class="dim-grid">
-                        <label class="field"><span><span>Length (cm)</span><input id="dimL" type="number" min="1" step="1" inputmode="numeric"></span></label>
-                        <label class="field"><span><span>Width (cm)</span><input id="dimW" type="number" min="1" step="1" inputmode="numeric"></span></label>
-                        <label class="field"><span><span>Height (cm)</span><input id="dimH" type="number" min="1" step="1" inputmode="numeric"></span></label>
+                      <div class="dims-head">
+                        <p class="block-label">Size per box (cm)</p>
+                        <button type="button" class="copy-dims" id="copyDims" hidden>Copy Box 1 to all</button>
                       </div>
+                      <div class="box-cols" aria-hidden="true"><span></span><span>Length</span><span>Width</span><span>Height</span></div>
+                      <div class="box-list" id="boxList"></div>
+                      <p class="dims-hint" id="dimsHint" hidden></p>
                     </div>
                     <p class="parcel-note upgrade" id="upgradeNote" hidden></p>
                     <p class="parcel-note error" id="capacityError" hidden></p>
                   </div>
-                </div>
-              </div>
             </div>
 
             <div class="quote-body service-mode" id="serviceMode" hidden>
               <div class="quote-col">
                 <label class="field">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
-                  <span><span>Area</span><input id="serviceArea" value="Brixton, London"></span>
+                  <span><span>Area</span><input id="serviceArea" value="Edappally, Kochi"></span>
                 </label>
                 <label class="field">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
@@ -1461,6 +1525,7 @@
       setMenuOpen(false);
       setTypeOpen(false);
       setWeightOpen(false);
+      setQtyOpen(false);
     });
     const hero = document.getElementById('hero');
     const heroGrid = document.getElementById('heroGrid');
@@ -1509,6 +1574,7 @@
       setDateOpen(false);
       setTypeOpen(false);
       setWeightOpen(false);
+      setQtyOpen(false);
       if (parcel) {
         setParcelStep(1);
         syncParcel();
@@ -1544,8 +1610,9 @@
     });
     const capacity = window.AjobzioParcel;
     const vehicleList = document.getElementById('vehicleList');
-    const parcelFlip = document.getElementById('parcelFlip');
     const parcelStep1 = document.getElementById('parcelStep1');
+    const parcelStep2 = document.getElementById('parcelStep2');
+    const stepMeta1 = document.getElementById('stepMeta1');
     const parcelRow = document.getElementById('parcelRow');
     const backBtn = document.getElementById('backBtn');
     const compareBtn = document.getElementById('compareBtn');
@@ -1557,23 +1624,32 @@
     const weightMenu = document.getElementById('weightMenu');
     const weightValue = document.getElementById('weightValue');
     const weightField = document.getElementById('weightField');
-    const parcelQty = document.getElementById('parcelQty');
+    const qtyBtn = document.getElementById('qtyBtn');
+    const qtyMenu = document.getElementById('qtyMenu');
+    const qtyValue = document.getElementById('qtyValue');
+    const qtyField = document.getElementById('qtyField');
     const parcelDims = document.getElementById('parcelDims');
-    const dimL = document.getElementById('dimL');
-    const dimW = document.getElementById('dimW');
-    const dimH = document.getElementById('dimH');
+    const boxList = document.getElementById('boxList');
+    const copyDims = document.getElementById('copyDims');
+    const dimsHint = document.getElementById('dimsHint');
     const totalWeightLine = document.getElementById('totalWeightLine');
     const upgradeNote = document.getElementById('upgradeNote');
     const capacityError = document.getElementById('capacityError');
     let vehicleId = 'TWO_WHEELER';
+    /* The vehicle picked before switching to Document, restored when switching back. */
+    let vehicleBeforeDocument = vehicleId;
     let parcelType = 'NON_DOCUMENT';
     let weightKg = 1;
+    let quantity = 1;
     let parcelStep = 1;
+    /* Typed dimensions per box, kept when the quantity shrinks so they come back if it grows again. */
+    const boxDims = [];
+    /* Documents always go by 2 Wheeler and skip step 2 (no weight, quantity or size). */
+    function isDocument() {
+      return parcelType === 'DOCUMENT';
+    }
     function vehicleById(id) {
       return capacity.VEHICLE_CAPACITY.find((item) => item.vehicleType === id);
-    }
-    function vehicleIndex(id) {
-      return capacity.VEHICLE_CAPACITY.findIndex((item) => item.vehicleType === id);
     }
     function setTypeOpen(open) {
       typeMenu.hidden = !open;
@@ -1585,40 +1661,63 @@
       weightBtn.setAttribute('aria-expanded', String(open));
       weightField.classList.toggle('open', open);
     }
-    function readQuantity() {
-      const value = Number(parcelQty.value);
-      return Number.isInteger(value) && value >= 1 ? value : null;
+    function setQtyOpen(open) {
+      qtyMenu.hidden = !open;
+      qtyBtn.setAttribute('aria-expanded', String(open));
+      qtyField.classList.toggle('open', open);
     }
-    function readDim(input) {
-      if (input.value.trim() === '') return null;
-      const value = Number(input.value);
-      return value > 0 ? value : null;
+    function boxesText(count) {
+      return count + (count === 1 ? ' box' : ' boxes');
     }
-    function syncFlipHeight() {
-      const visible = parcelStep === 1 ? parcelStep1 : document.getElementById('parcelStep2');
-      const inner = parcelFlip.querySelector('.parcel-flip-inner');
-      if (!visible || !inner) return;
-      inner.style.minHeight = visible.scrollHeight + 'px';
+    function readDim(value) {
+      if (!value || value.trim() === '') return null;
+      const number = Number(value);
+      return number > 0 ? number : null;
+    }
+    function renderBoxes() {
+      while (boxDims.length < quantity) boxDims.push({ lengthCm: '', widthCm: '', heightCm: '' });
+      const dims = [['lengthCm', 'Length'], ['widthCm', 'Width'], ['heightCm', 'Height']];
+      let html = '';
+      for (let i = 0; i < quantity; i += 1) {
+        html += '<div class="box-row"><b>Box ' + (i + 1) + '</b>' + dims.map(([key, label]) => (
+          '<input type="number" min="1" step="1" inputmode="numeric" placeholder="cm"' +
+          ' data-box="' + i + '" data-dim="' + key + '" value="' + boxDims[i][key] + '"' +
+          ' aria-label="Box ' + (i + 1) + ' ' + label.toLowerCase() + ' in cm">'
+        )).join('') + '</div>';
+      }
+      boxList.innerHTML = html;
+      copyDims.hidden = quantity < 2;
     }
     function setParcelStep(step) {
+      const changed = parcelStep !== step;
       parcelStep = step;
-      parcelFlip.classList.toggle('is-flipped', step === 2);
+      parcelStep1.hidden = step !== 1;
+      parcelStep2.hidden = step !== 2;
+      if (changed) {
+        const shown = step === 1 ? parcelStep1 : parcelStep2;
+        shown.classList.remove('entering');
+        void shown.offsetWidth;
+        shown.classList.add('entering');
+      }
       backBtn.hidden = step !== 2;
       parcelRow.classList.toggle('with-back', step === 2);
       parcelRow.classList.toggle('solo', step !== 2);
+      stepMeta1.hidden = isDocument();
       if (step === 1) {
-        compareBtn.type = 'button';
-        compareBtn.textContent = 'Next →';
+        compareBtn.type = isDocument() ? 'submit' : 'button';
+        compareBtn.textContent = isDocument() ? 'Confirm Quote →' : 'Next →';
         compareBtn.disabled = !fromInput.value.trim() || !toInput.value.trim();
       } else {
         compareBtn.type = 'submit';
         compareBtn.textContent = 'Confirm Quote →';
         syncParcel();
       }
-      requestAnimationFrame(syncFlipHeight);
     }
     function renderVehicles() {
-      vehicleList.innerHTML = capacity.VEHICLE_CAPACITY.map((item) => {
+      const vehicles = isDocument()
+        ? [vehicleById('TWO_WHEELER')]
+        : capacity.VEHICLE_CAPACITY;
+      vehicleList.innerHTML = vehicles.map((item) => {
         const on = item.vehicleType === vehicleId ? ' active' : '';
         return '<button type="button" class="' + on.trim() + '" data-vehicle="' + item.vehicleType + '" role="radio" aria-checked="' + (on ? 'true' : 'false') + '">' + item.icon + ' ' + item.displayName + '</button>';
       }).join('');
@@ -1634,47 +1733,60 @@
       }).join('');
       weightValue.textContent = weightKg + ' kg';
     }
+    function renderQuantities() {
+      const vehicle = vehicleById(vehicleId);
+      const options = [];
+      for (let count = 1; count <= vehicle.maxQuantity; count += 1) options.push(count);
+      if (options.indexOf(quantity) === -1) options.push(quantity);
+      qtyMenu.innerHTML = options.map((count) => {
+        const on = count === quantity ? ' class="on"' : '';
+        return '<li><button type="button" data-qty="' + count + '"' + on + '>' + boxesText(count) + '</button></li>';
+      }).join('');
+      qtyValue.textContent = boxesText(quantity);
+    }
     function syncParcel() {
-      const quantity = readQuantity();
+      if (isDocument()) {
+        vehicleId = 'TWO_WHEELER';
+        renderVehicles();
+        upgradeNote.hidden = true;
+        capacityError.hidden = true;
+        compareBtn.disabled = activeMode === 'parcel' && (!fromInput.value.trim() || !toInput.value.trim());
+        return;
+      }
       const before = vehicleId;
       const result = capacity.evaluateShipment({
         weightKg: weightKg,
-        quantity: quantity || 0,
-        lengthCm: readDim(dimL),
-        widthCm: readDim(dimW),
-        heightCm: readDim(dimH),
-        checkDimensions: parcelType === 'NON_DOCUMENT'
+        quantity: quantity,
+        boxes: boxDims.slice(0, quantity).map((box) => ({
+          lengthCm: readDim(box.lengthCm),
+          widthCm: readDim(box.widthCm),
+          heightCm: readDim(box.heightCm)
+        })),
+        checkDimensions: parcelType === 'NON_DOCUMENT',
+        vehicleType: vehicleId
       });
       parcelDims.hidden = parcelType !== 'NON_DOCUMENT';
-      if (result.vehicle && quantity) vehicleId = result.vehicle.vehicleType;
-      if (!result.supported && quantity) vehicleId = 'FOUR_WHEELER';
+      if (result.vehicle) vehicleId = result.vehicle.vehicleType;
+      if (!result.supported) vehicleId = 'FOUR_WHEELER';
       const previous = vehicleById(before);
       renderVehicles();
       renderWeights();
-      totalWeightLine.innerHTML = quantity
-        ? '<span>Total weight:</span> ' + result.totalWeightKg + ' kg'
-        : '<span>Total weight:</span> —';
-      const dims = result.dimensions;
-      const blocked = !quantity || result.incompleteDimensions || !result.supported;
+      renderQuantities();
+      totalWeightLine.innerHTML = '<span>Total weight:</span> ' + result.totalWeightKg + ' kg';
+      const blocked = result.incompleteDimensions || !result.supported;
       upgradeNote.hidden = true;
       capacityError.hidden = true;
-      if (quantity && result.vehicle && result.vehicle.vehicleType !== before) {
-        const upward = vehicleIndex(result.vehicle.vehicleType) > vehicleIndex(before);
-        if (upward) {
-          const why = [];
-          if (result.totalWeightKg > previous.maxWeightKg) why.push(previous.maxWeightKg + ' kg');
-          if (dims && (dims.lengthCm > previous.maxLengthCm || dims.widthCm > previous.maxWidthCm || dims.heightCm > previous.maxHeightCm)) {
-            why.push(capacity.limitsText(previous));
-          }
-          const limitLine = why.length ? previous.displayName + ' supports a maximum of ' + why.join(' and ') + '. ' : '';
-          upgradeNote.textContent = limitLine + 'Vehicle upgraded to ' + result.vehicle.displayName + ' because the parcel exceeds the maximum capacity of a ' + previous.displayName + '.';
-          upgradeNote.hidden = false;
-        } else {
-          upgradeNote.textContent = 'Vehicle set to ' + result.vehicle.displayName + ', the smallest vehicle that can carry this parcel.';
-          upgradeNote.hidden = false;
-        }
+      if (result.vehicle && result.vehicle.vehicleType !== before) {
+        const failure = capacity.checkVehicle(previous, result.totalWeightKg, quantity, result.boxes);
+        const why = [];
+        if (failure.weightFail) why.push(previous.maxWeightKg + ' kg');
+        if (failure.quantityFail) why.push(boxesText(previous.maxQuantity));
+        if (failure.dimensionFail) why.push(capacity.limitsText(previous) + ' per box');
+        const limitLine = why.length ? previous.displayName + ' supports a maximum of ' + why.join(' and ') + '. ' : '';
+        upgradeNote.textContent = limitLine + 'Vehicle upgraded to ' + result.vehicle.displayName + ' because the parcel exceeds the maximum capacity of a ' + previous.displayName + '.';
+        upgradeNote.hidden = false;
       }
-      if (quantity && !result.incompleteDimensions && !result.supported) {
+      if (!result.incompleteDimensions && !result.supported) {
         capacityError.textContent = 'This parcel exceeds the maximum supported capacity for Ajobzio parcel delivery. Please reduce the parcel quantity/size or contact support for a suitable delivery option.';
         capacityError.hidden = false;
       }
@@ -1684,7 +1796,10 @@
       } else {
         compareBtn.disabled = false;
       }
-      syncFlipHeight();
+      dimsHint.hidden = !result.incompleteDimensions;
+      dimsHint.textContent = quantity > 1
+        ? 'Enter the length, width and height of every box to continue.'
+        : 'Enter the length, width and height of the box to continue.';
     }
     vehicleList.addEventListener('click', (event) => {
       const button = event.target.closest('[data-vehicle]');
@@ -1699,6 +1814,7 @@
     typeBtn.addEventListener('click', (event) => {
       event.stopPropagation();
       setWeightOpen(false);
+      setQtyOpen(false);
       setWhenOpen(false);
       setDateOpen(false);
       setTypeOpen(typeMenu.hidden);
@@ -1707,15 +1823,20 @@
       const option = event.target.closest('button');
       if (!option) return;
       event.stopPropagation();
+      const wasDocument = isDocument();
       parcelType = option.dataset.value;
+      if (!wasDocument && isDocument()) vehicleBeforeDocument = vehicleId;
+      if (wasDocument && !isDocument()) vehicleId = vehicleBeforeDocument;
       typeValue.textContent = option.textContent;
       typeMenu.querySelectorAll('button').forEach((item) => item.classList.toggle('on', item === option));
       setTypeOpen(false);
+      setParcelStep(1);
       syncParcel();
     });
     weightBtn.addEventListener('click', (event) => {
       event.stopPropagation();
       setTypeOpen(false);
+      setQtyOpen(false);
       setWhenOpen(false);
       setDateOpen(false);
       setWeightOpen(weightMenu.hidden);
@@ -1728,8 +1849,34 @@
       setWeightOpen(false);
       syncParcel();
     });
-    [parcelQty, dimL, dimW, dimH].forEach((input) => {
-      input.addEventListener('input', syncParcel);
+    qtyBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setTypeOpen(false);
+      setWeightOpen(false);
+      setWhenOpen(false);
+      setDateOpen(false);
+      setQtyOpen(qtyMenu.hidden);
+    });
+    qtyMenu.addEventListener('click', (event) => {
+      const option = event.target.closest('button');
+      if (!option) return;
+      event.stopPropagation();
+      quantity = Number(option.dataset.qty);
+      setQtyOpen(false);
+      renderBoxes();
+      syncParcel();
+    });
+    copyDims.addEventListener('click', () => {
+      const first = boxDims[0];
+      for (let i = 1; i < quantity; i += 1) boxDims[i] = { ...first };
+      renderBoxes();
+      syncParcel();
+    });
+    boxList.addEventListener('input', (event) => {
+      const input = event.target.closest('[data-box]');
+      if (!input) return;
+      boxDims[Number(input.dataset.box)][input.dataset.dim] = input.value;
+      syncParcel();
     });
     [fromInput, toInput].forEach((input) => {
       input.addEventListener('input', () => {
@@ -1741,7 +1888,7 @@
     backBtn.addEventListener('click', () => setParcelStep(1));
     compareBtn.addEventListener('click', (event) => {
       if (activeMode !== 'parcel') return;
-      if (parcelStep === 1) {
+      if (parcelStep === 1 && !isDocument()) {
         event.preventDefault();
         if (!fromInput.value.trim() || !toInput.value.trim()) return;
         setParcelStep(2);
@@ -1750,10 +1897,11 @@
     document.getElementById('quote').addEventListener('submit', (event) => {
       event.preventDefault();
       if (activeMode === 'parcel') {
-        if (parcelStep !== 2) return;
+        if (parcelStep !== 2 && !isDocument()) return;
         syncParcel();
       }
     });
+    renderBoxes();
     setParcelStep(1);
     syncParcel();
   </script>
