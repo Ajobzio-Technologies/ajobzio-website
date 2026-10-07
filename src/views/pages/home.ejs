@@ -1,0 +1,607 @@
+<%- include("../partials/head", { styles: ["/css/home.css"], scripts: ["/js/pages/home.js"] }) %>
+
+  <main>
+    <section class="hero mode-parcel" id="hero">
+      <div class="hero-bg hero-bg-parcel" aria-hidden="true"></div>
+      <div class="hero-bg hero-bg-service" aria-hidden="true"></div>
+      <div class="hero-modes">
+        <div class="modes" role="tablist" aria-label="Choose a service">
+          <span class="modes-pill" aria-hidden="true"></span>
+          <button type="button" class="active" data-mode="parcel" role="tab" aria-selected="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z"/><path d="M3 7.5V16.5L12 21l9-4.5V7.5"/><path d="M12 12v9"/></svg>
+            Parcel delivery
+          </button>
+          <button type="button" data-mode="service" role="tab" aria-selected="false">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            Local service
+          </button>
+        </div>
+      </div>
+      <div class="hero-stage">
+        <div class="hero-grid" id="heroGrid">
+          <div>
+            <div class="badge"><i></i><span id="heroBadge">Parcel delivery, made simple</span></div>
+            <h1 id="heroTitle">Send it. Track it. Get it delivered.</h1>
+            <p class="lede" id="heroLede">Compare trusted local delivery partners, choose the right vehicle for your parcel, and see clear pricing — all in minutes.</p>
+            <form class="quote" id="quote">
+            <div class="quote-body parcel-mode" id="parcelMode">
+                  <div class="parcel-face" id="parcelStep1">
+                    <p class="step-meta" id="stepMeta1">Step 1 of 2</p>
+                    <div class="center-block vehicle-pick" id="vehiclePick">
+                      <p class="block-label">Vehicle type</p>
+                      <div class="vehicles" id="vehicleList" role="radiogroup" aria-label="Vehicle type"></div>
+                    </div>
+                    <div class="center-block" id="typeCenter">
+                      <p class="block-label">Parcel type</p>
+                      <div class="field when-field" id="typeField">
+                        <span>
+                          <span>Choose parcel type</span>
+                          <button type="button" class="when-btn" id="typeBtn" aria-haspopup="listbox" aria-expanded="false">
+                            <span id="typeValue">Non-Document</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                          </button>
+                        </span>
+                        <ul class="when-menu" id="typeMenu" role="listbox" hidden>
+                          <li><button type="button" data-value="DOCUMENT">Document</button></li>
+                          <li><button type="button" class="on" data-value="NON_DOCUMENT">Non-Document</button></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="address-row">
+                      <label class="field">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
+                        <span><span id="fromLabel">Pickup location</span><input id="from" placeholder="Search pickup area"></span>
+                      </label>
+                      <label class="field">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
+                        <span><span id="toLabel">Delivery location</span><input id="to" placeholder="Search delivery area"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="parcel-face" id="parcelStep2" hidden>
+                    <p class="step-meta">Step 2 of 2</p>
+                    <div class="fields">
+                      <div class="field when-field" id="weightField">
+                        <span>
+                          <span>Weight per box</span>
+                          <button type="button" class="when-btn" id="weightBtn" aria-haspopup="listbox" aria-expanded="false">
+                            <span id="weightValue">1 kg</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                          </button>
+                        </span>
+                        <ul class="when-menu" id="weightMenu" role="listbox" hidden></ul>
+                      </div>
+                      <div class="field when-field" id="qtyField">
+                        <span>
+                          <span>Quantity</span>
+                          <button type="button" class="when-btn" id="qtyBtn" aria-haspopup="listbox" aria-expanded="false">
+                            <span id="qtyValue">1 box</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                          </button>
+                        </span>
+                        <ul class="when-menu" id="qtyMenu" role="listbox" hidden></ul>
+                      </div>
+                    </div>
+                    <p class="total-line" id="totalWeightLine"><span>Total weight:</span> 1 kg</p>
+                    <div class="dims" id="parcelDims">
+                      <div class="dims-head">
+                        <p class="block-label">Size per box (cm)</p>
+                        <button type="button" class="copy-dims" id="copyDims" hidden>Copy Box 1 to all</button>
+                      </div>
+                      <div class="box-cols" aria-hidden="true"><span></span><span>Length</span><span>Width</span><span>Height</span></div>
+                      <div class="box-list" id="boxList"></div>
+                      <p class="dims-hint" id="dimsHint" hidden></p>
+                    </div>
+                    <p class="parcel-note upgrade" id="upgradeNote" hidden></p>
+                    <p class="parcel-note error" id="capacityError" hidden></p>
+                  </div>
+            </div>
+
+            <div class="quote-body service-mode" id="serviceMode" hidden>
+                <label class="field">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6Z"/></svg>
+                  <span><span>Service</span><input id="serviceNeed" value="Home cleaning" list="serviceList" autocomplete="off" placeholder="What do you need?"></span>
+                  <datalist id="serviceList">
+                    <option value="Home cleaning"></option>
+                    <option value="Plumbing"></option>
+                    <option value="Electrical work"></option>
+                    <option value="AC service &amp; repair"></option>
+                    <option value="Appliance repair"></option>
+                    <option value="Carpentry"></option>
+                    <option value="Painting"></option>
+                    <option value="Pest control"></option>
+                  </datalist>
+                </label>
+                <label class="field">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
+                  <span><span>Area</span><input id="serviceArea" autocomplete="off" placeholder="Search your locality"></span>
+                </label>
+                <div class="field when-field" id="whenField">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                  <span><span>When</span>
+                    <button type="button" class="when-btn" id="whenBtn" aria-haspopup="listbox" aria-expanded="false">
+                      <span id="whenValue">Morning, 6 AM – 11 AM</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                  </span>
+                  <ul class="when-menu" id="whenMenu" role="listbox" hidden>
+                    <li><button type="button" class="on" data-value="Morning, 6 AM – 11 AM" aria-label="Morning, 6 AM to 11 AM"><span><b>Morning</b><small>6 AM to 11 AM</small></span></button></li>
+                    <li><button type="button" data-value="Afternoon, 11 AM – 4 PM" aria-label="Afternoon, 11 AM to 4 PM"><span><b>Afternoon</b><small>11 AM to 4 PM</small></span></button></li>
+                    <li><button type="button" data-value="Evening, 4 PM – 9 PM" aria-label="Evening, 4 PM to 9 PM"><span><b>Evening</b><small>4 PM to 9 PM</small></span></button></li>
+                    <li><button type="button" data-value="Night, after 9 PM" aria-label="Night, after 9 PM"><span><b>Night</b><small>After 9 PM</small></span></button></li>
+                  </ul>
+                </div>
+                <div class="field date-field" id="dateField">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+                  <span>
+                    <span>Date</span>
+                    <button type="button" class="when-btn" id="dateBtn" aria-haspopup="dialog" aria-expanded="false">
+                      <span id="dateValue">Immediate</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                  </span>
+                  <div class="date-menu" id="dateMenu" role="dialog" aria-label="Choose a date" hidden>
+                    <button type="button" class="date-choice on" data-kind="immediate">
+                      <span><b>Immediate</b><small>A worker can come as soon as possible</small></span>
+                    </button>
+                    <button type="button" class="date-choice" data-kind="dates">
+                      <span><b>Choose dates</b><small>A preferred start day, plus one backup within 7 days</small></span>
+                    </button>
+                    <div class="date-pickers" id="datePickers" hidden>
+                      <p class="date-step">Preferred date<small>The day you most want the worker to start</small></p>
+                      <div id="prefCal"></div>
+                      <p class="date-step">Backup date<small id="backupHint">Choose the preferred date first. The backup has to be within the next 7 days.</small></p>
+                      <div class="backup-days" id="backupDays"></div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <p class="parcel-note upgrade place-error" id="placeError" role="status" hidden></p>
+            <div class="parcel-row solo" id="parcelRow">
+              <button type="button" class="compare ghost" id="backBtn" hidden>← Back</button>
+              <button class="compare" id="compareBtn" type="button">Next →</button>
+            </div>
+            <div class="checks" id="heroChecks">
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10A88B" stroke-width="2.4"><path d="m5 12 5 5L20 7"/></svg> No account required</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10A88B" stroke-width="2.4"><path d="m5 12 5 5L20 7"/></svg> Clear pricing</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10A88B" stroke-width="2.4"><path d="m5 12 5 5L20 7"/></svg> Reliable delivery</span>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="services" id="services">
+      <div class="pill"><i></i> One search, plenty of help</div>
+      <h2>What can we help with?</h2>
+      <div class="services-line">
+        <p>Search practical local services and compare providers without forms, phone tag or an account.</p>
+        <a class="browse" href="#services">Browse all services →</a>
+      </div>
+      <div class="svc-grid">
+        <a class="svc" href="#services">
+          <span class="svc-icon" style="background:#EAF4FF;color:#1666D8"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z"/><path d="M3 7.5V16.5L12 21l9-4.5V7.5"/><path d="M12 12v9"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Courier &amp; parcels</h3>
+          <p>Same-day, next-day and scheduled delivery.</p>
+          <b style="color:#1666D8">From ₹149</b>
+        </a>
+        <a class="svc is-soon" href="#services">
+          <span class="svc-icon" style="background:#DDF7EF;color:#087B69"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Moving help</h3>
+          <p>Vans, lifting help and small home moves.</p>
+          <b class="soon-tag">Coming soon</b>
+        </a>
+        <a class="svc is-soon" href="#services">
+          <span class="svc-icon" style="background:#FFF0D9;color:#C4842A"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v2M12 19v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M3 12h2M19 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Cleaning</h3>
+          <p>Trusted help for homes, offices and end-of-tenancy.</p>
+          <b class="soon-tag">Coming soon</b>
+        </a>
+        <a class="svc is-soon" href="#services">
+          <span class="svc-icon" style="background:#F1EBFF;color:#6C4CCF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.6L4 17l3 3 5.1-5.1a4 4 0 0 0 5.6-5.6l-2.2 2.2-1.6-1.6 2.2-2.2Z"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Repairs</h3>
+          <p>Handypeople for fixes, fitting and maintenance.</p>
+          <b class="soon-tag">Coming soon</b>
+        </a>
+        <a class="svc is-soon" href="#services">
+          <span class="svc-icon" style="background:#FDECEA;color:#C75B44"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Errands</h3>
+          <p>Collections, shopping, returns and local tasks.</p>
+          <b class="soon-tag">Coming soon</b>
+        </a>
+        <a class="svc is-soon" href="#services">
+          <span class="svc-icon" style="background:#E5F7F3;color:#0E9B86"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 11V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/><path d="M4 14h16v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4Z"/><path d="M4 14a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3"/></svg></span>
+          <span class="go">↗</span>
+          <h3>Furniture assembly</h3>
+          <p>Flat-pack assembly by rated local experts.</p>
+          <b class="soon-tag">Coming soon</b>
+        </a>
+      </div>
+    </section>
+    <section class="nearby" id="nearby">
+      <div class="pill"><i></i> Near you now</div>
+      <div class="nearby-line">
+        <div>
+          <h2>Trusted help around the corner</h2>
+          <p>Parcel couriers are ready now. Cleaning, repairs and other local help are coming soon.</p>
+        </div>
+        <button type="button" class="area-select" aria-label="Change area">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          Brixton · within 3 miles
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+      </div>
+      <div class="pro-grid">
+        <article class="pro">
+          <div class="pro-media">
+            <img src="/images/hero/parcel-delivery/Modern Delivery Hero Banner.png" alt="Courier with a cargo bike" loading="lazy">
+            <span class="pro-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#087B69" stroke-width="2.2" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg> Top courier</span>
+          </div>
+          <div class="pro-body">
+            <div class="pro-head">
+              <h3>Swift &amp; Kind Couriers</h3>
+              <span class="pro-rating"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E2A23B" stroke-width="2" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg> 4.9 <small>(426)</small></span>
+            </div>
+            <div class="pro-cat">Same-day courier</div>
+            <div class="pro-meta">0.8 miles away · replies in 3 min</div>
+            <div class="pro-foot">
+              <div class="pro-price"><small>Typical price</small><b>From ₹149</b></div>
+              <a class="pro-cta" href="#hero">Get a quote <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+        </article>
+        <article class="pro is-soon">
+          <div class="pro-media">
+            <img src="/images/hero/local-services/Professional Service Team Banner.png" alt="Home helper holding cleaning supplies" loading="lazy">
+            <span class="pro-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#087B69" stroke-width="2.2" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg> Coming soon</span>
+          </div>
+          <div class="pro-body">
+            <div class="pro-head">
+              <h3>Maya’s Home Help</h3>
+            </div>
+            <div class="pro-cat">Cleaning &amp; errands</div>
+            <div class="pro-meta">Joining Ajobzio soon</div>
+            <div class="pro-foot">
+              <div class="pro-price"><small>Expected from</small><b>₹399/hr</b></div>
+              <span class="pro-cta is-soon">Coming soon</span>
+            </div>
+          </div>
+        </article>
+        <article class="pro is-soon">
+          <div class="pro-media">
+            <img src="/images/content/skilled-professionals-cityscape.png" alt="Handyman with a toolbox" loading="lazy">
+            <span class="pro-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#087B69" stroke-width="2.2" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg> Coming soon</span>
+          </div>
+          <div class="pro-body">
+            <div class="pro-head">
+              <h3>Northside Handy Co.</h3>
+            </div>
+            <div class="pro-cat">Repairs &amp; assembly</div>
+            <div class="pro-meta">Joining Ajobzio soon</div>
+            <div class="pro-foot">
+              <div class="pro-price"><small>Expected from</small><b>₹499</b></div>
+              <span class="pro-cta is-soon">Coming soon</span>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="nearby-foot">
+        <p>Local service providers are joining soon. Parcel delivery is available today.</p>
+        <a href="#hero">Send a parcel →</a>
+      </div>
+    </section>
+    <section class="how" id="how">
+      <div class="how-copy">
+        <div class="pill"><i></i> Simple from start to finish</div>
+        <h2>Booked in minutes. Sorted without the fuss.</h2>
+        <p>Ajobzio keeps the useful details up front, so you can make a confident choice quickly.</p>
+        <ul class="how-checks">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10A88B" stroke-width="2.6" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg> No sign-up or membership fees</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10A88B" stroke-width="2.6" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg> Contact details shared only when you choose</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10A88B" stroke-width="2.6" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg> Friendly support if plans change</li>
+        </ul>
+        <a class="how-cta" href="#hero">Start a search <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a>
+      </div>
+      <ol class="how-steps">
+        <li>
+          <span class="how-num">01</span>
+          <div>
+            <h3>Tell us what you need</h3>
+            <p>Enter two locations and parcel details, or describe the local service you’re looking for.</p>
+          </div>
+          <span class="how-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+        </li>
+        <li>
+          <span class="how-num">02</span>
+          <div>
+            <h3>Compare trusted options</h3>
+            <p>See real availability, verified reviews and straightforward prices side by side.</p>
+          </div>
+          <span class="how-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h10M18 18h2"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="16" cy="18" r="2"/></svg></span>
+        </li>
+        <li>
+          <span class="how-num">03</span>
+          <div>
+            <h3>Choose and get it done</h3>
+            <p>Book directly with your provider. Track delivery or agree the job details — no account needed.</p>
+          </div>
+          <span class="how-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span>
+        </li>
+      </ol>
+    </section>
+    <section class="options" id="options">
+      <div class="pill"><i></i> Built around your day</div>
+      <h2>A delivery option for every kind of send</h2>
+      <div class="options-line">
+        <p>Choose the balance of speed, timing and price that works for you. These sample quotes are for Brixton to Camden.</p>
+        <a class="options-cta" href="#hero">Quote my parcel <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z"/><path d="M3 7.5V16.5L12 21l9-4.5V7.5"/><path d="M12 12v9"/></svg></a>
+      </div>
+      <div class="opt-grid">
+        <a class="opt" href="#hero">
+          <span class="opt-icon" style="background:#EAF4FF;color:#1666D8"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></span>
+          <span class="opt-tag" style="background:#DCEBFF;color:#1666D8">Fastest</span>
+          <h3>Same-day</h3>
+          <div class="opt-sub" style="color:#1666D8">Collection in 30–90 min</div>
+          <p>Best for urgent documents, gifts and parcels across town.</p>
+          <div class="opt-foot">
+            <div><small>Estimated from</small><b>₹189</b></div>
+            <span class="opt-go" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+        <a class="opt featured" href="#hero">
+          <span class="opt-icon" style="background:#DDF7EF;color:#087B69"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="15" cy="16" r="2.5"/><path d="M15 15v1l.8.6"/></svg></span>
+          <span class="opt-tag" style="background:#DDF7EF;color:#087B69">Most popular</span>
+          <h3>Scheduled</h3>
+          <div class="opt-sub" style="color:#087B69">Choose a 2-hour window</div>
+          <p>Plan collection around your day with a confirmed slot.</p>
+          <div class="opt-foot">
+            <div><small>Estimated from</small><b>₹149</b></div>
+            <span class="opt-go" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+        <a class="opt" href="#hero">
+          <span class="opt-icon" style="background:#F1EBFF;color:#6C4CCF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 11a7 6 0 0 1 13-2h2v4l-2 1v3h-3v-2H9v2H6v-3a6 6 0 0 1-1-3Z"/><path d="M14 9h.01"/></svg></span>
+          <h3>Economy</h3>
+          <div class="opt-sub" style="color:#6C4CCF">Delivered by tomorrow</div>
+          <p>A lower-cost option when your parcel can take its time.</p>
+          <div class="opt-foot">
+            <div><small>Estimated from</small><b>₹99</b></div>
+            <span class="opt-go" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+        <a class="opt" href="#hero">
+          <span class="opt-icon" style="background:#FFF0D9;color:#C4842A"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z"/><path d="M3 7.5V16.5L12 21l9-4.5V7.5"/><path d="M12 12v9"/></svg></span>
+          <h3>Large &amp; careful</h3>
+          <div class="opt-sub" style="color:#C75B44">Matched specialist vehicle</div>
+          <p>For furniture, artwork and bulky or fragile items.</p>
+          <div class="opt-foot">
+            <div><small>Estimated from</small><b>₹449</b></div>
+            <span class="opt-go" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+      </div>
+      <p class="options-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg> Every quote includes collection, delivery and basic protection. You’ll see the full price before choosing a provider.</p>
+    </section>
+    <section class="trust" id="trust">
+      <div class="trust-media">
+        <img src="/images/content/doorstep-parcel-handover.png" alt="Courier handing a parcel to a smiling customer at her front door" loading="lazy">
+        <div class="trust-stat">
+          <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg> Ajobzio protection</span>
+          <b>98% on-time</b>
+          <small>across tracked local deliveries</small>
+        </div>
+      </div>
+      <div class="trust-copy">
+        <div class="trust-eyebrow">Trust built into every search</div>
+        <h2>Good local help should feel safe and straightforward.</h2>
+        <p>We check the people behind every profile and make the important details easy to see before you choose.</p>
+        <ul class="trust-list">
+          <li>
+            <span class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span>
+            <div>
+              <h3>Verified identities</h3>
+              <p>Providers confirm their identity, contact details and right to work before appearing.</p>
+            </div>
+          </li>
+          <li>
+            <span class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg></span>
+            <div>
+              <h3>Reviews from real jobs</h3>
+              <p>Only customers who completed a booking can leave a public provider review.</p>
+            </div>
+          </li>
+          <li>
+            <span class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <div>
+              <h3>Protected from pickup to handoff</h3>
+              <p>Eligible deliveries include basic protection, with clear options for higher-value items.</p>
+            </div>
+          </li>
+          <li>
+            <span class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg></span>
+            <div>
+              <h3>A human when you need one</h3>
+              <p>Our support team can help resolve missed collections, delays or job concerns.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section class="reviews" id="reviews">
+      <div class="pill"><i></i> Real jobs, real reviews</div>
+      <h2>People use Ajobzio to get on with life</h2>
+      <div class="reviews-line">
+        <p>From the thing that has to arrive today to the job that has waited all month.</p>
+        <div class="reviews-score"><b>4.8 / 5</b><small>from 3,840 verified reviews</small></div>
+      </div>
+      <div class="review-grid">
+        <figure class="review">
+          <div class="review-top">
+            <span class="review-stars"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E2A23B" stroke-width="2.2" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg> 5.0</span>
+            <span class="review-quote" aria-hidden="true">”</span>
+          </div>
+          <blockquote>“I had three quotes within five minutes and my forgotten laptop was across Kochi before lunch. No account, no chasing — genuinely useful.”</blockquote>
+          <figcaption class="review-who">
+            <span class="review-avatar" style="background:#EAF4FF;color:#1666D8" aria-hidden="true">AM</span>
+            <span><b>Anjali Menon</b><small>Same-day parcel · Kakkanad</small></span>
+          </figcaption>
+        </figure>
+        <figure class="review featured">
+          <div class="review-top">
+            <span class="review-stars"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E2A23B" stroke-width="2.2" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg> 5.0</span>
+            <span class="review-quote" aria-hidden="true">”</span>
+          </div>
+          <blockquote>“Ajobzio found two brilliant movers at short notice. The profiles showed exactly what was included, so there were no awkward extras on the day.”</blockquote>
+          <figcaption class="review-who">
+            <span class="review-avatar" style="background:#DDF7EF;color:#087B69" aria-hidden="true">RT</span>
+            <span><b>Rahul Thomas</b><small>Small flat move · Edappally</small></span>
+          </figcaption>
+        </figure>
+        <figure class="review">
+          <div class="review-top">
+            <span class="review-stars"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E2A23B" stroke-width="2.2" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg> 5.0</span>
+            <span class="review-quote" aria-hidden="true">”</span>
+          </div>
+          <blockquote>“I booked a cleaner for my mum in minutes. Maya was kind, punctual and the verified reviews gave us confidence before we chose.”</blockquote>
+          <figcaption class="review-who">
+            <span class="review-avatar" style="background:#FFF0D9;color:#C4842A" aria-hidden="true">SN</span>
+            <span><b>Sneha Nair</b><small>Home cleaning · Kottayam</small></span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <section class="faq" id="faq">
+      <div class="faq-intro">
+        <div class="pill"><i></i> Good to know</div>
+        <h2>Questions, answered clearly</h2>
+        <p>The essentials before you send, book or choose a provider.</p>
+        <div class="faq-help">
+          <span class="faq-help-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg></span>
+          <h3>Still wondering?</h3>
+          <p>Our support team is here daily, 8am–8pm.</p>
+          <div class="faq-contact">
+            <a href="mailto:support@ajobzio.com" aria-label="Email support@ajobzio.com">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              Email
+            </a>
+            <a class="is-whatsapp" href="https://wa.me/919188946562" target="_blank" rel="noopener" aria-label="WhatsApp +91 91889 46562">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg>
+              WhatsApp
+            </a>
+            <a href="tel:+919188946562" aria-label="Call +91 91889 46562">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>
+              Call
+            </a>
+          </div>
+          <p class="faq-number">+91 91889 46562 · support@ajobzio.com</p>
+        </div>
+      </div>
+      <div class="faq-list">
+        <details name="faq" open>
+          <summary>Do I need an account to get a quote?<span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>No. Enter your route or service details and compare available providers straight away. You only share contact details with the provider you choose.</p>
+        </details>
+        <details name="faq">
+          <summary>How are providers checked?<span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>Every provider confirms their identity, contact details and right to work before they appear. Reviews can only be left by customers who completed a booking.</p>
+        </details>
+        <details name="faq">
+          <summary>What can I send with Ajobzio?<span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>Documents, parcels, gifts, groceries and bulky items, from a small envelope to furniture. Illegal, hazardous or perishable items that need special handling can’t be sent.</p>
+        </details>
+        <details name="faq">
+          <summary>When and how do I pay?<span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>You see the full price before you book. Pay the provider directly once your booking is confirmed, using the payment options they accept.</p>
+        </details>
+        <details name="faq">
+          <summary>What if my plans change?<span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>Contact your provider as early as you can to reschedule or cancel. If something goes wrong, our support team can help sort it out.</p>
+        </details>
+        <details name="faq">
+          <summary>Is my parcel protected?<span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>Eligible deliveries include basic protection from pickup to handoff. For higher-value items, ask your provider about extra cover before you book.</p>
+        </details>
+      </div>
+    </section>
+    <section class="cta" id="get-started">
+      <svg class="cta-lines" viewBox="0 0 1440 460" preserveAspectRatio="none" fill="none" stroke="rgba(8,123,105,0.16)" stroke-width="1.5" aria-hidden="true">
+        <path d="M0 280C180 200 300 150 480 190s260 160 470 110 300-170 490-260"/>
+        <path d="M1100 0c40 90 140 140 340 120"/>
+      </svg>
+      <div class="cta-eyebrow">Ready when you are</div>
+      <h2>What needs doing today?</h2>
+      <p class="cta-sub">Get local options and clear prices in under a minute. No account, no obligation.</p>
+      <form class="cta-form" id="ctaForm">
+        <label class="cta-field">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span><small>Search</small><input id="ctaNeed" list="serviceList" autocomplete="off" placeholder="Courier, moving help, cleaning..."></span>
+        </label>
+        <label class="cta-field">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span><small>Near</small><input id="ctaArea" autocomplete="off" placeholder="Enter your area or locality"></span>
+        </label>
+        <button type="submit" class="cta-submit">Find help <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </form>
+      <div class="cta-popular">
+        Popular:
+        <button type="button">Same-day courier</button>
+        <button type="button">Man with a van</button>
+        <button type="button">Cleaner today</button>
+        <button type="button">Furniture assembly</button>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="contact-dialog" id="contactDialog" aria-labelledby="contactTitle">
+    <form id="contactForm" novalidate>
+      <h2 id="contactTitle">Confirm your quote</h2>
+      <p class="contact-sub">Tell us how to reach you and our team will get back with your quote.</p>
+      <ul class="contact-summary" id="contactSummary"></ul>
+      <div class="contact-fields">
+        <input class="contact-trap" name="website" id="contactWebsite" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label class="field">
+          <span><span>Full name</span><input id="contactName" name="name" autocomplete="name" required></span>
+        </label>
+        <label class="field">
+          <span><span>Phone number</span><input id="contactPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></span>
+        </label>
+        <label class="field">
+          <span><span>Email (optional)</span><input id="contactEmail" name="email" type="email" autocomplete="email"></span>
+        </label>
+      </div>
+      <p class="parcel-note contact-status" id="contactStatus" role="status" hidden></p>
+      <div class="contact-actions">
+        <button type="button" class="compare ghost" id="contactCancel">Cancel</button>
+        <button type="submit" class="compare" id="contactSubmit">Confirm Quote</button>
+      </div>
+    </form>
+  </dialog>
+  <dialog class="contact-dialog map-dialog" id="mapDialog" aria-labelledby="mapTitle">
+    <h2 id="mapTitle">Choose on map</h2>
+    <p class="contact-sub">Search your locality, then move the map so the pin sits on the exact spot.</p>
+    <label class="field map-search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span><span>Search locality</span><input id="mapSearch" placeholder="Search a locality or landmark"></span>
+    </label>
+    <div class="map-wrap">
+      <div class="map-canvas" id="mapCanvas"></div>
+      <svg class="map-pin" width="36" height="44" viewBox="0 0 36 44" aria-hidden="true"><path d="M18 43s15-13.2 15-25A15 15 0 0 0 3 18c0 11.8 15 25 15 25Z" fill="#1666D8" stroke="#fff" stroke-width="2"/><circle cx="18" cy="18" r="5.5" fill="#fff"/></svg>
+      <button type="button" class="map-locate" id="mapLocate">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        Use my current location
+      </button>
+    </div>
+    <p class="parcel-note contact-status" id="mapStatus" role="status" hidden></p>
+    <div class="contact-actions">
+      <button type="button" class="compare ghost" id="mapCancel">Cancel</button>
+      <button type="button" class="compare" id="mapConfirm">Confirm location</button>
+    </div>
+  </dialog>
+
+<%- include("../partials/footer") %>

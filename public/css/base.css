@@ -1,0 +1,363 @@
+/* Shared by every page: tokens, reset, header (nav, served-areas pill, menu) and footer. */
+:root {
+  --bg: #F7FAF8;
+  --ink: #082D36;
+  --nav: #173F48;
+  --line: #D8E5E2;
+  --blue: #1666D8;
+  --green: #087B69;
+  --mint: #DDF7EF;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: Poppins, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: inherit; text-decoration: none; }
+main { flex: 1; }
+
+header {
+  height: 68px;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 64px;
+}
+.brand, .nav-links { flex: none; }
+.nav-links { margin-left: 56px; }
+.logo { height: 36px; width: auto; display: block; }
+footer .logo {
+  height: 58px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 8px 14px;
+}
+.nav-links { display: flex; align-items: center; gap: 34px; }
+.nav-links a {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17px;
+  color: var(--nav);
+}
+.nav-links a:hover { color: var(--blue); }
+/* Wide screens: the nav sits in the true centre of the header. Narrower ones keep it beside the logo so it never overlaps. */
+@media (min-width: 1180px) {
+  header { position: relative; }
+  .nav-links { position: absolute; left: 50%; transform: translateX(-50%); margin-left: 0; }
+}
+.nav-btn {
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: var(--mint);
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+/* Served districts: a compact pill that opens a list, between the nav and Track order. */
+.areas {
+  position: relative;
+  margin: 0 12px 0 auto;
+  flex: none;
+}
+.areas summary {
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6D8386;
+  white-space: nowrap;
+  cursor: pointer;
+  list-style: none;
+}
+.areas summary::-webkit-details-marker { display: none; }
+.areas summary:hover, .areas[open] summary { background: #F3F6F5; }
+.areas summary > svg:first-child { color: var(--green); flex: none; }
+.areas summary b { font-weight: 600; color: var(--nav); }
+/* District names stack in one grid cell, so the pill stays as wide as the longest name. */
+.areas-rotor {
+  display: inline-grid;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.areas-rotor b {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.areas-rotor b.is-on { opacity: 1; transform: none; }
+.areas-rotor b.is-off { opacity: 0; transform: translateY(-100%); }
+@media (prefers-reduced-motion: reduce) {
+  .areas-rotor b { transition: none; }
+}
+.areas-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 50;
+  width: 300px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 20px 48px rgba(8, 45, 54, 0.14);
+  transform-origin: top right;
+}
+.areas[open] .areas-panel { animation: areas-pop 0.22s ease-out; }
+@keyframes areas-pop {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.areas-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.areas-head h2 { font-size: 16px; font-weight: 700; line-height: 1.3; color: var(--ink); }
+.areas-head p { margin-top: 2px; font-size: 12px; color: #6D8386; }
+.areas-live {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--mint);
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+}
+.areas-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 0 rgba(8, 123, 105, 0.5);
+  animation: areas-pulse 1.8s ease-out infinite;
+}
+@keyframes areas-pulse {
+  to { box-shadow: 0 0 0 7px rgba(8, 123, 105, 0); }
+}
+.areas-list {
+  list-style: none;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.areas-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--nav);
+  transition: background 0.3s ease;
+}
+.areas[open] .areas-list li { animation: areas-row 0.32s ease-out both; animation-delay: calc(var(--i) * 45ms); }
+@keyframes areas-row {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.areas-list li span {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: #F3F6F5;
+  color: var(--green);
+  display: grid;
+  place-items: center;
+  flex: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.areas-list li em {
+  margin-left: auto;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 600;
+  color: #8AA0A2;
+}
+/* The district currently shown in the pill. */
+.areas-list li.is-current { background: #F3FAF7; }
+.areas-list li.is-current span { background: var(--green); color: #fff; }
+.areas-list li.is-current em { color: var(--green); }
+.areas-soon {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px dashed #C9D8D5;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: #6D8386;
+}
+.areas-soon svg { flex: none; color: #8AA0A2; }
+@media (prefers-reduced-motion: reduce) {
+  .areas[open] .areas-panel, .areas[open] .areas-list li, .areas-live i { animation: none; }
+}
+/* Too little room for the label at these widths: show just the pin. */
+@media (min-width: 761px) and (max-width: 1000px) {
+  .areas summary { width: 42px; padding: 0; justify-content: center; }
+  .areas-label { display: none; }
+}
+.menu-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--nav);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex: none;
+}
+.menu-toggle .close-icon { display: none; }
+.menu-toggle[aria-expanded="true"] .open-icon { display: none; }
+.menu-toggle[aria-expanded="true"] .close-icon { display: block; }
+
+footer {
+  background: var(--ink);
+  padding: 64px 96px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 52px;
+}
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+}
+.foot-brand { width: 300px; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.foot-brand p { color: #AFC4C5; font-size: 14px; font-weight: 400; line-height: 1.55; }
+.social { display: flex; gap: 10px; }
+.social a {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  display: grid;
+  place-items: center;
+}
+.cols { display: flex; gap: 48px; }
+.cols h2 {
+  font-family: Poppins, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 15px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #FFB45C;
+  margin-bottom: 13px;
+}
+.cols a {
+  display: block;
+  margin-top: 13px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17px;
+  color: #D5E2E2;
+}
+.cols a:first-of-type { margin-top: 0; }
+.legal {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  line-height: 15px;
+}
+.legal span { color: #8FA7A9; }
+.legal nav, .region { display: flex; align-items: center; gap: 24px; }
+.region { gap: 7px; color: #AFC4C5; }
+.legal a { color: #AFC4C5; }
+
+@media (max-width: 980px) {
+  header, footer { padding-left: 24px; padding-right: 24px; }
+  .foot, .legal { flex-direction: column; align-items: flex-start; }
+  .foot-brand { width: 100%; }
+  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 16px; width: 100%; }
+  .legal nav { flex-wrap: wrap; gap: 12px 16px; }
+}
+@media (max-width: 760px) {
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    height: auto;
+    min-height: 64px;
+    padding: 11px 16px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  /* Phones: the served-areas pill becomes a full-width row under the logo row. */
+  .areas {
+    order: 5;
+    flex: 1 0 100%;
+    margin: 2px 0 0;
+  }
+  .areas summary { height: 34px; padding: 0 12px; border-radius: 10px; font-size: 12px; background: #F3F6F5; }
+  .areas-panel { left: 0; right: 0; width: auto; }
+  .nav-btn { margin-left: auto; }
+  .logo { height: 32px; }
+  .menu-toggle { display: inline-flex; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 6px 16px 12px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 16px 40px rgba(8, 45, 54, 0.08);
+  }
+  .nav-links { margin-left: 0; }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 14px 2px; border-top: 1px solid #EEF3F2; font-size: 15px; }
+  .nav-btn { height: 42px; padding: 0 12px; }
+  .cols { grid-template-columns: 1fr 1fr; }
+  footer { padding: 40px 16px 24px; gap: 32px; }
+  footer .logo { height: 48px; }
+}
+@media (max-width: 380px) {
+  .track-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .nav-btn { width: 42px; padding: 0; justify-content: center; }
+}

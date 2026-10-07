@@ -1,0 +1,18 @@
+<%- include("../partials/head", { styles: ["/css/track.css"], scripts: ["/js/pages/track.js"] }) %>
+
+  <main class="track">
+    <div class="pill"><i></i> Track your order</div>
+    <h1>Where’s my order?</h1>
+    <p class="track-sub">Enter the order ID from your booking confirmation to see the latest status of your delivery.</p>
+    <form class="track-form" id="trackForm" novalidate>
+      <label class="track-field">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1666D8" stroke-width="2" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z"/><path d="M3 7.5V16.5L12 21l9-4.5V7.5"/><path d="M12 12v9"/></svg>
+        <span><small>Order ID</small><input id="orderId" name="orderId" autocomplete="off" spellcheck="false" maxlength="30" placeholder="e.g. AJB-10234" required></span>
+      </label>
+      <button type="submit" class="track-submit" id="trackSubmit">Track order <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </form>
+    <p class="track-hint">You’ll find your order ID in the confirmation message we sent you.</p>
+    <div class="track-result" id="trackResult" role="status" aria-live="polite" hidden></div>
+  </main>
+
+<%- include("../partials/footer") %>

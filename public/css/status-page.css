@@ -1,0 +1,43 @@
+/* Simple centred message pages, like the 404. */
+.status-page {
+  padding: 96px 24px 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.status-page .pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--mint);
+  color: var(--green);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.status-page .pill i { width: 7px; height: 7px; border-radius: 50%; background: #10A88B; display: block; }
+.status-page h1 {
+  margin-top: 16px;
+  font-size: clamp(30px, 3.4vw, 42px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.status-page p { margin-top: 10px; max-width: 480px; color: #6D8386; font-size: 15px; line-height: 1.6; }
+.status-home {
+  margin-top: 28px;
+  padding: 13px 22px;
+  border-radius: 12px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+.status-home:hover { background: #1158BD; }
+@media (max-width: 760px) {
+  .status-page { padding: 64px 16px 80px; }
+}

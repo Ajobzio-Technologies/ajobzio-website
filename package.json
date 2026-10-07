@@ -2,7 +2,7 @@
   "name": "ajobzio-website",
   "version": "1.0.0",
   "private": true,
-  "description": "Ajobzio website with a small backend for quote emails",
+  "description": "Ajobzio website: Express (MVC) with EJS views, quote emails and Google Places checks",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.21.2",
     "nodemailer": "^6.9.16"
   }
