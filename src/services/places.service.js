@@ -1,6 +1,6 @@
 /* Google Places API (New), called from the server so the API key never reaches the browser. */
 const { google } = require('../config/env');
-const { PLACES_AREA, servedDistrict } = require('../config/service-area');
+const { PLACES_AREA, districtFromComponents } = require('../config/service-area');
 
 const PLACES_BASE = 'https://places.googleapis.com/v1/places';
 const TIMEOUT_MS = 5000;
@@ -33,17 +33,13 @@ async function lookupPlace(placeId, sessionToken) {
     headers: googleHeaders('addressComponents,formattedAddress,location')
   }, 'Place Details');
 
-  const components = result.addressComponents || [];
-  /* Some components come back without a types list. */
-  const find = (type) => components.find((item) => (item.types || []).includes(type));
-  const state = find('administrative_area_level_1');
-  const districtName = (find('administrative_area_level_3') || find('administrative_area_level_2') || {}).longText || '';
+  /* area is where the customer is, for the "not served yet" message. */
+  const { area, district } = districtFromComponents(result.addressComponents || []);
   const place = {
     placeId,
     address: result.formattedAddress || '',
-    /* Where the customer is, for the "not served yet" message. */
-    area: districtName || (state ? state.longText : ''),
-    district: servedDistrict(districtName, state && state.longText),
+    area,
+    district,
     /* Lets the map picker jump to a searched place. */
     location: result.location ? { lat: result.location.latitude, lng: result.location.longitude } : null
   };

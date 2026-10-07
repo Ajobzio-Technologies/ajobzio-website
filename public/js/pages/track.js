@@ -1,4 +1,5 @@
 /* Track order page: looks an order up by ID and shows its status and steps. */
+import backend from '../backend/index.js';
 import { escapeHtml } from '../lib/html.js';
 
 const ORDER_ID = /^[A-Z0-9-]{4,30}$/;
@@ -44,8 +45,7 @@ async function trackOrder(id) {
   }
   submitBtn.disabled = true;
   try {
-    const response = await fetch('/api/track?orderId=' + encodeURIComponent(id));
-    const result = await response.json();
+    const result = await backend.trackOrder(id);
     if (result.ok && result.order) {
       renderOrder(result.order);
       history.replaceState(null, '', '?id=' + encodeURIComponent(id));

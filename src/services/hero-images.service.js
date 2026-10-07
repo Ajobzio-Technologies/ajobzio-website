@@ -17,4 +17,4 @@ async function listHeroImages(set) {
     .map((name) => '/images/hero/' + folder + '/' + encodeURIComponent(name));
 }
 
-module.exports = { listHeroImages };
+module.exports = { HERO_SETS, listHeroImages };

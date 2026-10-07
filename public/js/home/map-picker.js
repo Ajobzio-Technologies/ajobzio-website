@@ -1,31 +1,13 @@
 /* "Choose on map": the customer centres the map on their spot (starting from their current location),
-   and /api/places/reverse turns it into a checked place, just like a picked suggestion. */
+   and the backend turns it into a checked place, just like a picked suggestion. */
+import backend from '../backend/index.js';
+import { loadGoogleMaps } from '../lib/google-maps.js';
+
 const MAP_START = { lat: 9.9816, lng: 76.2999 }; /* Kochi */
 
-let mapsLoading = null;
-
-/* Loads the Maps JavaScript API once, with the browser key from the server. */
-function loadMaps() {
-  if (!mapsLoading) {
-    mapsLoading = (async () => {
-      const config = await (await fetch('/api/maps/config')).json();
-      if (!config.ok || !config.key) throw new Error('Maps key missing');
-      await new Promise((resolve, reject) => {
-        window.ajobzioMapsReady = resolve;
-        const script = document.createElement('script');
-        script.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(config.key) +
-          '&loading=async&callback=ajobzioMapsReady&region=IN&language=en';
-        script.async = true;
-        script.onerror = reject;
-        document.head.append(script);
-      });
-      return google.maps.importLibrary('maps');
-    })().catch((error) => {
-      mapsLoading = null;
-      throw error;
-    });
-  }
-  return mapsLoading;
+async function loadMaps() {
+  const maps = await loadGoogleMaps(backend.mapsKey);
+  return maps.importLibrary('maps');
 }
 
 export function createMapPicker() {
@@ -108,10 +90,9 @@ export function createMapPicker() {
     confirmBtn.textContent = 'Checking…';
     setStatus('', '');
     try {
-      const response = await fetch('/api/places/reverse?lat=' + pin.lat.toFixed(6) + '&lng=' + pin.lng.toFixed(6));
-      const result = await response.json();
+      const result = await backend.reversePlace(pin.lat, pin.lng);
       if (!dialog.open || target !== pickFor) return;
-      if (response.ok && result.ok && result.allowed) {
+      if (result.ok && result.allowed) {
         pickFor.onPick(result, pin);
         dialog.close();
         return;

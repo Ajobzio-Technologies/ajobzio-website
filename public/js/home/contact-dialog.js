@@ -1,6 +1,19 @@
-/* Last step of a quote: shows the summary, asks for contact details and sends it to /api/quote.
-   getRows() returns the summary rows; getPlaces() the checked places. */
+/* Last step of a quote: shows the summary, asks for contact details and sends it through the backend,
+   or hands the same quote to WhatsApp. getRows() returns the summary rows; getPlaces() the checked places. */
+import backend from '../backend/index.js';
+import { config } from '../lib/config.js';
+
 const PHONE = /^\+?[0-9\s-]{10,15}$/;
+
+/* The quote as a ready-to-send WhatsApp message. */
+function whatsappLink(rows, name, phone) {
+  const lines = ['Hi Ajobzio, I\'d like a quote.', ''];
+  if (name) lines.push('Name: ' + name);
+  if (phone) lines.push('Phone: ' + phone);
+  if (name || phone) lines.push('');
+  rows.forEach(([label, value]) => lines.push(label + ': ' + value));
+  return 'https://wa.me/' + config.phone + '?text=' + encodeURIComponent(lines.join('\n'));
+}
 
 export function createContactDialog({ getRows, getPlaces }) {
   const $ = (id) => document.getElementById(id);
@@ -68,13 +81,8 @@ export function createContactDialog({ getRows, getPlaces }) {
     submitBtn.textContent = 'Sending…';
     setStatus('', '');
     try {
-      const response = await fetch('/api/quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, email, details: getRows(), places: getPlaces(), website: websiteInput.value })
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.ok) throw new Error(result.error || '');
+      const result = await backend.submitQuote({ name, phone, email, details: getRows(), places: getPlaces(), website: websiteInput.value });
+      if (!result.ok) throw new Error(result.error || '');
       setStatus('Thanks, ' + name + '! Your quote request has been sent. We\'ll contact you shortly.', 'done');
       submitBtn.hidden = true;
       cancelBtn.textContent = 'Close';
@@ -88,6 +96,9 @@ export function createContactDialog({ getRows, getPlaces }) {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Confirm Quote';
     }
+  });
+  $('contactWhatsapp').addEventListener('click', () => {
+    window.open(whatsappLink(getRows(), nameInput.value.trim(), phoneInput.value.trim()), '_blank', 'noopener');
   });
   cancelBtn.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (event) => {

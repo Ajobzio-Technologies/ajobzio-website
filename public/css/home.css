@@ -420,6 +420,25 @@
 .contact-actions .compare { height: 44px; }
 .contact-status { margin-top: 12px; }
 .contact-status.done { background: var(--mint); color: var(--green); }
+.contact-whatsapp {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #CDEFD9;
+  border-radius: 12px;
+  padding: 11px 12px;
+  background: #F2FBF5;
+  color: #128C4A;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.contact-whatsapp:hover { background: #E6F8EC; }
+.contact-whatsapp svg { color: #25D366; }
 .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0; }
 .field {
   border: 1px solid #E4ECEA;

@@ -150,6 +150,7 @@ export function createQuoteForm({ onSubmit }) {
     return inputs.map(([label, input]) => ({
       label,
       placeId: input.dataset.placeId,
+      district: input.dataset.district,
       ...(input.dataset.lat ? { lat: Number(input.dataset.lat), lng: Number(input.dataset.lng) } : {})
     }));
   }

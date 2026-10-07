@@ -21,4 +21,4 @@ function basic(req, res, next) {
   res.render('pages/basic', { title });
 }
 
-module.exports = { home, track, basic };
+module.exports = { BASIC_PAGES, home, track, basic };

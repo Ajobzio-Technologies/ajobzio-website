@@ -1,4 +1,4 @@
-/* Place suggestions under a text input, from Google Places through /api/places (the key stays on the server).
+/* Place suggestions under a text input, from Google Places (through the backend module).
    A picked suggestion is checked to be in a served district before it counts:
    the input then carries data-place-id (and data-lat/lng when set on the map).
 
@@ -6,6 +6,8 @@
    options.onChange()          after the input's place is set or cleared
    options.pickOnMap(input, pin, onPick)  adds a "Choose on map" button
    options.onPick(result)      takes over a verified pick instead of storing it (the map's own search) */
+import backend from '../backend/index.js';
+
 const SEARCH_DELAY_MS = 250;
 const MIN_QUERY = 3;
 const MAP_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
@@ -39,9 +41,11 @@ export function attachPlaces(input, options) {
   /* Groups the keystrokes and the final pick into one billed Google session. */
   let sessionToken = newSessionToken();
 
-  function setPlace(placeId, pin) {
+  function setPlace(placeId, pin, district) {
     if (placeId) input.dataset.placeId = placeId;
     else delete input.dataset.placeId;
+    if (district) input.dataset.district = district;
+    else delete input.dataset.district;
     if (pin) {
       input.dataset.lat = pin.lat;
       input.dataset.lng = pin.lng;
@@ -76,7 +80,7 @@ export function attachPlaces(input, options) {
       const current = input.dataset.lat ? { lat: Number(input.dataset.lat), lng: Number(input.dataset.lng) } : null;
       options.pickOnMap(input, current, (result, pin) => {
         fillInput(result.text);
-        setPlace(result.placeId, pin);
+        setPlace(result.placeId, pin, result.district);
         report('');
       });
     });
@@ -134,14 +138,12 @@ export function attachPlaces(input, options) {
     const token = sessionToken;
     sessionToken = newSessionToken();
     try {
-      const response = await fetch('/api/places/verify?placeId=' + encodeURIComponent(place.placeId) +
-        '&sessionToken=' + encodeURIComponent(token));
-      const result = await response.json();
+      const result = await backend.verifyPlace(place.placeId, token);
       if (input.value !== place.text) return;
-      if (response.ok && result.ok && result.allowed) {
+      if (result.ok && result.allowed) {
         report('');
         if (options.onPick) options.onPick(result);
-        else setPlace(place.placeId);
+        else setPlace(place.placeId, null, result.district);
         return;
       }
       input.value = '';
@@ -158,11 +160,9 @@ export function attachPlaces(input, options) {
     if (controller) controller.abort();
     controller = new AbortController();
     try {
-      const response = await fetch('/api/places/autocomplete?input=' + encodeURIComponent(query) +
-        '&sessionToken=' + encodeURIComponent(sessionToken), { signal: controller.signal });
-      const result = await response.json();
+      const result = await backend.autocomplete(query, sessionToken, controller.signal);
       if (input.value.trim() !== query || document.activeElement !== input) return;
-      places = response.ok && result.ok ? result.places : [];
+      places = result.ok ? result.places : [];
       render();
     } catch (error) {
       if (error.name === 'AbortError') return;

@@ -1,5 +1,7 @@
 /* Hero backgrounds: every image in images/hero/<set>, crossfading every 10 seconds.
    No file names live in the code; the first image to load fades in first. */
+import backend from '../backend/index.js';
+
 const SETS = [
   { selector: '.hero-bg-parcel', imageVar: '--parcel-img', set: 'parcel-delivery' },
   { selector: '.hero-bg-service', imageVar: '--svc-img', set: 'local-services' }
@@ -13,9 +15,8 @@ function rotateSet({ selector, imageVar, set }) {
   const banners = [];
   let current = 0;
 
-  fetch('/api/hero-images?set=' + set)
-    .then((response) => response.json())
-    .then(({ images = [] }) => {
+  backend.heroImages(set)
+    .then((images) => {
       images.forEach((src) => {
         /* Only join the rotation once loaded, so a crossfade never reveals a blank banner. */
         const img = new Image();

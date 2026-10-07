@@ -10,6 +10,7 @@
 <% (locals.styles || []).forEach((href) => { -%>
   <link rel="stylesheet" href="<%= href %>">
 <% }) -%>
+  <script>window.AJOBZIO_CONFIG = <%- JSON.stringify(clientConfig).replace(/</g, '\\u003c') %>;</script>
   <script type="module" src="/js/site.js"></script>
 <% (locals.scripts || []).forEach((src) => { -%>
   <script type="module" src="<%= src %>"></script>
