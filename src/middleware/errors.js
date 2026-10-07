@@ -17,7 +17,7 @@ function errorHandler(error, req, res, next) {
   if (res.headersSent) return next(error);
   const status = error.status || 500;
   const logged = error.cause || (status >= 500 ? error : null);
-  if (logged) console.error(req.method + ' ' + req.path + ' failed:', logged.message);
+  if (logged) console.error(req.method + ' ' + req.baseUrl + req.path + ' failed:', logged.message);
   const message = error.status ? error.message : 'Something went wrong. Please try again.';
   if (isApi(req)) return res.status(status).json({ ok: false, error: message });
   res.status(status).type('text').send(message);
