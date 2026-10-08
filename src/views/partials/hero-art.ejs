@@ -1,0 +1,22 @@
+<%#
+  Hero illustration for the info pages: orbit lines, a soft glow, a centrepiece and floating tiles.
+  centre: name of a partial in partials/art/ (shield, chat-headset, brand, rocket).
+  tiles: [{ cls: 'tile-user', icon: 'mail', size: 22 }, …]; cls also sets each tile's position and colour.
+-%>
+<div class="legal-art" aria-hidden="true">
+  <svg class="legal-orbits" viewBox="0 0 400 300" fill="none">
+    <ellipse cx="200" cy="150" rx="185" ry="70" transform="rotate(-14 200 150)" stroke="url(#orbitA)" stroke-width="2"/>
+    <ellipse cx="200" cy="150" rx="165" ry="95" transform="rotate(18 200 150)" stroke="url(#orbitB)" stroke-width="1.6"/>
+    <circle cx="40" cy="190" r="5" fill="#2BC4A0"/><circle cx="356" cy="88" r="5" fill="#2BC4A0"/><circle cx="336" cy="122" r="4" fill="#1666D8"/>
+    <defs>
+      <linearGradient id="orbitA" x1="0" x2="1"><stop offset="0" stop-color="#2BC4A0"/><stop offset="1" stop-color="#2BC4A0" stop-opacity="0.15"/></linearGradient>
+      <linearGradient id="orbitB" x1="1" x2="0"><stop offset="0" stop-color="#1666D8" stop-opacity="0.7"/><stop offset="1" stop-color="#1666D8" stop-opacity="0.1"/></linearGradient>
+    </defs>
+  </svg>
+  <div class="legal-glow"></div>
+  <%- include('art/' + centre) %>
+<% tiles.forEach((tile) => { -%>
+  <span class="legal-tile <%= tile.cls %>"><%- icon(tile.icon, tile.size || 22) %></span>
+<% }) -%>
+  <span class="legal-bubble"></span>
+</div>

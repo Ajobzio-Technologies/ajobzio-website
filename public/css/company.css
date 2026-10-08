@@ -1,0 +1,104 @@
+/* About and Careers pages. Builds on legal.css (hero, tones, value tiles) and support.css (sections, buttons, CTA). */
+
+/* Hero centrepieces */
+.art-brand { width: 150px; }
+.art-rocket { width: 160px; }
+
+/* Our story: text with a mission callout */
+.info-story { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+.info-story p { margin-top: 12px; color: #4E6A6F; font-size: 15px; line-height: 1.75; }
+.info-mission {
+  margin: 0;
+  padding: 26px;
+  border-radius: 18px;
+  background: linear-gradient(140deg, var(--ink), #0E4652);
+  color: #fff;
+}
+.info-mission span {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #7FE3CB;
+}
+.info-mission small {
+  display: block;
+  margin-top: 16px;
+  color: #FFB45C;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.info-mission p { margin-top: 6px; color: #fff; font-size: 22px; font-weight: 700; line-height: 1.35; letter-spacing: -0.01em; }
+
+/* Two offer cards (What we do, Partner with us) */
+.info-offers { margin-top: 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.info-ticks { list-style: none; margin-top: 14px; display: grid; gap: 8px; width: 100%; }
+.info-ticks li { display: flex; align-items: flex-start; gap: 8px; color: #26494F; font-size: 14px; line-height: 1.5; }
+.info-ticks svg { flex: none; margin-top: 2px; color: #10A88B; }
+
+/* How it works */
+.info-steps { list-style: none; margin-top: 18px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.info-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid #E7EFED;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 14px 32px rgba(8, 45, 54, 0.05);
+}
+.info-steps span {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--tone-bg);
+  color: var(--tone);
+  font-size: 18px;
+  font-weight: 700;
+}
+.info-steps b { display: block; color: var(--ink); font-size: 15.5px; font-weight: 600; }
+.info-steps p { margin-top: 4px; color: #4E6A6F; font-size: 14px; line-height: 1.6; }
+
+/* Careers: hiring status */
+.info-status {
+  display: grid;
+  grid-template-columns: 60px minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: center;
+  padding: 28px 30px;
+  border: 1px solid #F3DDB8;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #FFF8EC, #fff);
+  box-shadow: 0 14px 32px rgba(8, 45, 54, 0.05);
+}
+.info-status-icon {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: #FFEBCF;
+  color: #C4842A;
+}
+.info-status h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.info-status p { margin-top: 6px; color: #4E6A6F; font-size: 14.5px; line-height: 1.65; }
+
+/* Value tiles: links inside them */
+.legal-rights p a { color: var(--blue); font-weight: 600; }
+
+@media (max-width: 980px) {
+  .info-story, .info-offers, .info-steps { grid-template-columns: 1fr; }
+  .info-status { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .info-mission p { font-size: 19px; }
+  .info-status { padding: 22px 18px; text-align: left; }
+}

@@ -1,0 +1,175 @@
+<%
+  /* Line icons (24×24, stroke) for the contents list and cards. */
+  const SECTIONS = [
+    ['summary', 'Summary', 'summary'],
+    ['who-we-are', 'Who we are', 'building'],
+    ['data-we-collect', 'Data we collect', 'database'],
+    ['how-we-use', 'How we use your data', 'gear'],
+    ['sharing', 'Who we share it with', 'users'],
+    ['cookies', 'Cookies', 'cookie'],
+    ['retention', 'How long we keep it', 'clock'],
+    ['security', 'Security', 'shield'],
+    ['your-rights', 'Your rights', 'user'],
+    ['children', 'Children', 'child'],
+    ['changes', 'Changes to this policy', 'file'],
+    ['contact', 'Contact & grievances', 'mail']
+  ];
+  const served = districts.slice(0, -1).join(', ') + ' and ' + districts[districts.length - 1];
+  let n = 0;
+  /* Opens a numbered section card. */
+  const card = (id, title, lead) => {
+    n += 1;
+    return '<section id="' + id + '" class="legal-card"><span class="legal-num tone-' + ((n - 1) % 6) + '">' + n + '</span><div class="legal-card-body"><h2>' + title + '</h2>' + (lead ? '<p class="legal-lead">' + lead + '</p>' : '');
+  };
+  const end = '</div></section>';
+-%>
+<%- include('../partials/head', { styles: ['/css/legal.css'], scripts: ['/js/pages/legal.js'] }) %>
+
+  <main class="legal-page">
+    <div class="legal-hero">
+      <div class="legal-hero-copy">
+        <div class="legal-pill"><%- icon('lock', 14) %> Your privacy matters</div>
+        <h1>Privacy Policy</h1>
+        <p>How Ajobzio collects, uses and protects your personal data when you use our website to request a parcel delivery or a local service.</p>
+        <p class="legal-date"><span>Effective: <%= effectiveDate %></span><i></i><span>Last updated: <%= effectiveDate %></span></p>
+      </div>
+      <%- include('../partials/hero-art', {
+        centre: 'shield',
+        tiles: [{ cls: 'tile-user', icon: 'user' }, { cls: 'tile-doc', icon: 'summary' }, { cls: 'tile-gear', icon: 'gear', size: 16 }, { cls: 'tile-pin', icon: 'pinSolid' }]
+      }) %>
+    </div>
+
+    <div class="legal-layout">
+      <nav class="legal-toc" aria-label="On this page">
+        <b>On this page</b>
+<% SECTIONS.forEach(([id, label, key], i) => { -%>
+        <a href="#<%= id %>"<%- i === 0 ? ' class="is-active"' : '' %>><%- icon(key, 18) %><span><%= label %></span></a>
+<% }) -%>
+      </nav>
+
+      <article class="legal-body">
+        <section id="summary" class="legal-card legal-summary">
+          <span class="legal-summary-icon"><svg width="56" height="64" viewBox="0 0 56 64" aria-hidden="true"><path d="M28 2 54 12v20c0 16-11 26-26 31C13 58 2 48 2 32V12Z" fill="#9BE4CF"/><path d="M28 9 47 16v16c0 12-8 20-19 24C17 52 9 44 9 32V16Z" fill="#0E9B86"/><path d="m19 32 6 6 12-13" stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="legal-card-body">
+            <div class="legal-summary-head">
+              <div>
+                <h2>Summary</h2>
+                <p class="legal-lead">A quick overview of how we handle your personal data.</p>
+              </div>
+              <span class="legal-badge"><%- icon('check', 14) %> Key points</span>
+            </div>
+            <ul class="legal-checks">
+              <li><%- icon('check', 16) %>We only ask for what we need to give you a quote: your contact details and the job details.</li>
+              <li><%- icon('check', 16) %>You don’t need an account, and we never sell your data or use it for advertising.</li>
+              <li><%- icon('check', 16) %>We share your details only with the partner handling your request and the services that run this website.</li>
+              <li><%- icon('check', 16) %>We don’t use tracking or advertising cookies.</li>
+              <li><%- icon('check', 16) %>We keep your data secure, and only for as long as we need it.</li>
+              <li><%- icon('check', 16) %>You can ask us to see, correct or delete your data at any time.</li>
+            </ul>
+          </div>
+        </section>
+
+        <%- card('who-we-are', 'Who we are') %>
+          <p>Ajobzio (“Ajobzio”, “we”, “us” or “our”) runs <a href="/">ajobzio.com</a>, a platform for requesting parcel deliveries and local services in <%= served %> in <%= state %>, India. We connect customers with delivery partners and local service providers.</p>
+          <p>This policy explains how we collect, use, share and protect your personal data in line with India’s Digital Personal Data Protection Act, 2023 (the “DPDP Act”). For that law, we are the data fiduciary for the data described here.</p>
+        <%- end %>
+
+        <%- card('data-we-collect', 'Data we collect', 'We collect only the information needed to give you a quote and deliver the service. This includes:') %>
+          <div class="legal-split">
+            <div class="legal-subcard">
+              <span class="legal-subicon tone-green"><%- icon('user', 20) %></span>
+              <div>
+                <h3>Information you give us</h3>
+                <ul>
+                  <li><b>Contact details</b> – name, phone number and, if you choose, email address</li>
+                  <li><b>Request details</b> – pickup and delivery locations or service area, and the spot you mark on the map</li>
+                  <li><b>Parcel and service details</b> – parcel type, weight, quantity and box sizes, the service you need and preferred dates</li>
+                  <li><b>Order lookups</b> – the order ID you enter on Track order</li>
+                  <li><b>Messages</b> – anything you send us by email, WhatsApp or phone</li>
+                </ul>
+              </div>
+            </div>
+            <div class="legal-subcard">
+              <span class="legal-subicon tone-blue"><%- icon('database', 20) %></span>
+              <div>
+                <h3>Information collected automatically</h3>
+                <ul>
+                  <li><b>Technical data</b> – IP address, browser type and the pages you request, used to run the site and block abuse</li>
+                  <li><b>Current location</b> – only if you tap “Use my current location” and allow it; used to centre the map and not saved</li>
+                  <li><b>No tracking</b> – we don’t use analytics or advertising cookies</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="legal-note"><%- icon('shield', 16) %> We don’t ask for financial details, government ID numbers or health data. Please don’t include them in your request.</p>
+        <%- end %>
+
+        <%- card('how-we-use', 'How we use your data', 'With your consent, and only for the purpose you gave it, we use your data to:') %>
+          <ul class="legal-dots">
+            <li>check that your locations are inside the areas we serve</li>
+            <li>prepare your quote and contact you about it by phone, WhatsApp or email</li>
+            <li>arrange the delivery or service with the partner or provider you choose</li>
+            <li>answer your questions and support requests</li>
+            <li>keep the website secure and prevent spam and misuse</li>
+            <li>meet our legal obligations</li>
+          </ul>
+          <p>We don’t sell your personal data, and we don’t use it for third-party advertising.</p>
+        <%- end %>
+
+        <%- card('sharing', 'Who we share it with', 'We share personal data only as needed to handle your request:') %>
+          <ul class="legal-dots">
+            <li><b>Delivery partners and service providers</b> – the partner handling your request receives the contact and job details they need. You only share contact details with the provider you choose.</li>
+            <li><b>Google Maps Platform</b> – what you type in a location field and the spot you mark on the map, to suggest places and check addresses (see the <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>).</li>
+            <li><b>Hosting and email providers</b> – our website runs on Amazon Web Services, which also delivers quote requests to our team by email. They process data only on our instructions.</li>
+            <li><b>WhatsApp</b> – if you contact us or send a quote on WhatsApp, under <a href="https://www.whatsapp.com/legal/privacy-policy" target="_blank" rel="noopener">WhatsApp’s privacy policy</a>.</li>
+            <li><b>Authorities</b> – when required by law or a court order, or to protect the safety of customers, partners or the public.</li>
+          </ul>
+          <p>Some providers may process data outside India; we rely on them to protect it to the standard Indian law requires.</p>
+        <%- end %>
+
+        <%- card('cookies', 'Cookies') %>
+          <p>Ajobzio does not set advertising or tracking cookies, and we don’t use analytics that follow you across websites.</p>
+          <p>When you open the map, Google Maps may set its own cookies or similar storage to make the map work, and our pages load fonts from Google Fonts, which receives your IP address to deliver them. You can block or delete cookies in your browser; the site keeps working, although the map may not.</p>
+        <%- end %>
+
+        <%- card('retention', 'How long we keep it') %>
+          <p>We keep quote requests and related messages only as long as we need them to handle your request, provide support and keep proper business records — normally no longer than 24 months — unless the law requires longer. Technical data used to prevent abuse is held only briefly. When data is no longer needed, we delete or anonymise it.</p>
+        <%- end %>
+
+        <%- card('security', 'Security') %>
+          <p>We protect your data with encrypted connections (HTTPS), restricted access for our team, and by keeping service keys on our servers rather than in the website. No method of transmission or storage is completely secure, but we work to protect your information and will notify you and the authorities of a personal data breach where the law requires.</p>
+        <%- end %>
+
+        <%- card('your-rights', 'Your rights', 'Under the DPDP Act, you can:') %>
+          <div class="legal-rights">
+            <div><span class="tone-blue"><%- icon('eye', 18) %></span><b>Access</b><p>Get a summary of the data we hold about you and how we use it.</p></div>
+            <div><span class="tone-green"><%- icon('edit', 18) %></span><b>Correct</b><p>Fix data that is inaccurate or incomplete.</p></div>
+            <div><span class="tone-rose"><%- icon('trash', 18) %></span><b>Erase</b><p>Have your data deleted once it’s no longer needed.</p></div>
+            <div><span class="tone-orange"><%- icon('undo', 18) %></span><b>Withdraw consent</b><p>At any time, as easily as you gave it.</p></div>
+            <div><span class="tone-purple"><%- icon('flag', 18) %></span><b>Raise a grievance</b><p>With us, and then the Data Protection Board of India.</p></div>
+            <div><span class="tone-teal"><%- icon('heart', 18) %></span><b>Nominate</b><p>Someone to act for you in case of death or incapacity.</p></div>
+          </div>
+          <p>To use any of these rights, contact us using the details below. We may ask you to confirm your identity first.</p>
+        <%- end %>
+
+        <%- card('children', 'Children') %>
+          <p>Our services are meant for adults. We don’t knowingly collect personal data from anyone under 18. If you believe a child has given us their data, contact us and we’ll delete it.</p>
+        <%- end %>
+
+        <%- card('changes', 'Changes to this policy') %>
+          <p>We may update this policy when our services or the law change. We’ll post the new version here and update the dates at the top, and make significant changes clear on the website.</p>
+        <%- end %>
+
+        <%- card('contact', 'Contact & grievances', 'For questions, to use your rights or to raise a complaint, contact our grievance team:') %>
+          <div class="legal-contact">
+            <a href="mailto:<%= site.supportEmail %>?subject=Privacy%20request"><span class="tone-blue"><%- icon('mail', 20) %></span><small>Email</small><b><%= site.supportEmail %></b></a>
+            <a href="tel:+<%= site.phone %>"><span class="tone-green"><%- icon('phone', 20) %></span><small>Phone / WhatsApp</small><b><%= site.phoneDisplay %></b></a>
+            <div><span class="tone-orange"><%- icon('clock', 20) %></span><small>Hours</small><b>Daily, 8am–8pm IST</b></div>
+          </div>
+          <p>We aim to acknowledge requests within 48 hours and resolve them within 30 days.</p>
+        <%- end %>
+      </article>
+    </div>
+  </main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,113 @@
+<%
+  const served = districts.slice(0, -1).join(', ') + ' and ' + districts[districts.length - 1];
+-%>
+<%- include('../partials/head', { styles: ['/css/legal.css', '/css/support.css', '/css/company.css'] }) %>
+
+  <main class="legal-page support-page">
+    <div class="legal-hero">
+      <div class="legal-hero-copy">
+        <div class="legal-pill"><%- icon('building', 14) %> About Ajobzio</div>
+        <h1>Local help, made simple.</h1>
+        <p>Ajobzio is a Kerala-based platform that makes it easy to send parcels and book trusted local services — with clear prices, checked providers and no account needed.</p>
+        <div class="support-hero-actions">
+          <a class="support-btn is-blue" href="/#hero"><%- icon('quote', 18) %> Get a quote</a>
+          <a class="support-btn is-ghost" href="/support"><%- icon('headset', 18) %> Talk to us</a>
+        </div>
+      </div>
+      <%- include('../partials/hero-art', {
+        centre: 'brand',
+        tiles: [{ cls: 'tile-user', icon: 'truck' }, { cls: 'tile-doc', icon: 'wrench' }, { cls: 'tile-gear', icon: 'sparkle', size: 16 }, { cls: 'tile-pin', icon: 'pinSolid' }]
+      }) %>
+    </div>
+
+    <div class="support-wrap">
+      <section class="support-section support-card info-story" id="story">
+        <div>
+          <h2>Our story</h2>
+          <p>Sending a parcel across town or finding a reliable plumber shouldn’t mean a dozen phone calls and guesswork on price. Yet for most people, that’s still how it works.</p>
+          <p>Ajobzio brings local delivery partners and service providers together in one place. Tell us what you need, compare clear options and book with confidence — whether it’s an urgent document, a sofa that needs moving, or a leaking tap.</p>
+          <p>We started in <%= state %>, where we know the roads, the towns and the people, and we’re growing one district at a time.</p>
+        </div>
+        <blockquote class="info-mission">
+          <span><%- icon('compass', 22) %></span>
+          <small>Our mission</small>
+          <p>Make everyday local help as easy as sending a message.</p>
+        </blockquote>
+      </section>
+
+      <section class="support-section" id="what-we-do">
+        <h2>What we do</h2>
+        <p class="legal-lead">Two simple ways to get things done, both from the same quote form.</p>
+        <div class="info-offers">
+          <article class="support-channel">
+            <span class="support-icon tone-blue"><%- icon('box', 22) %></span>
+            <h3>Parcel delivery</h3>
+            <p>From documents and gifts to groceries and furniture. Choose a 2, 3 or 4 wheeler and we’ll suggest the right size for your parcel, with the price shown up front.</p>
+            <ul class="info-ticks">
+              <li><%- icon('check', 16) %>Same-day, scheduled and economy options</li>
+              <li><%- icon('check', 16) %>Vehicle matched to your parcel’s size and weight</li>
+              <li><%- icon('check', 16) %>Pickup and drop pinned exactly on the map</li>
+            </ul>
+            <a class="support-btn is-blue" href="/#parcel-delivery">Send a parcel <%- icon('arrow', 16) %></a>
+          </article>
+          <article class="support-channel">
+            <span class="support-badge">Launching soon</span>
+            <span class="support-icon tone-green"><%- icon('wrench', 22) %></span>
+            <h3>Local services</h3>
+            <p>Trusted local professionals for the jobs around your home — booked for a time that suits you, with clear prices before you commit.</p>
+            <ul class="info-ticks">
+              <li><%- icon('check', 16) %>Cleaning, repairs and moving help</li>
+              <li><%- icon('check', 16) %>Errands and furniture assembly</li>
+              <li><%- icon('check', 16) %>Preferred date with a backup day</li>
+            </ul>
+            <a class="support-btn is-ghost" href="/#local-services">Explore services <%- icon('arrow', 16) %></a>
+          </article>
+        </div>
+      </section>
+
+      <section class="support-section" id="how-it-works">
+        <h2>How it works</h2>
+        <ol class="info-steps">
+          <li><span class="tone-blue">1</span><div><b>Tell us what you need</b><p>Enter two locations and your parcel details, or describe the local service you’re looking for.</p></div></li>
+          <li><span class="tone-orange">2</span><div><b>Compare trusted options</b><p>See availability and straightforward prices side by side.</p></div></li>
+          <li><span class="tone-green">3</span><div><b>Choose and get it done</b><p>Book directly with your provider and track the delivery — no account needed.</p></div></li>
+        </ol>
+      </section>
+
+      <section class="support-section support-card" id="values">
+        <h2>What we stand for</h2>
+        <p class="legal-lead">The promises behind every booking.</p>
+        <div class="legal-rights">
+          <div><span class="tone-blue"><%- icon('tag', 18) %></span><b>Clear pricing</b><p>You see the full price before you book. No surprises at the door.</p></div>
+          <div><span class="tone-green"><%- icon('shieldCheck', 18) %></span><b>Checked providers</b><p>Providers confirm their identity, contact details and right to work.</p></div>
+          <div><span class="tone-orange"><%- icon('user', 18) %></span><b>No account needed</b><p>Get a quote in minutes without signing up for anything.</p></div>
+          <div><span class="tone-purple"><%- icon('lock', 18) %></span><b>Privacy first</b><p>We share your details only with the provider you choose. <a href="/privacy-policy">Read our policy</a>.</p></div>
+          <div><span class="tone-teal"><%- icon('pin', 18) %></span><b>Local first</b><p>Built for <%= state %>, working with partners who know your area.</p></div>
+          <div><span class="tone-rose"><%- icon('headset', 18) %></span><b>Real support</b><p>A real team on WhatsApp, phone and email, every day 8am–8pm.</p></div>
+        </div>
+      </section>
+
+      <section class="support-section support-card" id="where">
+        <h2>Where we operate</h2>
+        <p class="legal-lead">Today we serve <%= served %> in <%= state %> — with more districts coming soon.</p>
+        <ul class="support-areas">
+<% districts.forEach((district) => { -%>
+          <li><%- icon('pin', 15) %><%= district %></li>
+<% }) -%>
+        </ul>
+      </section>
+
+      <section class="support-cta">
+        <div>
+          <h2>Ready when you are</h2>
+          <p>Get a clear quote in minutes, or ask our team anything.</p>
+        </div>
+        <div class="support-hero-actions">
+          <a class="support-btn is-blue" href="/#hero"><%- icon('quote', 18) %> Get a quote</a>
+          <a class="support-btn is-light" href="/support"><%- icon('headset', 18) %> Contact us</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+<%- include('../partials/footer') %>

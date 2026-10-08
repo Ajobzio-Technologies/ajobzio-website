@@ -502,7 +502,7 @@
   color: var(--nav);
 }
 .when-btn svg { flex: none; transition: transform 0.15s ease; }
-.when-field, .date-field { position: relative; }
+.when-field, .date-field { position: relative; cursor: pointer; }
 .when-field.open, .date-field.open {
   border-color: #1666D8;
   box-shadow: 0 0 0 3px rgba(22, 102, 216, 0.12);
@@ -1549,6 +1549,11 @@
   transition: background 0.2s ease;
 }
 .cta-popular button:hover { background: #EAF9F3; }
+/* Phones: bigger chips so they're easy to tap, and the FAQ help card uses the full width. */
+@media (max-width: 760px) {
+  .cta-popular button { padding: 9px 14px; font-size: 12.5px; }
+  .faq-help { max-width: none; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .hero-bg,

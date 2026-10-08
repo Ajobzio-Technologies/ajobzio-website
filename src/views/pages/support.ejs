@@ -1,0 +1,135 @@
+<%
+  const waLink = 'https://wa.me/' + site.phone + '?text=' + encodeURIComponent('Hi Ajobzio, I need help with ');
+  const FAQS = [
+    ['How do I track my order?', 'Open <a href="/track">Track order</a> and enter the order ID from your booking confirmation. If it doesn’t show up, message us with the ID and we’ll check it for you.'],
+    ['Do I need an account to get a quote?', 'No. Enter your route or service details and compare available providers straight away. You only share contact details with the provider you choose.'],
+    ['What if my plans change?', 'Contact your provider as early as you can to reschedule or cancel. If something goes wrong, our support team can help sort it out.'],
+    ['Something went wrong with my delivery or service. What now?', 'Contact us as soon as possible with your order ID, what happened and photos if anything is damaged. We’ll work with the provider to put it right.'],
+    ['What can I send with Ajobzio?', 'Documents, parcels, gifts, groceries and bulky items, from a small envelope to furniture. Illegal, hazardous or perishable items that need special handling can’t be sent.'],
+    ['When and how do I pay?', 'You see the full price before you book. Pay the provider directly once your booking is confirmed, using the payment options they accept.'],
+    ['Is my parcel protected?', 'Eligible deliveries include basic protection from pickup to handoff. For higher-value items, ask your provider about extra cover before you book.'],
+    ['Do you serve my area?', 'Right now we serve ' + districts.slice(0, -1).join(', ') + ' and ' + districts[districts.length - 1] + ' in ' + state + ', with more districts coming soon. The quote form checks your location for you.']
+  ];
+-%>
+<%- include('../partials/head', { styles: ['/css/legal.css', '/css/support.css'], scripts: ['/js/pages/support.js'] }) %>
+
+  <main class="legal-page support-page">
+    <div class="legal-hero">
+      <div class="legal-hero-copy">
+        <div class="legal-pill"><%- icon('headset', 14) %> Support</div>
+        <h1>How can we help?</h1>
+        <p>Questions about a quote, a delivery or a local service? Our team is here every day to help — reach us on WhatsApp, by phone or by email.</p>
+        <p class="support-status" id="supportStatus"><i></i><span>Daily, 8am–8pm IST</span></p>
+        <div class="support-hero-actions">
+          <a class="support-btn is-whatsapp" href="<%= waLink %>" target="_blank" rel="noopener"><%- icon('whatsapp', 22) %> Chat on WhatsApp</a>
+          <a class="support-btn is-ghost" href="tel:+<%= site.phone %>"><%- icon('phone', 18) %> <%= site.phoneDisplay %></a>
+        </div>
+      </div>
+      <%- include('../partials/hero-art', {
+        centre: 'chat-headset',
+        tiles: [{ cls: 'tile-user support-tile-wa', icon: 'whatsapp' }, { cls: 'tile-doc', icon: 'mail' }, { cls: 'tile-gear', icon: 'clock', size: 16 }, { cls: 'tile-pin', icon: 'phone' }]
+      }) %>
+    </div>
+
+    <div class="support-wrap">
+      <section class="support-section" id="contact">
+        <h2>Contact us</h2>
+        <p class="legal-lead">Pick whatever is easiest for you. WhatsApp is usually the quickest.</p>
+        <div class="support-channels">
+          <article class="support-channel is-featured">
+            <span class="support-badge">Fastest</span>
+            <span class="support-icon tone-wa"><%- icon('whatsapp', 22) %></span>
+            <h3>WhatsApp</h3>
+            <b><%= site.phoneDisplay %></b>
+            <p>Chat with our team and share photos or your order ID.</p>
+            <small><%- icon('clock', 14) %> Replies within minutes, 8am–8pm</small>
+            <a class="support-btn is-whatsapp" href="<%= waLink %>" target="_blank" rel="noopener">Start a chat <%- icon('arrow', 16) %></a>
+          </article>
+          <article class="support-channel">
+            <span class="support-icon tone-blue"><%- icon('phone', 22) %></span>
+            <h3>Call us</h3>
+            <b><%= site.phoneDisplay %></b>
+            <p>Talk to us directly about a booking that needs attention.</p>
+            <small><%- icon('clock', 14) %> Daily, 8am–8pm IST</small>
+            <a class="support-btn is-blue" href="tel:+<%= site.phone %>">Call now <%- icon('arrow', 16) %></a>
+          </article>
+          <article class="support-channel">
+            <span class="support-icon tone-orange"><%- icon('mail', 22) %></span>
+            <h3>Email</h3>
+            <b><%= site.supportEmail %></b>
+            <p>Best for detailed questions, documents and anything that isn’t urgent.</p>
+            <small><%- icon('clock', 14) %> Reply within 24 hours</small>
+            <a class="support-btn is-ghost" href="mailto:<%= site.supportEmail %>?subject=Support%20request">Send an email <%- icon('arrow', 16) %></a>
+          </article>
+        </div>
+      </section>
+
+      <section class="support-section" id="quick-help">
+        <h2>Quick help</h2>
+        <p class="legal-lead">Get things done without waiting for a reply.</p>
+        <div class="support-links">
+          <a href="/track"><span class="tone-blue"><%- icon('box', 20) %></span><div><b>Track your order</b><small>See the latest status with your order ID</small></div><%- icon('arrow', 18) %></a>
+          <a href="/#hero"><span class="tone-green"><%- icon('quote', 20) %></span><div><b>Get a new quote</b><small>Parcel delivery or a local service</small></div><%- icon('arrow', 18) %></a>
+          <a href="mailto:<%= site.supportEmail %>?subject=Problem%20with%20my%20booking"><span class="tone-rose"><%- icon('alert', 20) %></span><div><b>Report a problem</b><small>Late, damaged or missing — tell us what happened</small></div><%- icon('arrow', 18) %></a>
+          <a href="/privacy-policy"><span class="tone-purple"><%- icon('lock', 20) %></span><div><b>Privacy &amp; your data</b><small>How we handle your information</small></div><%- icon('arrow', 18) %></a>
+        </div>
+      </section>
+
+      <div class="support-split">
+        <section class="support-section support-card" id="hours">
+          <h2>Hours &amp; response times</h2>
+          <ul class="support-table">
+            <li><span><%- icon('clock', 16) %> Support hours</span><b>Every day, 8am–8pm IST</b></li>
+            <li><span class="is-wa"><%- icon('whatsapp', 22) %> WhatsApp</span><b>Within minutes</b></li>
+            <li><span><%- icon('phone', 16) %> Phone</span><b>Answered live</b></li>
+            <li><span><%- icon('mail', 16) %> Email</span><b>Within 24 hours</b></li>
+          </ul>
+          <p class="support-small">Messages sent outside these hours are answered first thing the next morning.</p>
+        </section>
+        <section class="support-section support-card" id="areas">
+          <h2>Areas we serve</h2>
+          <p class="legal-lead"><%= districts.length %> districts across <%= state %>, with more coming soon.</p>
+          <ul class="support-areas">
+<% districts.forEach((district) => { -%>
+            <li><%- icon('pin', 15) %><%= district %></li>
+<% }) -%>
+          </ul>
+        </section>
+      </div>
+
+      <section class="support-section support-card support-tips" id="before-you-contact">
+        <h2>Help us help you faster</h2>
+        <p class="legal-lead">When you get in touch about a booking, please have these ready:</p>
+        <ul>
+          <li><span class="tone-blue"><%- icon('hash', 18) %></span><div><b>Your order ID</b><small>From your booking confirmation, like AJB-10234</small></div></li>
+          <li><span class="tone-green"><%- icon('phone', 18) %></span><div><b>The phone number you booked with</b><small>So we can find your request quickly</small></div></li>
+          <li><span class="tone-orange"><%- icon('camera', 18) %></span><div><b>Photos, if something is damaged</b><small>They help us resolve claims faster</small></div></li>
+        </ul>
+      </section>
+
+      <section class="support-section" id="faq">
+        <h2>Frequently asked questions</h2>
+        <div class="support-faq">
+<% FAQS.forEach(([question, answer], i) => { -%>
+          <details name="support-faq"<%- i === 0 ? ' open' : '' %>>
+            <summary><%= question %><span aria-hidden="true"></span></summary>
+            <p><%- answer %></p>
+          </details>
+<% }) -%>
+        </div>
+      </section>
+
+      <section class="support-cta">
+        <div>
+          <h2>Still need help?</h2>
+          <p>Our team is a message away, every day from 8am to 8pm.</p>
+        </div>
+        <div class="support-hero-actions">
+          <a class="support-btn is-whatsapp" href="<%= waLink %>" target="_blank" rel="noopener"><%- icon('whatsapp', 22) %> WhatsApp us</a>
+          <a class="support-btn is-light" href="mailto:<%= site.supportEmail %>?subject=Support%20request"><%- icon('mail', 18) %> Email us</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+<%- include('../partials/footer') %>

@@ -4,56 +4,56 @@
         <a class="brand" href="/" aria-label="Ajobzio">
           <img class="logo" src="/images/brand/logo.png" alt="Ajobzio">
         </a>
-        <p>Parcel delivery and local services, requested from one place.</p>
+        <p>Parcel delivery and local services across <%= state %>, requested from one place.</p>
         <div class="social">
           <a href="https://instagram.com" aria-label="Instagram">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="#fff" stroke="none"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
           </a>
           <a href="https://facebook.com" aria-label="Facebook">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M14 8h3V4h-3c-2.8 0-5 2.2-5 5v2H6v4h3v7h4v-7h3l1-4h-4V9c0-.6.4-1 1-1Z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-5 2.2-5 5v2H6v4h3v7h4v-7h3l1-4h-4V9c0-.6.4-1 1-1Z"/></svg>
           </a>
           <a href="https://linkedin.com" aria-label="LinkedIn">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v7M8 7h.01M12 17v-4.5a2.5 2.5 0 0 1 5 0V17"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v7M8 7h.01M12 17v-4.5a2.5 2.5 0 0 1 5 0V17"/></svg>
+          </a>
+          <a href="https://wa.me/<%= site.phone %>" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <%- icon('whatsapp', 16) %>
           </a>
         </div>
       </div>
-      <div class="cols">
-        <div>
-          <h2>Services</h2>
-          <a href="/">Parcel delivery</a>
-          <a href="/">Local services</a>
-          <a href="/">Home cleaning</a>
-          <a href="/">Repairs</a>
-        </div>
-        <div>
-          <h2>Company</h2>
-          <a href="/">About</a>
-          <a href="/careers">Careers</a>
-          <a href="/support">Support</a>
-          <a href="mailto:<%= site.supportEmail %>">Contact</a>
-        </div>
-        <div>
-          <h2>Legal</h2>
-          <a href="/privacy">Privacy</a>
-          <a href="/terms">Terms of use</a>
-          <a href="/privacy-policy">Privacy policy</a>
-          <a href="/support">Help center</a>
-        </div>
-      </div>
+
+      <nav class="foot-col" aria-label="Services">
+        <h2>Services</h2>
+        <a href="/#parcel-delivery">Parcel delivery</a>
+        <a href="/#local-services">Local services</a>
+        <a href="/#home-cleaning">Home cleaning</a>
+        <a href="/#repairs">Repairs</a>
+      </nav>
+
+      <nav class="foot-col" aria-label="Company">
+        <h2>Company</h2>
+        <a href="/about">About</a>
+        <a href="/careers">Careers</a>
+        <a href="/support">Support</a>
+        <a href="/track">Track order</a>
+      </nav>
     </div>
+
     <div class="legal">
-      <span>© <%= year %> Ajobzio</span>
+      <span>© <%= year %> Ajobzio. All rights reserved.</span>
       <nav aria-label="Legal">
         <a href="/terms">Terms</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/privacy-policy">Cookies</a>
+        <a href="/privacy-policy">Privacy</a>
+        <a href="/privacy-policy#cookies">Cookies</a>
         <a href="/support">Support</a>
       </nav>
       <div class="region">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#AFC4C5" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.8 3.8 5.8 3.8 9s-1.3 6.2-3.8 9c-2.5-2.8-3.8-5.8-3.8-9S9.5 5.8 12 3Z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.8 3.8 5.8 3.8 9s-1.3 6.2-3.8 9c-2.5-2.8-3.8-5.8-3.8-9S9.5 5.8 12 3Z"/></svg>
         <span>India</span>
       </div>
     </div>
   </footer>
+  <button type="button" class="back-to-top" aria-label="Back to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 </body>
 </html>

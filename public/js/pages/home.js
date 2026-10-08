@@ -6,6 +6,7 @@ import { createContactDialog } from '../home/contact-dialog.js';
 import { createMapPicker } from '../home/map-picker.js';
 import { attachPlaces } from '../home/places-autocomplete.js';
 import { initCtaSearch } from '../home/cta-search.js';
+import { initServiceLinks } from '../home/service-links.js';
 
 const quoteForm = createQuoteForm({ onSubmit: () => contactDialog.open() });
 const contactDialog = createContactDialog({
@@ -27,4 +28,5 @@ attachPlaces(mapPicker.searchInput, {
 });
 
 initCtaSearch({ switchMode: heroMode.switchTo, fields: quoteForm.fields });
+initServiceLinks({ switchMode: heroMode.switchTo, fields: quoteForm.fields });
 initHeroBanners();

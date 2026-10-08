@@ -17,6 +17,12 @@ export function createDropdown({ button, menu, field }) {
       return open;
     }
   };
+  /* The whole field is the tap target, not just the small button inside it. */
+  field.addEventListener('click', (event) => {
+    if (button.contains(event.target) || menu.contains(event.target)) return;
+    event.stopPropagation();
+    button.click();
+  });
   dropdowns.add(dropdown);
   return dropdown;
 }

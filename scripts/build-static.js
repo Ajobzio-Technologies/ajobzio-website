@@ -12,8 +12,9 @@ const ejs = require('ejs');
 const { ROOT, PUBLIC_DIR, SHARED_DIR, VIEWS_DIR } = require('../src/config/paths');
 const { SERVICE_DISTRICTS, STATE } = require('../src/config/service-area');
 const site = require('../src/config/site');
+const { icon } = require('../src/views/icons');
 const { HERO_SETS, listHeroImages } = require('../src/services/hero-images.service');
-const { BASIC_PAGES } = require('../src/controllers/pages.controller');
+const { BASIC_PAGES, PRIVACY_POLICY_DATE } = require('../src/controllers/pages.controller');
 
 const DIST = path.join(ROOT, 'dist');
 
@@ -23,12 +24,18 @@ const clientConfig = {
   mapsKey: process.env.GOOGLE_MAPS_BROWSER_KEY || '',
   web3formsKey: process.env.WEB3FORMS_ACCESS_KEY || ''
 };
-const locals = { districts: SERVICE_DISTRICTS, state: STATE, site, year: new Date().getFullYear(), clientConfig };
+const locals = { districts: SERVICE_DISTRICTS, state: STATE, site, icon, year: new Date().getFullYear(), clientConfig };
 
 /* view → output file. GitHub Pages serves /careers from careers.html and unknown paths from 404.html. */
 const PAGES = [
   { view: 'pages/home', file: 'index.html', title: '' },
   { view: 'pages/track', file: 'track.html', title: 'Track order' },
+  { view: 'pages/about', file: 'about.html', title: 'About us' },
+  { view: 'pages/careers', file: 'careers.html', title: 'Careers' },
+  { view: 'pages/support', file: 'support.html', title: 'Support' },
+  { view: 'pages/privacy-policy', file: 'privacy-policy.html', title: 'Privacy Policy', effectiveDate: PRIVACY_POLICY_DATE },
+  /* The old /privacy link: same policy. */
+  { view: 'pages/privacy-policy', file: 'privacy.html', title: 'Privacy Policy', effectiveDate: PRIVACY_POLICY_DATE },
   ...Object.entries(BASIC_PAGES).map(([slug, title]) => ({ view: 'pages/basic', file: slug + '.html', title })),
   { view: 'errors/404', file: '404.html', title: 'Page not found' }
 ];
@@ -39,7 +46,7 @@ async function build() {
   fs.cpSync(SHARED_DIR, path.join(DIST, 'js', 'shared'), { recursive: true });
 
   for (const page of PAGES) {
-    const html = await ejs.renderFile(path.join(VIEWS_DIR, page.view + '.ejs'), { ...locals, title: page.title });
+    const html = await ejs.renderFile(path.join(VIEWS_DIR, page.view + '.ejs'), { ...locals, ...page });
     fs.writeFileSync(path.join(DIST, page.file), html);
   }
 

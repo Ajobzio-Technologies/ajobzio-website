@@ -1,0 +1,76 @@
+<%
+  const introMail = 'mailto:' + site.supportEmail + '?subject=' + encodeURIComponent('Careers – introducing myself');
+  const providerChat = 'https://wa.me/' + site.phone + '?text=' + encodeURIComponent('Hi Ajobzio, I\'d like to join as a delivery partner / service provider.');
+-%>
+<%- include('../partials/head', { styles: ['/css/legal.css', '/css/support.css', '/css/company.css'] }) %>
+
+  <main class="legal-page support-page">
+    <div class="legal-hero">
+      <div class="legal-hero-copy">
+        <div class="legal-pill"><%- icon('briefcase', 14) %> Careers</div>
+        <h1>Build the future of local help.</h1>
+        <p>We’re a small team in <%= state %> making it simpler for people to send parcels and book trusted local services. We care about clear prices, reliable partners and real support.</p>
+        <p class="support-status"><i></i><span>Not hiring right now</span></p>
+      </div>
+      <%- include('../partials/hero-art', {
+        centre: 'rocket',
+        tiles: [{ cls: 'tile-user', icon: 'users' }, { cls: 'tile-doc', icon: 'briefcase' }, { cls: 'tile-gear', icon: 'lightbulb', size: 16 }, { cls: 'tile-pin', icon: 'heart' }]
+      }) %>
+    </div>
+
+    <div class="support-wrap">
+      <section class="info-status" id="openings">
+        <span class="info-status-icon"><%- icon('briefcase', 26) %></span>
+        <div>
+          <h2>We’re not hiring right now</h2>
+          <p>There are no open positions at the moment. As Ajobzio grows into more districts, new roles will be posted on this page first.</p>
+          <p>Think you’d be a great fit for the future? Send us a short introduction and your CV — we’ll keep it on file and reach out when something suitable opens up.</p>
+        </div>
+        <a class="support-btn is-blue" href="<%= introMail %>"><%- icon('mail', 18) %> Introduce yourself</a>
+      </section>
+
+      <section class="support-section support-card" id="why">
+        <h2>Why work with us</h2>
+        <p class="legal-lead">What it’s like to build Ajobzio.</p>
+        <div class="legal-rights">
+          <div><span class="tone-blue"><%- icon('pin', 18) %></span><b>Real local impact</b><p>Your work helps people across <%= state %> get things done, and helps local partners grow their business.</p></div>
+          <div><span class="tone-green"><%- icon('rocket', 18) %></span><b>Ownership from day one</b><p>In a small team, your ideas ship and your decisions matter.</p></div>
+          <div><span class="tone-orange"><%- icon('lightbulb', 18) %></span><b>Learn fast</b><p>Work across product, operations and customers, and grow with the company.</p></div>
+          <div><span class="tone-purple"><%- icon('handshake', 18) %></span><b>Trust and respect</b><p>We’re honest with customers, partners and each other.</p></div>
+          <div><span class="tone-teal"><%- icon('users', 18) %></span><b>Customer first</b><p>Every decision starts with what makes life easier for the people we serve.</p></div>
+          <div><span class="tone-rose"><%- icon('heart', 18) %></span><b>People first</b><p>A supportive, inclusive team where everyone is welcome.</p></div>
+        </div>
+      </section>
+
+      <section class="support-section" id="partners">
+        <h2>Not looking for a job? Partner with us</h2>
+        <p class="legal-lead">Delivery partners and local professionals can join Ajobzio and get bookings from customers nearby.</p>
+        <div class="info-offers">
+          <article class="support-channel">
+            <span class="support-icon tone-blue"><%- icon('truck', 22) %></span>
+            <h3>Delivery partners</h3>
+            <p>Own a 2, 3 or 4 wheeler? Take on parcel deliveries in your area on a schedule that works for you.</p>
+            <a class="support-btn is-whatsapp" href="<%= providerChat %>" target="_blank" rel="noopener"><%- icon('whatsapp', 18) %> Join as a partner</a>
+          </article>
+          <article class="support-channel">
+            <span class="support-icon tone-green"><%- icon('wrench', 22) %></span>
+            <h3>Service providers</h3>
+            <p>Cleaners, electricians, plumbers, movers and more — reach customers who need your skills.</p>
+            <a class="support-btn is-whatsapp" href="<%= providerChat %>" target="_blank" rel="noopener"><%- icon('whatsapp', 18) %> Join as a provider</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="support-cta">
+        <div>
+          <h2>Stay in touch</h2>
+          <p>Questions about working with Ajobzio? We’d love to hear from you.</p>
+        </div>
+        <div class="support-hero-actions">
+          <a class="support-btn is-light" href="<%= introMail %>"><%- icon('mail', 18) %> <%= site.supportEmail %></a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+<%- include('../partials/footer') %>
