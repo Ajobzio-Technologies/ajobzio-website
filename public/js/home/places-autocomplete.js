@@ -8,7 +8,8 @@
    options.onPick(result)      takes over a verified pick instead of storing it (the map's own search) */
 import backend from '../backend/index.js';
 
-const SEARCH_DELAY_MS = 250;
+/* Each search is a billed Google call, so wait until typing pauses. */
+const SEARCH_DELAY_MS = 450;
 const MIN_QUERY = 3;
 const MAP_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
 
@@ -40,8 +41,13 @@ export function attachPlaces(input, options) {
   let picking = false;
   /* Groups the keystrokes and the final pick into one billed Google session. */
   let sessionToken = newSessionToken();
+  /* Suggestions already fetched for this input, by search text. */
+  const recent = new Map();
+  const RECENT_LIMIT = 30;
 
-  function setPlace(placeId, pin, district) {
+  /* pin: the exact spot the customer marked on the map. location: the place's own coordinates,
+     used to estimate distance when no pin was set. */
+  function setPlace(placeId, pin, district, location) {
     if (placeId) input.dataset.placeId = placeId;
     else delete input.dataset.placeId;
     if (district) input.dataset.district = district;
@@ -52,6 +58,13 @@ export function attachPlaces(input, options) {
     } else {
       delete input.dataset.lat;
       delete input.dataset.lng;
+    }
+    if (location) {
+      input.dataset.placeLat = location.lat;
+      input.dataset.placeLng = location.lng;
+    } else {
+      delete input.dataset.placeLat;
+      delete input.dataset.placeLng;
     }
     if (options.onChange) options.onChange();
   }
@@ -143,7 +156,7 @@ export function attachPlaces(input, options) {
       if (result.ok && result.allowed) {
         report('');
         if (options.onPick) options.onPick(result);
-        else setPlace(place.placeId, null, result.district);
+        else setPlace(place.placeId, null, result.district, result.location);
         return;
       }
       input.value = '';
@@ -158,9 +171,20 @@ export function attachPlaces(input, options) {
 
   async function search(query) {
     if (controller) controller.abort();
+    /* Text searched before on this page (e.g. after a backspace) shows the same suggestions without a new call. */
+    const key = query.toLowerCase();
+    if (recent.has(key)) {
+      places = recent.get(key);
+      render();
+      return;
+    }
     controller = new AbortController();
     try {
       const result = await backend.autocomplete(query, sessionToken, controller.signal);
+      if (result.ok) {
+        if (recent.size >= RECENT_LIMIT) recent.delete(recent.keys().next().value);
+        recent.set(key, result.places);
+      }
       if (input.value.trim() !== query || document.activeElement !== input) return;
       places = result.ok ? result.places : [];
       render();

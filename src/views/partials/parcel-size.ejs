@@ -1,0 +1,22 @@
+<%# Quantity and box sizes (js/home/parcel-details.js). Shared by the home quote form and the quote page editor.
+    The vehicle is chosen from these, so every box needs all three sizes. -%>
+<div class="field when-field" id="qtyField">
+  <span>
+    <span>Quantity</span>
+    <button type="button" class="when-btn" id="qtyBtn" aria-haspopup="listbox" aria-expanded="false">
+      <span id="qtyValue">1 box</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+  </span>
+  <ul class="when-menu" id="qtyMenu" role="listbox" hidden></ul>
+</div>
+<div class="dims" id="parcelDims">
+  <div class="dims-head">
+    <p class="block-label">Size per box (cm)</p>
+    <button type="button" class="copy-dims" id="copyDims" hidden>Copy Box 1 to all</button>
+  </div>
+  <div class="box-cols" aria-hidden="true"><span></span><span>Length</span><span>Width</span><span>Height</span></div>
+  <div class="box-list" id="boxList"></div>
+</div>
+<p class="total-line" id="vehicleLine" aria-live="polite"></p>
+<p class="parcel-note error" id="capacityError" hidden></p>

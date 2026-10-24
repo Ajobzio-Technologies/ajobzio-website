@@ -4,6 +4,7 @@ const PATTERNS = {
   placeId: /^[A-Za-z0-9_-]{10,300}$/,
   sessionToken: /^[A-Za-z0-9-]{1,64}$/,
   orderId: /^[A-Z0-9-]{4,30}$/,
+  paymentId: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
   phone: /^\+?[0-9\s-]{10,15}$/,
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 };

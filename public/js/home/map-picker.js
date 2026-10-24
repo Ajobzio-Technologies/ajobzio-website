@@ -17,6 +17,7 @@ export function createMapPicker() {
   const locateBtn = document.getElementById('mapLocate');
   const confirmBtn = document.getElementById('mapConfirm');
   const search = document.getElementById('mapSearch');
+  const mapWrap = canvas.closest('.map-wrap');
   let map = null;
   let target = null;
 
@@ -29,25 +30,35 @@ export function createMapPicker() {
   /* Google calls this when the key is rejected (wrong referrer, API not enabled, billing). */
   window.gm_authFailure = () => setStatus('The map is unavailable right now. Please search for your location instead.', 'error');
 
-  function locate() {
-    if (!map) return;
+  /* The customer's live location as { lat, lng }, or null (with the reason shown) when it isn't available. */
+  function currentPosition() {
     if (!navigator.geolocation) {
       setStatus('Your browser can\'t share your location. Move the map to your spot instead.', 'error');
-      return;
+      return Promise.resolve(null);
     }
+    return new Promise((resolve) => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        resolve({ lat: position.coords.latitude, lng: position.coords.longitude });
+      }, (error) => {
+        setStatus(error.code === error.PERMISSION_DENIED
+          ? 'Location access is blocked. Allow it in your browser settings, or move the map to your spot.'
+          : 'We couldn\'t get your location. Move the map to your spot instead.', 'error');
+        resolve(null);
+      }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+    });
+  }
+
+  /* "Use my current location": moves the map to where the customer is. */
+  async function locate() {
+    if (!map) return;
     locateBtn.disabled = true;
     setStatus('Finding your location…', 'upgrade');
-    navigator.geolocation.getCurrentPosition((position) => {
-      locateBtn.disabled = false;
-      setStatus('', '');
-      map.setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
-      map.setZoom(17);
-    }, (error) => {
-      locateBtn.disabled = false;
-      setStatus(error.code === error.PERMISSION_DENIED
-        ? 'Location access is blocked. Allow it in your browser settings, or move the map to your spot.'
-        : 'We couldn\'t get your location. Move the map to your spot instead.', 'error');
-    }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+    const here = await currentPosition();
+    locateBtn.disabled = false;
+    if (!here) return;
+    setStatus('', '');
+    map.setCenter(here);
+    map.setZoom(17);
   }
 
   /* Opens the picker for input, centred on pin (or the customer's location).
@@ -58,13 +69,21 @@ export function createMapPicker() {
     setStatus('', '');
     confirmBtn.disabled = true;
     dialog.showModal();
+    /* showModal focuses the search box, which pops up the phone keyboard over the map.
+       Focus the popup itself instead; the customer taps the search box if they want it. */
+    dialog.tabIndex = -1;
+    dialog.focus({ preventScroll: true });
+    /* Show the map only once it's centred: on the customer's pin, else their live location,
+       which is looked up while the map loads, so it never opens on some other place first. */
+    mapWrap.classList.add('is-loading');
     try {
-      const { Map } = await loadMaps();
-      const center = pin || MAP_START;
+      const [{ Map }, here] = await Promise.all([loadMaps(), pin ? null : currentPosition()]);
+      const center = pin || here || MAP_START;
+      const zoom = here ? 17 : 16;
       if (!map) {
         map = new Map(canvas, {
           center,
-          zoom: 16,
+          zoom,
           disableDefaultUI: true,
           zoomControl: true,
           clickableIcons: false,
@@ -72,12 +91,13 @@ export function createMapPicker() {
         });
       } else {
         map.setCenter(center);
-        map.setZoom(16);
+        map.setZoom(zoom);
       }
       confirmBtn.disabled = false;
-      if (!pin) locate();
     } catch (error) {
       setStatus('The map couldn\'t load right now. Please search for your location instead.', 'error');
+    } finally {
+      mapWrap.classList.remove('is-loading');
     }
   }
 

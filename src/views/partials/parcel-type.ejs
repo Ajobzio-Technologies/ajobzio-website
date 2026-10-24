@@ -1,0 +1,18 @@
+<%# Parcel type picker (js/home/parcel-details.js). Shared by the home quote form and the quote page editor.
+    The vehicle is chosen automatically from the parcel details. -%>
+<div class="center-block" id="typeCenter">
+  <p class="block-label">Parcel type</p>
+  <div class="field when-field" id="typeField">
+    <span>
+      <span>Choose parcel type</span>
+      <button type="button" class="when-btn" id="typeBtn" aria-haspopup="listbox" aria-expanded="false">
+        <span id="typeValue">Non-Document</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8AA0A4" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </span>
+    <ul class="when-menu" id="typeMenu" role="listbox" hidden>
+      <li><button type="button" data-value="DOCUMENT">Document</button></li>
+      <li><button type="button" class="on" data-value="NON_DOCUMENT">Non-Document</button></li>
+    </ul>
+  </div>
+</div>
