@@ -35,7 +35,8 @@ header {
 }
 .brand, .nav-links { flex: none; }
 .nav-links { margin-left: 56px; }
-.logo { height: 36px; width: auto; display: block; }
+/* The logo file has transparent space around it, so the image is taller than the logo it shows. */
+.logo { height: 60px; width: auto; display: block; }
 .nav-links { display: flex; align-items: center; gap: 34px; }
 .nav-links a {
   font-size: 14px;
@@ -249,7 +250,7 @@ footer {
   gap: 40px;
 }
 .foot-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
-footer .logo { height: 46px; padding: 7px 12px; border-radius: 12px; background: #fff; }
+footer .logo { height: 62px; padding: 6px 12px; border-radius: 12px; background: #fff; }
 .foot-brand p { max-width: 300px; font-size: 14px; line-height: 1.6; }
 .social { display: flex; gap: 8px; }
 .social a {
@@ -303,7 +304,7 @@ footer .logo { height: 46px; padding: 7px 12px; border-radius: 12px; background:
   footer { padding: 40px 20px 26px; }
   .foot { grid-template-columns: 1fr 1fr; gap: 28px 16px; }
   .foot-brand { grid-column: 1 / -1; }
-  footer .logo { height: 40px; padding: 6px 10px; border-radius: 10px; }
+  footer .logo { height: 54px; padding: 5px 10px; border-radius: 10px; }
   .foot-col a { padding: 7px 0; font-size: 14.5px; }
   .legal {
     margin-top: 30px;
@@ -361,7 +362,7 @@ section[id] { scroll-margin-top: 80px; }
 @media (max-width: 760px) {
   /* Phones: one compact row (logo, served-areas pill, Track as an icon, menu) so the sticky header stays short. */
   header { height: 60px; padding: 0 12px 0 16px; gap: 8px; }
-  .logo { height: 26px; }
+  .logo { height: 46px; }
   /* The pill sits in the row; its list opens across the full header width. */
   .areas { position: static; margin: 0 0 0 auto; }
   .areas summary { height: 42px; padding: 0 10px; gap: 6px; border-radius: 12px; font-size: 12px; background: #F3F6F5; }

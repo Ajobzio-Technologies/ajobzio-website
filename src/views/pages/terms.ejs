@@ -1,0 +1,183 @@
+<%
+  /* Line icons (24×24, stroke) for the contents list and cards. */
+  const SECTIONS = [
+    ['summary', 'Summary', 'summary'],
+    ['about-these-terms', 'About these terms', 'file'],
+    ['our-role', 'What Ajobzio does', 'handshake'],
+    ['using-the-site', 'Using the website', 'user'],
+    ['quotes-bookings', 'Quotes & bookings', 'quote'],
+    ['payments', 'Prices & payment', 'tag'],
+    ['changes-cancellations', 'Changes & cancellations', 'undo'],
+    ['parcels', 'What you can send', 'box'],
+    ['providers', 'Partners & providers', 'users'],
+    ['problems', 'If something goes wrong', 'alert'],
+    ['liability', 'Our liability', 'shield'],
+    ['general', 'General terms', 'gear'],
+    ['contact', 'Contact us', 'mail']
+  ];
+  const served = districts.slice(0, -1).join(', ') + ' and ' + districts[districts.length - 1];
+  let n = 0;
+  /* Opens a numbered section card. */
+  const card = (id, title, lead) => {
+    n += 1;
+    return '<section id="' + id + '" class="legal-card"><span class="legal-num tone-' + ((n - 1) % 6) + '">' + n + '</span><div class="legal-card-body"><h2>' + title + '</h2>' + (lead ? '<p class="legal-lead">' + lead + '</p>' : '');
+  };
+  const end = '</div></section>';
+-%>
+<%- include('../partials/head', { styles: ['/css/legal.css'], scripts: ['/js/pages/legal.js'] }) %>
+
+  <main class="legal-page">
+    <div class="legal-hero">
+      <div class="legal-hero-copy">
+        <div class="legal-pill"><%- icon('handshake', 14) %> Clear and fair</div>
+        <h1>Terms of Service</h1>
+        <p>The rules for using Ajobzio to request a parcel delivery or a local service — what we do, what our partners do, and what we ask of you.</p>
+        <p class="legal-date"><span>Effective: <%= effectiveDate %></span><i></i><span>Last updated: <%= effectiveDate %></span></p>
+      </div>
+      <%- include('../partials/hero-art', {
+        centre: 'shield',
+        tiles: [{ cls: 'tile-user', icon: 'handshake' }, { cls: 'tile-doc', icon: 'file' }, { cls: 'tile-gear', icon: 'check', size: 16 }, { cls: 'tile-pin', icon: 'truck' }]
+      }) %>
+    </div>
+
+    <div class="legal-layout">
+      <nav class="legal-toc" aria-label="On this page">
+        <b>On this page</b>
+<% SECTIONS.forEach(([id, label, key], i) => { -%>
+        <a href="#<%= id %>"<%- i === 0 ? ' class="is-active"' : '' %>><%- icon(key, 18) %><span><%= label %></span></a>
+<% }) -%>
+      </nav>
+
+      <article class="legal-body">
+        <section id="summary" class="legal-card legal-summary">
+          <span class="legal-summary-icon"><svg width="56" height="64" viewBox="0 0 56 64" aria-hidden="true"><path d="M28 2 54 12v20c0 16-11 26-26 31C13 58 2 48 2 32V12Z" fill="#9BE4CF"/><path d="M28 9 47 16v16c0 12-8 20-19 24C17 52 9 44 9 32V16Z" fill="#0E9B86"/><path d="m19 32 6 6 12-13" stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="legal-card-body">
+            <div class="legal-summary-head">
+              <div>
+                <h2>Summary</h2>
+                <p class="legal-lead">The key points in plain words. The full terms below apply.</p>
+              </div>
+              <span class="legal-badge"><%- icon('check', 14) %> Key points</span>
+            </div>
+            <ul class="legal-checks">
+              <li><%- icon('check', 16) %>Ajobzio connects you with independent delivery partners and local service providers. They carry out the job.</li>
+              <li><%- icon('check', 16) %>Getting a quote is free and needs no account.</li>
+              <li><%- icon('check', 16) %>You see the full price before you book, and pay the provider directly once your booking is confirmed.</li>
+              <li><%- icon('check', 16) %>Please give accurate details — the price and vehicle depend on them.</li>
+              <li><%- icon('check', 16) %>Illegal, hazardous and specially handled perishable items can’t be sent.</li>
+              <li><%- icon('check', 16) %>If something goes wrong, tell us quickly and we’ll work with the provider to put it right.</li>
+            </ul>
+          </div>
+        </section>
+
+        <%- card('about-these-terms', 'About these terms') %>
+          <p>These terms apply when you use <a href="/">ajobzio.com</a> (the “website”), run by Ajobzio (“Ajobzio”, “we”, “us” or “our”), to request a quote, book a parcel delivery or local service, or track an order. By using the website you agree to these terms and to our <a href="/privacy-policy">Privacy Policy</a>. If you don’t agree, please don’t use the website.</p>
+          <p>We currently serve <%= served %> in <%= state %>, India.</p>
+        <%- end %>
+
+        <%- card('our-role', 'What Ajobzio does', 'Ajobzio is a platform that brings customers and providers together:') %>
+          <div class="legal-split">
+            <div class="legal-subcard">
+              <span class="legal-subicon tone-green"><%- icon('handshake', 20) %></span>
+              <div>
+                <h3>What we do</h3>
+                <ul>
+                  <li>Check that your locations are inside the areas we serve</li>
+                  <li>Show you prices and available partners or providers</li>
+                  <li>Pass your request to the partner or provider you choose</li>
+                  <li>Help with support if something goes wrong</li>
+                </ul>
+              </div>
+            </div>
+            <div class="legal-subcard">
+              <span class="legal-subicon tone-blue"><%- icon('truck', 20) %></span>
+              <div>
+                <h3>What the provider does</h3>
+                <ul>
+                  <li>Picks up and delivers your parcel, or carries out the service</li>
+                  <li>Sets out the payment options they accept</li>
+                  <li>Is responsible for the quality and safety of their work</li>
+                  <li>Follows the laws and licences that apply to their trade</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="legal-note"><%- icon('users', 16) %> Delivery partners and service providers are independent businesses, not Ajobzio employees or agents. Your contract for the delivery or service is with them.</p>
+        <%- end %>
+
+        <%- card('using-the-site', 'Using the website', 'When you use Ajobzio, you agree to:') %>
+          <ul class="legal-dots">
+            <li>be at least 18, or use the website with a parent or guardian’s permission</li>
+            <li>give true and complete details — your name, phone number, locations and parcel or job details</li>
+            <li>use the website only for genuine requests, and not to spam, scrape, overload or disrupt it</li>
+            <li>not copy or reuse our content, design or brand without our written permission</li>
+            <li>treat partners, providers and our team with respect</li>
+          </ul>
+          <p>We may refuse or cancel a request, or block access, if these terms are broken or a request looks fraudulent or unsafe.</p>
+        <%- end %>
+
+        <%- card('quotes-bookings', 'Quotes & bookings') %>
+          <p>A quote is based on the details you give us: pickup and delivery locations, the parcel’s type, weight, quantity and size, or the service and timing you need. A booking is confirmed only when we or the provider confirm it to you by phone, WhatsApp or email.</p>
+          <p>If the real job is different from what was described — for example, the parcel is heavier or larger, or extra work is needed — the provider may change the price or vehicle, or decline the job. They’ll tell you before going ahead.</p>
+        <%- end %>
+
+        <%- card('payments', 'Prices & payment') %>
+          <div class="legal-rights">
+            <div><span class="tone-blue"><%- icon('eye', 18) %></span><b>See it first</b><p>You see the full price before you book.</p></div>
+            <div><span class="tone-green"><%- icon('tag', 18) %></span><b>No quote fee</b><p>Getting a quote on Ajobzio is free.</p></div>
+            <div><span class="tone-orange"><%- icon('handshake', 18) %></span><b>Pay the provider</b><p>Directly, once your booking is confirmed, using the options they accept.</p></div>
+          </div>
+          <p>Extra charges, such as waiting time, tolls or extra labour, apply only if the provider explains them before the job. Ajobzio never asks you for card or bank details on this website.</p>
+        <%- end %>
+
+        <%- card('changes-cancellations', 'Changes & cancellations') %>
+          <p>If your plans change, contact your provider as early as you can to reschedule or cancel. The provider may charge for a cancellation made after they have set off for pickup or started work; they’ll tell you about any such charge when you book. If you can’t reach them, contact us and we’ll help.</p>
+          <p>A provider may cancel if they can’t safely or legally complete the job. We’ll try to help you find another option.</p>
+        <%- end %>
+
+        <%- card('parcels', 'What you can send', 'Documents, parcels, gifts, groceries and bulky items — from a small envelope to furniture. You must not send:') %>
+          <ul class="legal-dots">
+            <li>anything illegal, stolen or counterfeit, or drugs and controlled substances</li>
+            <li>weapons, ammunition, explosives, fireworks, gas cylinders or flammable liquids</li>
+            <li>hazardous chemicals, batteries sent loose, or anything that could leak or cause harm</li>
+            <li>cash, jewellery or valuables, unless agreed with the provider before you book</li>
+            <li>live animals, or perishable items that need special handling</li>
+          </ul>
+          <p>Please pack items safely and label anything fragile. Providers may inspect or refuse a parcel they believe breaks these rules, and you’re responsible for any harm caused by items you send against them.</p>
+        <%- end %>
+
+        <%- card('providers', 'Partners & providers') %>
+          <p>We check partners and providers before they join Ajobzio, but we don’t supervise every job. Reviews and ratings reflect other customers’ experiences and aren’t a guarantee. You should make your own choice about the provider that’s right for you.</p>
+        <%- end %>
+
+        <%- card('problems', 'If something goes wrong') %>
+          <p>Contact us as soon as possible — ideally within 48 hours — with your order ID, what happened, and photos if anything is damaged. We’ll work with the provider to put it right.</p>
+          <p class="legal-note"><%- icon('shield', 16) %> Eligible deliveries include basic protection from pickup to handoff. For higher-value items, ask your provider about extra cover before you book.</p>
+        <%- end %>
+
+        <%- card('liability', 'Our liability') %>
+          <p>We work to keep the website accurate and available, but it is provided “as is” and may sometimes be unavailable or contain errors. As the delivery or service is carried out by an independent provider, Ajobzio isn’t responsible for their acts or omissions, except where the law says otherwise.</p>
+          <p>To the extent the law allows, we aren’t liable for indirect or consequential loss. Nothing in these terms limits any rights you have under the Consumer Protection Act, 2019 or other laws that can’t be excluded.</p>
+        <%- end %>
+
+        <%- card('general', 'General terms') %>
+          <ul class="legal-dots">
+            <li><b>Changes</b> – we may update these terms when our services or the law change. We’ll post the new version here and update the dates at the top. Using the website after that means you accept them.</li>
+            <li><b>Governing law</b> – these terms are governed by the laws of India, and disputes are subject to the courts in <%= state %>.</li>
+            <li><b>Severability</b> – if any part of these terms can’t be enforced, the rest still applies.</li>
+          </ul>
+        <%- end %>
+
+        <%- card('contact', 'Contact us', 'Questions about these terms, a booking or a complaint? Reach our team:') %>
+          <div class="legal-contact">
+            <a href="mailto:<%= site.supportEmail %>?subject=Terms%20question"><span class="tone-blue"><%- icon('mail', 20) %></span><small>Email</small><b><%= site.supportEmail %></b></a>
+            <a href="tel:+<%= site.phone %>"><span class="tone-green"><%- icon('phone', 20) %></span><small>Phone / WhatsApp</small><b><%= site.phoneDisplay %></b></a>
+            <div><span class="tone-orange"><%- icon('clock', 20) %></span><small>Hours</small><b>Daily, 8am–8pm IST</b></div>
+          </div>
+          <p>We aim to acknowledge complaints within 48 hours and resolve them within 30 days.</p>
+        <%- end %>
+      </article>
+    </div>
+  </main>
+
+<%- include('../partials/footer') %>

@@ -1,10 +1,11 @@
 /* Values every page template uses (header pill, contact links, browser config). */
 const { SERVICE_DISTRICTS, STATE } = require('../config/service-area');
 const site = require('../config/site');
+const env = require('../config/env');
 const { icon } = require('../views/icons');
 
 /* What the browser code needs to know. 'server' mode talks to this app's /api routes. */
-const clientConfig = { mode: 'server', phone: site.phone };
+const clientConfig = { mode: 'server', phone: site.phone, payNow: env.payments.enabled };
 
 function siteLocals(req, res, next) {
   res.locals.districts = SERVICE_DISTRICTS;

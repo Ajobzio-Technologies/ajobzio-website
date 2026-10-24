@@ -33,6 +33,11 @@ async function lookupPlace(placeId, sessionToken) {
     headers: googleHeaders('addressComponents,formattedAddress,location')
   }, 'Place Details');
 
+  return cachePlace(placeId, result);
+}
+
+/* Stores a Google place (from Place Details or Nearby Search) in the shape the site uses. */
+function cachePlace(placeId, result) {
   /* area is where the customer is, for the "not served yet" message. */
   const { area, district } = districtFromComponents(result.addressComponents || []);
   const place = {
@@ -76,11 +81,12 @@ async function autocomplete(input, sessionToken) {
     .filter((place) => place.text);
 }
 
-/* The closest Google place to a map pin (within 500 m), or null. */
+/* The closest Google place to a map pin (within 500 m), or null. It asks for the same fields as
+   lookupPlace and caches the place, so checking it afterwards needs no second Google call. */
 async function nearestPlace(lat, lng) {
   const result = await request(PLACES_BASE + ':searchNearby', {
     method: 'POST',
-    headers: googleHeaders('places.id,places.formattedAddress'),
+    headers: googleHeaders('places.id,places.formattedAddress,places.addressComponents,places.location'),
     body: JSON.stringify({
       locationRestriction: { circle: { center: { latitude: lat, longitude: lng }, radius: 500 } },
       rankPreference: 'DISTANCE',
@@ -89,7 +95,9 @@ async function nearestPlace(lat, lng) {
     })
   }, 'Nearby search');
   const nearest = (result.places || [])[0];
-  return nearest ? { id: nearest.id, address: nearest.formattedAddress } : null;
+  if (!nearest) return null;
+  cachePlace(nearest.id, nearest);
+  return { id: nearest.id, address: nearest.formattedAddress };
 }
 
 module.exports = { lookupPlace, autocomplete, nearestPlace };

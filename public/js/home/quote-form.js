@@ -4,6 +4,7 @@
 import { closeDropdowns } from '../lib/dropdowns.js';
 import { createParcelDetails } from './parcel-details.js';
 import { createSchedulePicker } from './schedule-picker.js';
+import { pickedPlace, routePoint } from '../lib/quote-places.js';
 
 /* Flip to true once local-service providers are signed up. */
 const SERVICES_LIVE = false;
@@ -147,12 +148,21 @@ export function createQuoteForm({ onSubmit }) {
     const inputs = mode === 'parcel'
       ? [['Pickup', fromInput], ['Delivery', toInput]]
       : [['Area', serviceArea]];
-    return inputs.map(([label, input]) => ({
-      label,
-      placeId: input.dataset.placeId,
-      district: input.dataset.district,
-      ...(input.dataset.lat ? { lat: Number(input.dataset.lat), lng: Number(input.dataset.lng) } : {})
-    }));
+    return inputs.map(([label, input]) => pickedPlace(label, input));
+  }
+
+  /* Everything the /quote confirmation page needs. */
+  function quoteData() {
+    const isParcel = mode === 'parcel';
+    return {
+      request: mode,
+      rows: summaryRows(),
+      places: pickedPlaces(),
+      route: isParcel ? { from: routePoint(fromInput), to: routePoint(toInput) } : null,
+      vehicle: isParcel ? parcel.vehicle() : null,
+      /* The raw choices, so the quote page's editor can reopen them. */
+      parcel: isParcel ? parcel.state() : null
+    };
   }
 
   [serviceNeed, serviceArea].forEach((input) => input.addEventListener('input', syncServiceReady));
@@ -185,7 +195,6 @@ export function createQuoteForm({ onSubmit }) {
     setMode,
     syncLocationReady,
     showPlaceError,
-    summaryRows,
-    pickedPlaces
+    quoteData
   };
 }

@@ -5,6 +5,7 @@ const { asyncRoute } = require('../middleware/errors');
 const quote = require('../controllers/quote.controller');
 const places = require('../controllers/places.controller');
 const track = require('../controllers/track.controller');
+const route = require('../controllers/route.controller');
 const heroImages = require('../controllers/hero-images.controller');
 
 const router = express.Router();
@@ -14,11 +15,13 @@ const placesLimit = rateLimit({ max: 60, windowMs: 60 * 1000, message: 'Too many
 const trackLimit = rateLimit({ max: 30, windowMs: 60 * 1000, message: 'Too many requests. Please slow down.' });
 
 router.post('/quote', honeypot, quoteLimit, asyncRoute(quote.create));
+router.get('/payment-status', trackLimit, asyncRoute(quote.paymentStatus));
 
 router.get('/places/autocomplete', placesLimit, asyncRoute(places.autocomplete));
 router.get('/places/verify', placesLimit, asyncRoute(places.verify));
 router.get('/places/reverse', placesLimit, asyncRoute(places.reverse));
 router.get('/maps/config', places.mapsConfig);
+router.get('/estimate', placesLimit, asyncRoute(route.estimate));
 
 router.get('/track', trackLimit, asyncRoute(track.show));
 

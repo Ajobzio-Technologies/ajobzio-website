@@ -1,0 +1,79 @@
+{
+  "_note": "Dummy orders for trying the Track order page (partner names and phone numbers are made up). Delete this file to switch them off. Fields: id, status, statusNote, bookedAt, eta, etaNote, pickup / delivery / current { label, lat, lng }, partner { name, phone, rating, deliveries }, parcel { type, weight, dimensions, vehicle }, cancelled, steps [{ label, time, done }].",
+  "orders": [
+    {
+      "id": "AJB-10234",
+      "status": "Out for delivery",
+      "statusNote": "Arriving today",
+      "bookedAt": "14 Oct 2026, 10:05 am",
+      "eta": "Today, 4:00 – 4:30 pm",
+      "etaNote": "About 20–30 minutes away",
+      "pickup": { "label": "Athirampuzha, Kottayam", "lat": 9.6679, "lng": 76.5329 },
+      "delivery": { "label": "Edappally Toll, Kochi", "lat": 10.0284, "lng": 76.3109 },
+      "current": { "label": "Near Vyttila, Kochi", "lat": 9.9658, "lng": 76.3185 },
+      "partner": { "name": "Sreejith S.", "phone": "+91 90000 00001", "rating": 4.8, "deliveries": 320 },
+      "parcel": { "type": "Non-Document", "weight": "5 kg", "dimensions": "40 × 30 × 20 cm", "vehicle": "2 Wheeler" },
+      "steps": [
+        { "label": "Booking confirmed", "time": "14 Oct, 10:05 am", "done": true },
+        { "label": "Picked up", "time": "14 Oct, 11:20 am", "done": true },
+        { "label": "In transit", "time": "14 Oct, 12:10 pm", "done": true },
+        { "label": "Out for delivery", "time": "14 Oct, 3:45 pm", "done": true },
+        { "label": "Delivered", "time": "", "done": false }
+      ]
+    },
+    {
+      "id": "AJQ-20261013-3F9A2C",
+      "status": "Delivered",
+      "statusNote": "Delivered on 13 Oct",
+      "bookedAt": "13 Oct 2026, 9:40 am",
+      "eta": "Delivered 13 Oct, 5:12 pm",
+      "etaNote": "Received by the delivery contact",
+      "pickup": { "label": "Mullackal, Alappuzha", "lat": 9.4985, "lng": 76.3386 },
+      "delivery": { "label": "Pala, Kottayam", "lat": 9.713, "lng": 76.6828 },
+      "partner": { "name": "Anoop K.", "phone": "+91 90000 00002", "rating": 4.9, "deliveries": 540 },
+      "parcel": { "type": "Non-Document", "weight": "25 kg", "dimensions": "Not given", "vehicle": "3 Wheeler" },
+      "steps": [
+        { "label": "Booking confirmed", "time": "13 Oct, 9:40 am", "done": true },
+        { "label": "Picked up", "time": "13 Oct, 11:02 am", "done": true },
+        { "label": "In transit", "time": "13 Oct, 11:30 am", "done": true },
+        { "label": "Out for delivery", "time": "13 Oct, 4:20 pm", "done": true },
+        { "label": "Delivered", "time": "13 Oct, 5:12 pm", "done": true }
+      ]
+    },
+    {
+      "id": "AJQ-20261014-7B21D0",
+      "status": "Awaiting pickup",
+      "statusNote": "Partner on the way to pickup",
+      "bookedAt": "14 Oct 2026, 2:15 pm",
+      "eta": "Tomorrow, by 6:00 pm",
+      "etaNote": "Pickup expected by 4:30 pm today",
+      "pickup": { "label": "Kakkanad, Kochi", "lat": 10.0159, "lng": 76.3419 },
+      "delivery": { "label": "Thodupuzha, Idukki", "lat": 9.8959, "lng": 76.7184 },
+      "partner": { "name": "Rafeeq M.", "phone": "+91 90000 00003", "rating": 4.7, "deliveries": 180 },
+      "parcel": { "type": "Non-Document", "weight": "250 kg", "dimensions": "120 × 80 × 90 cm", "vehicle": "4 Wheeler" },
+      "steps": [
+        { "label": "Booking confirmed", "time": "14 Oct, 2:15 pm", "done": true },
+        { "label": "Picked up", "time": "", "done": false },
+        { "label": "In transit", "time": "", "done": false },
+        { "label": "Out for delivery", "time": "", "done": false },
+        { "label": "Delivered", "time": "", "done": false }
+      ]
+    },
+    {
+      "id": "AJQ-20261012-C4E5F1",
+      "status": "Cancelled",
+      "statusNote": "Cancelled by the customer",
+      "cancelled": true,
+      "bookedAt": "12 Oct 2026, 8:55 am",
+      "eta": "",
+      "etaNote": "",
+      "pickup": { "label": "Pathanamthitta Town", "lat": 9.2648, "lng": 76.787 },
+      "delivery": { "label": "Adoor, Pathanamthitta", "lat": 9.1555, "lng": 76.7351 },
+      "parcel": { "type": "Document", "weight": "–", "dimensions": "–", "vehicle": "2 Wheeler" },
+      "steps": [
+        { "label": "Booking confirmed", "time": "12 Oct, 8:55 am", "done": true },
+        { "label": "Cancelled", "time": "12 Oct, 9:30 am", "done": true }
+      ]
+    }
+  ]
+}

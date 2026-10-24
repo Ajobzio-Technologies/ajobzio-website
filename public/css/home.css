@@ -54,18 +54,34 @@
   opacity: 1;
   transform: translateX(0);
 }
+/* The mode switch sits over the top of the hero and stays stuck under the header while the page scrolls.
+   The strip itself lets clicks through; only the tabs catch them. */
 .hero-modes {
+  --modes-top: 10px;
+  --modes-h: 46px;
   display: flex;
   justify-content: center;
   width: 100%;
-  position: relative;
-  z-index: 2;
+  position: sticky;
+  top: 68px;
+  z-index: 30;
+  padding-top: var(--modes-top);
+  margin-bottom: calc(-1 * (var(--modes-top) + var(--modes-h)));
+  pointer-events: none;
 }
+.hero-modes .modes { pointer-events: auto; }
+/* The pulsing glow behind the switch must not poke past the screen edge: on phones that widens the
+   page every pulse, which makes it (and any open popup) twitch sideways. clip, unlike hidden, keeps sticky working. */
+.hero-modes { overflow-x: clip; }
+main { overflow-x: clip; }
+.hero { padding-top: calc(10px + 46px + 10px); }
+/* Anchor links land below the header and the stuck switch. */
+section[id] { scroll-margin-top: 136px; }
 .hero-modes::before {
   content: "";
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: calc(50% + var(--modes-top) / 2);
   width: min(480px, 90%);
   height: 56px;
   transform: translate(-50%, -50%);
@@ -174,7 +190,7 @@
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
-.hero.mode-service .modes-pill {
+.hero-modes.mode-service .modes-pill {
   transform: translateX(100%);
 }
 .badge {
@@ -264,6 +280,7 @@
   gap: 8px;
   width: 100%;
 }
+.block-label small { margin-left: 4px; font-size: 10px; font-weight: 500; letter-spacing: 0; text-transform: none; color: #A3B5B8; }
 .block-label {
   margin: 0 2px 2px;
   font-size: 10px;
@@ -272,35 +289,6 @@
   text-transform: uppercase;
   color: #8AA0A4;
 }
-.vehicles {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: stretch;
-  gap: 8px;
-  width: min(100%, 360px);
-  margin-inline: auto;
-}
-.vehicles button {
-  min-height: 36px;
-  flex: 1 1 0;
-  min-width: 0;
-  border: 1px solid #E4ECEA;
-  border-radius: 10px;
-  background: #F3F6F5;
-  color: var(--nav);
-  font-family: inherit;
-  font-weight: 600;
-  font-size: 11px;
-  padding: 4px 6px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  text-align: center;
-}
-.vehicles button.active { background: var(--blue); border-color: var(--blue); color: #fff; }
 .step-meta {
   margin: 0;
   text-align: center;
@@ -366,10 +354,11 @@
   outline: none;
 }
 .box-row input:focus { border-color: var(--blue); }
+.box-row input::-webkit-outer-spin-button,
+.box-row input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.box-row input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 .box-row input::placeholder { color: #B3C2C4; font-weight: 500; }
 .field input::placeholder { color: #B3C2C4; font-weight: 500; }
-.dims-hint { margin: 0 2px; font-size: 12px; color: #6D8386; }
-.dims-hint[hidden] { display: none; }
 .parcel-note {
   margin: 0;
   border-radius: 12px;
@@ -382,11 +371,16 @@
 .parcel-note.error { background: #FDECEA; color: #9C2F2F; }
 .total-line {
   margin: 0;
+  border-radius: 10px;
+  padding: 9px 12px;
+  background: #EEF5FF;
   font-size: 13px;
   font-weight: 600;
   color: var(--nav);
 }
+.total-line:empty { display: none; }
 .total-line span { color: #6D8386; font-weight: 500; }
+.total-line .total-vehicle { color: var(--nav); font-weight: 600; }
 .compare:disabled { opacity: 0.45; cursor: not-allowed; }
 .contact-dialog {
   width: min(420px, calc(100% - 32px));
@@ -400,6 +394,11 @@
   box-shadow: 0 24px 60px rgba(8, 45, 54, 0.22);
 }
 .contact-dialog::backdrop { background: rgba(8, 45, 54, 0.45); }
+/* While a popup is open the page behind it stays still, so phone scrolling can't shift the popup. */
+html:has(dialog[open]) { overflow: hidden; }
+.contact-dialog { overscroll-behavior: contain; }
+/* The popup itself takes focus when it opens (js/home/map-picker.js); no ring around the whole popup. */
+.contact-dialog:focus { outline: none; }
 .contact-dialog h2 { font-size: 20px; line-height: 1.3; margin-bottom: 4px; }
 .contact-dialog .contact-sub { font-size: 13px; color: #6D8386; margin-bottom: 14px; }
 .contact-summary {
@@ -439,7 +438,6 @@
 }
 .contact-whatsapp:hover { background: #E6F8EC; }
 .contact-whatsapp svg { color: #25D366; }
-.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0; }
 .field {
   border: 1px solid #E4ECEA;
   border-radius: 12px;
@@ -469,7 +467,7 @@
   margin-top: 1px;
 }
 .field input[hidden], .when-pick[hidden], .date-field[hidden], .date-menu[hidden], .date-pickers[hidden],
-.vehicle-pick[hidden], .parcel-mode[hidden], .service-mode[hidden], .when-field[hidden], .dims[hidden], .parcel-note[hidden], .total-line[hidden],
+.parcel-mode[hidden], .service-mode[hidden], .when-field[hidden], .dims[hidden], .parcel-note[hidden], .total-line[hidden],
 .compare.ghost[hidden] { display: none !important; }
 .when-pick { position: static; width: 100%; }
 .when-btn {
@@ -552,11 +550,27 @@
 .map-wrap {
   position: relative;
   height: min(420px, 55vh);
+  /* svh ignores the phone's sliding address bar, so the map doesn't resize while it shows and hides. */
+  height: min(420px, 55svh);
   border-radius: 14px;
   overflow: hidden;
   background: #EEF3F2;
 }
 .map-canvas { position: absolute; inset: 0; }
+/* While the live location is found, the map stays hidden behind a message instead of showing another place. */
+.map-wrap.is-loading .map-canvas,
+.map-wrap.is-loading .map-pin,
+.map-wrap.is-loading .map-locate { visibility: hidden; }
+.map-wrap.is-loading::after {
+  content: "Finding your location…";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #4E6A6F;
+  font-size: 14px;
+  font-weight: 600;
+}
 /* The pin stays centred; the customer moves the map under it. */
 .map-pin {
   position: absolute;
@@ -741,6 +755,7 @@
 .checks {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
   margin-top: 6px;
   padding: 0 2px;
@@ -1615,7 +1630,9 @@
     gap: 14px;
     overflow: visible;
   }
-  .hero-modes { order: 0; }
+  .hero-modes { --modes-top: 12px; top: 60px; padding-inline: 16px; }
+  .hero { padding-top: calc(12px + 46px + 14px); }
+  section[id] { scroll-margin-top: 126px; }
   .hero-bg {
     order: 1;
     position: relative;
@@ -1663,15 +1680,13 @@
   .lede { font-size: 15px; }
   .quote { margin-top: 20px; padding: 12px; }
   .quote-body { grid-template-columns: 1fr; }
-  .address-row, .fields, .parcel-row { grid-template-columns: 1fr; }
+  .address-row, .parcel-row { grid-template-columns: 1fr; }
   .parcel-row.with-back { grid-template-columns: auto 1fr; }
   .parcel-row .compare,
   .parcel-row.with-back .compare:last-child { height: 48px; }
   .box-cols, .box-row { grid-template-columns: 48px repeat(3, minmax(0, 1fr)); }
   .box-row input { font-size: 16px; }
   .modes { grid-template-columns: 1fr 1fr; }
-  .vehicles { width: 100%; }
-  .vehicles button { flex: 1 1 calc(33.333% - 8px); min-width: 0; }
   .field input, .when-btn, .when-btn span { font-size: 16px; }
   .compare { width: 100%; height: 52px; }
   .when-menu, .date-menu {
@@ -1742,4 +1757,66 @@
   .cta { padding: 56px 16px 48px; }
   .cta-form { grid-template-columns: 1fr; }
   .cta-submit { padding: 14px 22px; }
+}
+
+/* The quote box brought down to the reader from the stuck switch (js/home/quote-float.js).
+   Fades only — a transform here would trap the fixed date menu on phones. */
+.quote-float {
+  position: fixed;
+  left: 50%;
+  margin-left: calc(min(640px, 100vw - 32px) / -2);
+  width: min(640px, 100vw - 32px);
+  z-index: 35;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.quote-float.is-open { opacity: 1; }
+.quote-float[hidden] { display: none; }
+.quote-float-scroll {
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(22, 102, 216, 0.14), 0 18px 44px rgba(8, 45, 54, 0.18);
+}
+.quote-float .quote { margin-top: 0; box-shadow: none; }
+.quote-float-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--nav);
+  box-shadow: 0 4px 14px rgba(8, 45, 54, 0.18);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.quote-float-close:hover { color: var(--blue); }
+@media (max-width: 760px) {
+  .quote-float-scroll {
+    max-height: calc(100svh - 150px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+  .quote-float-scroll::-webkit-scrollbar { display: none; }
+  .quote-float-close { top: -10px; right: -6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quote-float { transition: none; }
+}
+
+/* Phones: popups sit at a fixed spot near the top instead of being centred, so the address bar
+   and on-screen keyboard changing the screen height don't move them; long ones scroll inside. */
+@media (max-width: 760px) {
+  .contact-dialog {
+    margin: 12px auto auto;
+    max-height: calc(100svh - 24px);
+    overflow-y: auto;
+    padding: 18px;
+  }
+  .map-wrap { height: min(380px, 48svh); }
 }

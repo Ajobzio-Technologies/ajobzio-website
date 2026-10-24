@@ -19,6 +19,7 @@ const SWITCH_MS = 220;
 /* onChange(mode) runs once the copy has swapped, so the form can switch too. */
 export function initHeroMode({ onChange }) {
   const hero = document.getElementById('hero');
+  const heroModes = document.getElementById('heroModes');
   const heroGrid = document.getElementById('heroGrid');
   const heroBadge = document.getElementById('heroBadge');
   const heroTitle = document.getElementById('heroTitle');
@@ -30,6 +31,8 @@ export function initHeroMode({ onChange }) {
   function showMode(mode) {
     hero.classList.toggle('mode-parcel', mode === 'parcel');
     hero.classList.toggle('mode-service', mode !== 'parcel');
+    heroModes.classList.toggle('mode-parcel', mode === 'parcel');
+    heroModes.classList.toggle('mode-service', mode !== 'parcel');
     buttons.forEach((item) => {
       const on = item.dataset.mode === mode;
       item.classList.toggle('active', on);
@@ -48,20 +51,33 @@ export function initHeroMode({ onChange }) {
     });
   }
 
-  function switchTo(mode) {
+  function swap(mode) {
+    current = mode;
+    showMode(mode);
+    applyCopy(mode);
+    onChange(mode);
+  }
+
+  /* instant skips the fade, for when the hero is off screen and the form is in front of the reader. */
+  function switchTo(mode, { instant = false } = {}) {
     if (mode === current) return;
     clearTimeout(timer);
+    if (instant) {
+      heroGrid.classList.remove('is-switching');
+      swap(mode);
+      return;
+    }
     heroGrid.classList.add('is-switching');
     showMode(mode);
     timer = setTimeout(() => {
-      current = mode;
-      showMode(mode);
-      applyCopy(mode);
-      onChange(mode);
+      swap(mode);
       requestAnimationFrame(() => heroGrid.classList.remove('is-switching'));
     }, SWITCH_MS);
   }
 
-  buttons.forEach((button) => button.addEventListener('click', () => switchTo(button.dataset.mode)));
+  // js/home/quote-float.js has already moved the form out by the time this runs (it's set up first).
+  buttons.forEach((button) => button.addEventListener('click', () => {
+    switchTo(button.dataset.mode, { instant: Boolean(document.querySelector('.quote-float #quote')) });
+  }));
   return { switchTo };
 }

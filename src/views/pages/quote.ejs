@@ -1,0 +1,186 @@
+<%# home.css styles the shared quote form fields, popups and map picker used by the Edit popup. -%>
+<%- include('../partials/head', { styles: ['/css/home.css', '/css/quote.css'], scripts: ['/js/pages/quote.js'] }) %>
+
+  <main class="quote-page">
+    <div class="quote-head">
+      <div class="quote-head-top">
+        <div class="quote-pill"><%- icon('check', 14) %> Almost done</div>
+        <!-- The one way to change the locations or parcel on this page (opens the Edit popup). -->
+        <a class="quote-edit" href="/" id="quoteBack"><%- icon('edit', 16) %> Edit quote</a>
+      </div>
+      <h1>Confirm your quote</h1>
+      <p>Check your route and estimate, then tell us how to reach you. Our team will confirm the final price before pickup.</p>
+    </div>
+
+    <section class="quote-empty" id="quoteEmpty" hidden>
+      <span class="quote-empty-icon"><%- icon('box', 28) %></span>
+      <h2>Start your parcel quote</h2>
+      <p>Enter your pickup and delivery locations and parcel details, and see the route and price right here.</p>
+      <button type="button" class="quote-btn" id="quoteStart">Start a quote <%- icon('arrow', 16) %></button>
+    </section>
+
+    <div class="quote-layout" id="quoteMain" hidden>
+      <div class="quote-col">
+        <section class="quote-card quote-route" id="routeCard">
+          <!-- Google Maps replaces everything inside #routeMap, so the status sits beside it. -->
+          <div class="route-map-wrap">
+            <div class="route-map" id="routeMap"></div>
+            <p class="route-map-status" id="routeStatus">Loading your route…</p>
+          </div>
+          <ol class="route-stops">
+            <li><span class="stop-dot is-from">A</span><div><small>Pickup</small><b id="routeFrom"></b></div></li>
+            <li><span class="stop-dot is-to">B</span><div><small>Delivery</small><b id="routeTo"></b></div></li>
+          </ol>
+          <div class="route-stats">
+            <div><span class="tone-blue"><%- icon('pin', 18) %></span><small>Total distance</small><b id="routeDistance">–</b></div>
+            <div><span class="tone-orange"><%- icon('clock', 18) %></span><small>Est. travel time</small><b id="routeTime">–</b></div>
+            <div><span class="tone-green"><%- icon('truck', 18) %></span><small>Vehicle</small><b id="routeVehicle">–</b></div>
+          </div>
+        </section>
+
+        <section class="quote-card quote-contact" id="contactCard">
+          <!-- The submit buttons live in the billing card and reach this form through form="contactForm". -->
+          <form id="contactForm" novalidate>
+            <div class="contact-head">
+              <span class="bill-icon"><%- icon('users', 20) %></span>
+              <div>
+                <h2>Contact details</h2>
+                <p class="quote-sub" id="contactSub">Who we should call at each end of the trip.</p>
+              </div>
+            </div>
+            <input class="contact-trap" name="website" id="contactWebsite" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div class="person-cards">
+              <div class="person-card" role="group" aria-labelledby="senderLegend">
+                <div class="person-head">
+                  <span class="contact-dot is-from" aria-hidden="true">A</span>
+                  <div class="person-title"><b id="senderLegend">Pickup contact</b><small id="senderNote">We’ll call to confirm the booking</small></div>
+                </div>
+                <div class="person-grid">
+                  <label class="pfield"><%- icon('user', 16) %><input id="contactName" name="name" autocomplete="name" placeholder="Full name" aria-label="Pickup contact full name" required></label>
+                  <label class="pfield"><%- icon('phone', 16) %><input id="contactPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Phone number" aria-label="Pickup contact phone number" required></label>
+                  <label class="pfield is-wide"><%- icon('mail', 16) %><input id="contactEmail" name="email" type="email" autocomplete="email" placeholder="Email (optional)" aria-label="Pickup contact email, optional"></label>
+                </div>
+              </div>
+              <!-- Parcel quotes only: who receives the parcel. -->
+              <div class="person-card" id="receiverGroup" role="group" aria-labelledby="receiverLegend">
+                <div class="person-head">
+                  <span class="contact-dot is-to" aria-hidden="true">B</span>
+                  <div class="person-title"><b id="receiverLegend">Delivery contact</b><small>We’ll call on delivery</small></div>
+                  <label class="same-toggle"><input type="checkbox" id="sameContact"><span class="same-switch" aria-hidden="true"></span>Same as A</label>
+                </div>
+                <div class="person-grid" id="receiverFields">
+                  <label class="pfield"><%- icon('user', 16) %><input id="receiverName" name="receiverName" autocomplete="off" placeholder="Full name" aria-label="Delivery contact full name"></label>
+                  <label class="pfield"><%- icon('phone', 16) %><input id="receiverPhone" name="receiverPhone" type="tel" inputmode="tel" autocomplete="off" placeholder="Phone number" aria-label="Delivery contact phone number"></label>
+                  <label class="pfield is-wide"><%- icon('mail', 16) %><input id="receiverEmail" name="receiverEmail" type="email" autocomplete="off" placeholder="Email (optional)" aria-label="Delivery contact email, optional"></label>
+                </div>
+              </div>
+            </div>
+            <label class="same-toggle remember-toggle"><input type="checkbox" id="rememberContact" checked><span class="same-switch" aria-hidden="true"></span>Remember my details on this device</label>
+          </form>
+        </section>
+
+        <section class="quote-card quote-request">
+          <div class="contact-head">
+            <span class="bill-icon" id="requestIcon"><%- icon('box', 20) %></span>
+            <div>
+              <h2 id="requestTitle">Your parcel</h2>
+              <p class="quote-sub" id="requestSub">What we’re delivering</p>
+            </div>
+          </div>
+          <ul class="request-tiles" id="quoteRows"></ul>
+          <div class="box-sizes" id="boxSizes" hidden></div>
+          <!-- Icons for the detail tiles, picked by js/pages/quote.js. -->
+          <template id="requestIcons">
+<% ['box', 'truck', 'tag', 'hash', 'summary', 'wrench', 'pin', 'clock', 'file'].forEach((name) => { -%>
+            <span data-icon="<%= name %>"><%- icon(name, 18) %></span>
+<% }) -%>
+          </template>
+        </section>
+      </div>
+
+      <aside class="quote-col quote-side">
+        <section class="quote-card quote-bill" id="estimateCard">
+          <!-- Price breakdown (parcel quotes only); the actions below it are always shown. -->
+          <div id="billBody">
+            <div class="bill-head">
+              <span class="bill-icon"><%- icon('file', 20) %></span>
+              <div>
+                <h2>Billing summary</h2>
+                <small>Parcel delivery · <span id="billDate"></span></small>
+              </div>
+              <span class="bill-tag" id="billTag">Estimate</span>
+            </div>
+            <ul class="bill-lines" id="billLines"></ul>
+            <div class="bill-total">
+              <span>Total payable<small id="billGst">Inclusive of GST</small></span>
+              <b id="estimateTotal">–</b>
+            </div>
+            <p class="estimate-note"><%- icon('shield', 16) %> Estimated from the driving distance. Pay once our team confirms your booking.</p>
+          </div>
+
+          <div class="bill-actions" id="billActions">
+            <p class="quote-status" id="contactStatus" role="status" hidden></p>
+            <button type="submit" form="contactForm" class="quote-btn is-wide" id="contactSubmit">Confirm Quote</button>
+            <div class="pay-choice" id="payChoice" hidden>
+              <p class="pay-choice-title">How would you like to pay?</p>
+              <button type="button" class="pay-option is-now" id="payNow">
+                <span class="pay-option-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6.5 15h4"/></svg></span>
+                <span class="pay-option-text"><b>Pay now &amp; confirm</b><small>UPI, card or QR · <span id="payNowAmount"></span></small></span>
+                <%- icon('arrow', 18) %>
+              </button>
+              <button type="button" class="pay-option" id="payLater">
+                <span class="pay-option-icon"><%- icon('clock', 20) %></span>
+                <span class="pay-option-text"><b>Pay later</b><small>Pay once your booking is confirmed</small></span>
+                <%- icon('arrow', 18) %>
+              </button>
+              <button type="button" class="pay-back" id="payBack">← Change details</button>
+            </div>
+            <button type="button" class="quote-whatsapp" id="contactWhatsapp">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg>
+              Or send this quote on WhatsApp
+            </button>
+          </div>
+          <div class="quote-done pay-wait" id="payWait" hidden>
+            <span class="pay-spinner" aria-hidden="true"></span>
+            <h2>Complete your payment</h2>
+            <p>We’ve opened the secure payment page in a new tab. Pay there by UPI, card or QR — this page updates by itself once your payment goes through.</p>
+            <p class="pay-order">Order ID <b id="payOrder"></b> · Amount <b id="payAmount"></b></p>
+            <a class="quote-btn is-wide" id="payOpen" href="#" target="_blank" rel="noopener">Open payment page</a>
+          </div>
+          <div class="quote-done" id="quoteDone" hidden>
+            <span class="quote-done-icon"><%- icon('check', 28) %></span>
+            <h2 id="quoteDoneTitle">Quote request sent!</h2>
+            <p id="quoteDoneText">We’ll contact you shortly to confirm your booking.</p>
+            <a class="quote-btn is-wide" href="/">Back to home</a>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Edit the locations and parcel on this page (js/home/quote-editor.js). -->
+  <dialog class="contact-dialog edit-dialog" id="editDialog" aria-labelledby="editTitle">
+    <button type="button" class="dialog-close" id="editClose" aria-label="Close"><%- icon('x', 20) %></button>
+    <h2 id="editTitle">Edit your quote</h2>
+    <p class="contact-sub">Change the locations or parcel details. The route and price update when you save.</p>
+    <div class="edit-section">
+      <p class="edit-label"><span class="contact-dot is-from">A</span><span class="contact-dot is-to">B</span> Pickup &amp; delivery</p>
+      <%- include('../partials/parcel-route') %>
+    </div>
+    <div class="edit-section">
+      <p class="edit-label"><%- icon('box', 16) %> Parcel</p>
+      <div class="edit-parcel">
+        <%- include('../partials/parcel-type') %>
+        <div class="edit-size" id="editSize">
+          <%- include('../partials/parcel-size') %>
+        </div>
+      </div>
+    </div>
+    <p class="parcel-note error" id="editError" hidden></p>
+    <div class="contact-actions edit-actions">
+      <button type="button" class="compare" id="editSave">Update quote</button>
+    </div>
+  </dialog>
+  <%- include('../partials/map-dialog') %>
+
+<%- include('../partials/footer') %>

@@ -9,6 +9,8 @@ router.get('/about', pages.about);
 router.get('/careers', pages.careers);
 router.get('/support', pages.support);
 router.get('/privacy-policy', pages.privacyPolicy);
+router.get('/terms', pages.terms);
+router.get('/quote', pages.quote);
 /* One privacy page; the old /privacy link points to it. */
 router.get('/privacy', (req, res) => res.redirect(301, '/privacy-policy'));
 router.get('/:page', pages.basic);

@@ -1,0 +1,669 @@
+/* Quote confirmation page: route map and distance, price estimate, request summary and contact form. */
+.quote-page {
+  padding: 0 64px 96px;
+  background:
+    radial-gradient(1100px 420px at 85% -60px, #DDF4F9 0%, rgba(221, 244, 249, 0) 70%),
+    radial-gradient(900px 380px at -10% 120px, #E3F6F1 0%, rgba(227, 246, 241, 0) 70%),
+    var(--bg);
+  overflow-x: clip;
+}
+.quote-page [hidden] { display: none !important; }
+
+.tone-blue { --tone: #1666D8; --tone-bg: #E7F0FE; }
+.tone-orange { --tone: #E07A1F; --tone-bg: #FFF1E2; }
+.tone-green { --tone: #0E9B86; --tone-bg: #DDF7EF; }
+
+/* Heading */
+.quote-head { max-width: 1160px; margin: 0 auto; padding: 32px 0 28px; }
+/* The "Almost done" badge with the page's one Edit quote button beside it. */
+.quote-head-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; min-height: 42px; }
+.quote-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid #CFE0FA;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(22, 102, 216, 0.1);
+  /* The move itself is eased in by js/pages/quote.js; the shadow and colours follow smoothly. */
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease, padding 0.3s ease;
+}
+.quote-edit:hover { background: #F2F8FF; border-color: var(--blue); }
+.quote-edit[hidden] { display: none; }
+/* Scrolled past: the same button floats just under the site header, lined up with the page content. */
+.quote-edit.is-floating {
+  position: fixed;
+  top: 80px;
+  left: max(16px, calc((100vw - 1160px) / 2));
+  z-index: 35;
+  box-shadow: 0 10px 28px rgba(8, 45, 54, 0.18);
+}
+@media (max-width: 980px) {
+  .quote-edit.is-floating { left: 24px; }
+}
+@media (max-width: 760px) {
+  .quote-edit.is-floating { top: 70px; left: 16px; padding: 8px 14px; font-size: 13px; }
+}
+
+.quote-pill {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #D6F3E9;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.quote-head h1 {
+  margin-top: 14px;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.quote-head p { margin-top: 12px; max-width: 600px; color: #26494F; font-size: 15px; line-height: 1.65; }
+
+/* Layout */
+.quote-layout {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 24px;
+  align-items: start;
+}
+.quote-col { display: grid; gap: 20px; min-width: 0; }
+.quote-side { position: sticky; top: 88px; }
+.quote-card {
+  background: #fff;
+  border: 1px solid #E4EDEA;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 18px 50px rgba(8, 45, 54, 0.06);
+}
+.quote-card h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+.quote-sub { margin-top: 4px; font-size: 13px; color: #6D8386; }
+
+/* Route */
+.quote-route { padding: 10px; }
+.route-map-wrap { position: relative; }
+.route-map {
+  height: 340px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #EAF3FF, #E3F6F1);
+}
+.route-map-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  color: #4E6A6F;
+  font-size: 14px;
+  font-weight: 500;
+  pointer-events: none;
+}
+.route-stops { list-style: none; display: grid; gap: 0; margin: 14px 12px 4px; position: relative; }
+.route-stops li { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; position: relative; }
+.route-stops li + li::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: -12px;
+  height: 20px;
+  border-left: 2px dashed #C9D8D5;
+}
+.stop-dot {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+.stop-dot.is-from { background: #0E9B86; }
+.stop-dot.is-to { background: var(--blue); }
+.route-stops small, .route-stats small {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #8AA0A4;
+}
+.route-stops b { display: block; margin-top: 2px; font-size: 14px; font-weight: 600; color: var(--nav); line-height: 1.4; }
+.route-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 2px 2px;
+}
+.route-stats > div {
+  padding: 14px;
+  border-radius: 14px;
+  background: #F7FAF9;
+  border: 1px solid #EDF3F1;
+}
+.route-stats span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background: var(--tone-bg);
+  color: var(--tone);
+}
+.route-stats b { display: block; margin-top: 2px; font-size: 17px; font-weight: 700; color: var(--ink); }
+
+/* Parcel / service details: one icon tile per detail. */
+.request-tiles {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.request-tiles li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #EDF3F1;
+  border-radius: 12px;
+  background: #F7FAF9;
+}
+.request-tile-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #E7F0FE;
+  color: var(--blue);
+}
+.request-tiles li > div { min-width: 0; }
+.request-tiles small {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #8AA0A4;
+}
+.request-tiles b { display: block; margin-top: 1px; font-size: 14px; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.request-tiles b.is-muted { color: #8AA0A4; font-weight: 500; }
+.box-sizes { margin-top: 14px; }
+.box-sizes[hidden] { display: none; }
+.box-sizes-head {
+  margin: 0 0 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #8AA0A4;
+}
+.box-sizes-head small { margin-left: 4px; font-size: 11px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+.box-sizes ul { list-style: none; border: 1px solid #EDF3F1; border-radius: 12px; background: #F7FAF9; }
+.box-sizes li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 12px; font-size: 13px; }
+.box-sizes li + li { border-top: 1px solid #EDF3F1; }
+.box-sizes li span { color: #6D8386; font-weight: 500; }
+.box-sizes li b { color: var(--ink); font-weight: 600; }
+
+/* Billing summary: a receipt-style card with GST and the total payable. */
+.quote-bill { padding: 0; overflow: hidden; }
+.bill-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, #F2F8FF, #EEF9F5);
+  border-bottom: 1px dashed #D3E1DE;
+}
+.bill-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--blue);
+  box-shadow: 0 4px 12px rgba(22, 102, 216, 0.12);
+}
+.bill-head h2 { font-size: 17px; }
+.bill-head small { display: block; margin-top: 2px; font-size: 12px; color: #6D8386; }
+.bill-tag {
+  margin-left: auto;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--mint);
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.bill-tag.is-approx { background: #FFF0D9; color: #8A5A12; }
+.bill-lines { list-style: none; padding: 8px 22px 4px; }
+.bill-lines li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 9px 0;
+  font-size: 14px;
+  color: #26494F;
+}
+.bill-lines span { min-width: 0; }
+.bill-lines b { flex: none; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.bill-lines .is-info { padding: 5px 0; font-size: 13px; color: #6D8386; }
+.bill-lines .is-info b { color: var(--nav); }
+.bill-lines .is-info + li:not(.is-info) { margin-top: 6px; padding-top: 13px; border-top: 1px solid #EEF3F2; }
+.bill-lines .is-sub { margin-top: 4px; padding-top: 12px; border-top: 1px solid #EEF3F2; font-weight: 600; color: var(--ink); }
+.bill-lines .is-sub b { font-weight: 700; }
+.bill-lines .is-discount, .bill-lines .is-discount b { color: #1E8A5A; }
+.bill-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 8px 12px 0;
+  padding: 16px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #0B3B5C, #0E5A7A);
+  color: #fff;
+}
+.bill-total span { font-size: 15px; font-weight: 700; }
+.bill-total small { display: block; margin-top: 2px; font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.72); }
+.bill-total b { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.estimate-note {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 14px 22px 18px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #6D8386;
+}
+.estimate-note svg { flex: none; margin-top: 1px; color: var(--green); }
+
+/* Contact form */
+.contact-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.contact-fields { display: grid; gap: 10px; margin-top: 16px; }
+.qfield {
+  display: block;
+  border: 1px solid #E4ECEA;
+  border-radius: 12px;
+  padding: 7px 12px;
+  transition: border-color 0.2s ease;
+}
+.qfield:focus-within { border-color: var(--blue); }
+.qfield span { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: #8AA0A4; }
+.qfield input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--nav);
+}
+.quote-status {
+  margin-top: 12px;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.quote-status.error { background: #FDECEA; color: #9C2F2F; }
+.quote-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--blue);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(22, 102, 216, 0.25);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.quote-btn:hover { background: #1158BD; transform: translateY(-1px); }
+.quote-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+.quote-btn.is-wide { width: 100%; margin-top: 16px; }
+.quote-whatsapp {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #CDEFD9;
+  border-radius: 12px;
+  padding: 11px 12px;
+  background: #F2FBF5;
+  color: #128C4A;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.quote-whatsapp:hover { background: #E6F8EC; }
+.quote-whatsapp svg { color: #25D366; }
+
+/* Sent, and the empty state */
+.quote-done, .quote-empty { text-align: center; }
+.quote-done-icon, .quote-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: 6px auto 14px;
+  border-radius: 50%;
+  background: var(--mint);
+  color: var(--green);
+}
+.quote-done p, .quote-empty p { margin-top: 8px; color: #4E6A6F; font-size: 14px; line-height: 1.6; }
+.quote-empty {
+  max-width: 520px;
+  margin: 8px auto 0;
+  padding: 36px 28px;
+  background: #fff;
+  border: 1px solid #E4EDEA;
+  border-radius: 20px;
+}
+.quote-empty h2 { font-size: 22px; }
+.quote-empty .quote-btn { margin-top: 20px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-btn { transition: none; }
+}
+@media (max-width: 980px) {
+  .quote-page { padding: 0 24px 72px; }
+  /* One column, in the order a customer needs: route, contact details, then the price with the
+     buttons (so the details are filled in before reaching them), then the request details. */
+  .quote-layout { grid-template-columns: 1fr; gap: 20px; }
+  .quote-col { display: contents; }
+  .quote-route { order: 1; }
+  .quote-contact { order: 2; }
+  .quote-bill { order: 3; }
+  .quote-request { order: 4; }
+}
+@media (max-width: 760px) {
+  .quote-page { padding: 0 16px 56px; }
+  .quote-head { padding: 22px 0 20px; }
+  .quote-card { padding: 18px; border-radius: 18px; }
+  .quote-bill { padding: 0; }
+  .bill-head, .bill-lines, .estimate-note { padding-left: 18px; padding-right: 18px; }
+  .quote-route { padding: 8px; }
+  .route-map { height: 260px; }
+  .route-stats { grid-template-columns: 1fr 1fr; }
+  .route-stats > div:last-child { grid-column: 1 / -1; }
+  .request-tiles { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .request-tiles li { padding: 10px; }
+  .request-tiles li { gap: 8px; }
+  .request-tile-icon { width: 30px; height: 30px; border-radius: 9px; }
+  .request-tiles b { font-size: 13px; overflow-wrap: normal; }
+  .bill-total b { font-size: 24px; }
+}
+
+/* Payment choice after Confirm Quote, and the wait while the customer pays in another tab. */
+.pay-choice { display: grid; gap: 10px; margin-top: 16px; }
+.pay-choice-title { font-size: 14px; font-weight: 700; color: var(--ink); }
+.pay-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #DCE7E4;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--nav);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.pay-option:not(:disabled):hover { border-color: var(--blue); box-shadow: 0 8px 22px rgba(22, 102, 216, 0.12); transform: translateY(-1px); }
+.pay-option:disabled { opacity: 0.6; cursor: wait; transform: none; }
+/* "Pay now" while online payments are switched off (disabled for good, not busy). */
+.pay-option.is-now:disabled { cursor: not-allowed; border-color: #DCE7E4; background: #fff; box-shadow: none; }
+.pay-option.is-now:disabled .pay-option-icon { background: #F3F6F5; color: #8AA0A4; }
+.pay-option.is-now:disabled > svg { color: #8AA0A4; }
+.pay-option > svg { flex: none; margin-left: auto; color: #8AA0A4; }
+.pay-option-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #F3F6F5;
+  color: var(--nav);
+}
+.pay-option-text { min-width: 0; }
+.pay-option-text b { display: block; font-size: 15px; font-weight: 700; color: var(--ink); }
+.pay-option-text small { display: block; margin-top: 2px; font-size: 12.5px; color: #6D8386; }
+.pay-option.is-now { border-color: var(--blue); background: linear-gradient(135deg, #F2F8FF, #fff); }
+.pay-option.is-now .pay-option-icon { background: var(--blue); color: #fff; }
+.pay-option.is-now > svg { color: var(--blue); }
+.pay-back {
+  justify-self: center;
+  border: 0;
+  background: none;
+  color: var(--blue);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pay-spinner {
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 6px auto 16px;
+  border-radius: 50%;
+  border: 4px solid #E3EEF9;
+  border-top-color: var(--blue);
+  animation: pay-spin 0.9s linear infinite;
+}
+@keyframes pay-spin { to { transform: rotate(360deg); } }
+.pay-order { font-size: 13px; }
+.pay-order b { color: var(--ink); letter-spacing: 0.02em; }
+@media (prefers-reduced-motion: reduce) {
+  .pay-option { transition: none; }
+  .pay-spinner { animation-duration: 3s; }
+}
+
+/* Google's embedded route map fills the map box. */
+.route-frame { display: block; width: 100%; height: 100%; border: 0; }
+
+/* Contact details: one compact card per person, A (pickup) and B (delivery). */
+.contact-head { display: flex; align-items: center; gap: 12px; }
+.contact-head .quote-sub { margin-top: 2px; }
+/* Pickup and delivery side by side in the wide column; stacked on narrow screens. */
+.person-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; align-items: start; }
+.person-card {
+  padding: 12px;
+  border: 1px solid #E4EDEA;
+  border-radius: 14px;
+  background: #FAFCFB;
+}
+.person-head { display: flex; align-items: center; gap: 10px; }
+.person-title { min-width: 0; flex: 1; }
+.person-title b { display: block; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+.person-title small { display: block; font-size: 11.5px; color: #6D8386; line-height: 1.35; }
+.contact-dot {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+.contact-dot.is-from { background: #0E9B86; }
+.contact-dot.is-to { background: var(--blue); }
+.person-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.pfield {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: 44px;
+  padding: 0 11px;
+  border: 1px solid #DCE7E4;
+  border-radius: 10px;
+  background: #fff;
+  color: #8AA0A4;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pfield.is-wide { grid-column: 1 / -1; }
+.pfield svg { flex: none; }
+.pfield input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--nav);
+}
+.pfield input::placeholder { color: #9FB1B4; font-weight: 500; }
+.pfield:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(22, 102, 216, 0.12); color: var(--blue); }
+.pfield.is-invalid { border-color: #D2506A; box-shadow: 0 0 0 3px rgba(210, 80, 106, 0.12); color: #D2506A; }
+/* "Same as A": a small switch in the delivery card's header. */
+.same-toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--nav);
+  cursor: pointer;
+  user-select: none;
+}
+.same-toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+/* Under the contact cards: keep the pickup contact's details in this browser for next time. */
+.remember-toggle { margin-top: 14px; font-weight: 500; color: #6D8386; }
+.same-switch {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  border-radius: 999px;
+  background: #CBD8D5;
+  transition: background 0.2s ease;
+}
+.same-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(8, 45, 54, 0.25);
+  transition: transform 0.2s ease;
+}
+.same-toggle input:checked + .same-switch { background: var(--blue); }
+.same-toggle input:checked + .same-switch::after { transform: translateX(14px); }
+.same-toggle input:focus-visible + .same-switch { outline: 2px solid var(--blue); outline-offset: 2px; }
+.person-card.is-same { background: #F2F8FF; border-color: #CFE0FA; }
+@media (prefers-reduced-motion: reduce) {
+  .pfield, .same-switch, .same-switch::after { transition: none; }
+}
+
+/* Buttons and results inside the billing card. */
+.bill-actions { padding: 2px 22px 20px; border-top: 1px dashed #D3E1DE; }
+.bill-actions .quote-btn.is-wide { margin-top: 16px; }
+.quote-bill .quote-done { padding: 24px 22px; }
+#billBody[hidden] + .bill-actions { border-top: 0; padding-top: 6px; }
+@media (max-width: 760px) {
+  .bill-actions { padding: 2px 18px 18px; }
+}
+@media (max-width: 640px) {
+  .person-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .edit-parcel { grid-template-columns: 1fr; }
+}
+
+/* "Edit your quote" popup (the shared quote form fields are styled by home.css). */
+.contact-dialog.edit-dialog { position: relative; width: min(620px, calc(100% - 32px)); }
+.edit-dialog h2 { padding-right: 40px; }
+.dialog-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: #F3F6F5;
+  color: var(--nav);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.dialog-close:hover { background: #E4ECEA; }
+.dialog-close:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.edit-actions { grid-template-columns: 1fr; }
+.edit-section { display: grid; gap: 10px; padding: 14px 0; border-top: 1px solid #EEF3F2; }
+.edit-section:first-of-type { border-top: 0; padding-top: 4px; }
+.edit-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6D8386;
+}
+.edit-label .contact-dot { width: 20px; height: 20px; font-size: 10px; }
+.edit-label .contact-dot + .contact-dot { margin-left: -10px; box-shadow: 0 0 0 2px #fff; }
+/* Parcel type and quantity side by side, then the full box size table and the vehicle. */
+.edit-parcel { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: start; }
+.edit-parcel #typeCenter .block-label { display: none; }
+.edit-parcel #typeCenter { align-items: stretch; }
+.edit-parcel #typeCenter .field { width: 100%; }
+.edit-parcel:has(.edit-size[hidden]) #typeCenter { grid-column: 1 / -1; }
+.edit-size { display: contents; }
+.edit-size[hidden] { display: none; }
+.edit-size .dims, .edit-size .total-line, .edit-size .parcel-note { grid-column: 1 / -1; }
+.edit-size .dims { margin-top: 4px; }
+.edit-size .box-list { max-height: none; overflow: visible; }
+.edit-dialog .contact-actions .compare { height: 46px; }

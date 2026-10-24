@@ -40,6 +40,18 @@ export function submitQuote(quote) {
   });
 }
 
+/* Route and bill between two { lat, lng } points, priced on the server:
+   { ok, km, durationSeconds, path, approximate, bill }. */
+export function estimate(from, to, vehicle) {
+  return getJson('/api/estimate?fromLat=' + from.lat.toFixed(6) + '&fromLng=' + from.lng.toFixed(6) +
+    '&toLat=' + to.lat.toFixed(6) + '&toLng=' + to.lng.toFixed(6) + '&vehicle=' + encodeURIComponent(vehicle || ''));
+}
+
+/* { ok, status }: status is 'paid' once the customer has paid. */
+export function paymentStatus(paymentId) {
+  return getJson('/api/payment-status?paymentId=' + encodeURIComponent(paymentId));
+}
+
 export function trackOrder(orderId) {
   return getJson('/api/track?orderId=' + encodeURIComponent(orderId));
 }

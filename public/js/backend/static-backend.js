@@ -115,28 +115,44 @@ export async function reversePlace(lat, lng) {
   }
 }
 
+/* Google Maps URLs that open the right spot in the Maps app and the browser (same as the server's). */
+function latLng(coords) {
+  return coords.lat.toFixed(6) + ',' + coords.lng.toFixed(6);
+}
+function mapsSearchLink(coords, placeId, address) {
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(coords ? latLng(coords) : address || '') +
+    (placeId ? '&query_place_id=' + encodeURIComponent(placeId) : '');
+}
+
 /* Emails the quote to the team through Web3Forms, in the same layout as the server's email. */
-export async function submitQuote({ name, phone, email, details, places, website }) {
+export async function submitQuote({ name, phone, email, receiver, details, places, website }) {
   /* Honeypot: real visitors never fill this field. */
   if (website) return { ok: true };
   if (!config.web3formsKey) {
     return { ok: false, error: 'Online quotes aren\'t available right now. Please send this quote on WhatsApp instead.' };
   }
   const rows = details.slice();
+  const spots = {};
   places.forEach((place) => {
+    const own = typeof place.placeLat === 'number' ? { lat: place.placeLat, lng: place.placeLng } : null;
+    const pin = typeof place.lat === 'number' ? { lat: place.lat, lng: place.lng } : null;
     if (place.district) rows.push([place.label + ' district', place.district]);
-    rows.push([place.label + ' on map', 'https://www.google.com/maps/place/?q=place_id:' + place.placeId]);
-    if (typeof place.lat === 'number') {
-      rows.push([place.label + ' pin', 'https://www.google.com/maps?q=' + place.lat.toFixed(6) + ',' + place.lng.toFixed(6)]);
-    }
+    rows.push([place.label + ' on map', mapsSearchLink(own, place.placeId, place.address)]);
+    if (pin) rows.push([place.label + ' pin', mapsSearchLink(pin)]);
+    spots[place.label] = pin || own;
   });
+  if (spots.Pickup && spots.Delivery) {
+    rows.push(['Route on map', 'https://www.google.com/maps/dir/?api=1&origin=' + encodeURIComponent(latLng(spots.Pickup)) +
+      '&destination=' + encodeURIComponent(latLng(spots.Delivery)) + '&travelmode=driving']);
+  }
   const request = (details.find(([label]) => label === 'Request') || [])[1] || 'Quote';
   const message = [
-    'Customer',
+    receiver ? 'Pickup contact (customer)' : 'Customer',
     'Name: ' + name,
     'Phone: ' + phone,
     'Email: ' + (email || 'Not provided'),
     '',
+    ...(receiver ? ['Delivery contact', 'Name: ' + receiver.name, 'Phone: ' + receiver.phone, 'Email: ' + (receiver.email || 'Not provided'), ''] : []),
     'Quote details',
     ...rows.map(([label, value]) => label + ': ' + value)
   ].join('\n');
@@ -161,7 +177,60 @@ export async function submitQuote({ name, phone, email, details, places, website
   }
 }
 
-/* There is no order store yet, so every lookup finds nothing (same answer as the server). */
+/* Driving route between two { lat, lng } points through the Maps JavaScript API's Routes library. */
+async function drivingRoute(from, to) {
+  try {
+    await withTimeout(loadGoogleMaps(mapsKey));
+    const { Route } = await withTimeout(google.maps.importLibrary('routes'));
+    const { routes } = await withTimeout(Route.computeRoutes({
+      origin: from,
+      destination: to,
+      travelMode: 'DRIVING',
+      fields: ['path', 'distanceMeters', 'durationMillis']
+    }));
+    const best = routes && routes[0];
+    if (!best || !best.distanceMeters) return { ok: false, error: 'No driving route found.' };
+    return {
+      ok: true,
+      distanceMeters: best.distanceMeters,
+      durationSeconds: Math.round((best.durationMillis || 0) / 1000),
+      path: (best.path || []).map((point) => (typeof point.lat === 'function' ? { lat: point.lat(), lng: point.lng() } : { lat: point.lat, lng: point.lng }))
+    };
+  } catch (error) {
+    return { ok: false, error: 'Route is unavailable right now.' };
+  }
+}
+
+/* The static site has no server to keep rates private, so it shows the route and distance only
+   and the team confirms the price. Same shape as the server's /api/estimate, with bill: null. */
+export async function estimate(from, to) {
+  const route = await drivingRoute(from, to);
+  if (!route.ok) return route;
+  return {
+    ok: true,
+    km: Math.round(route.distanceMeters / 100) / 10,
+    durationSeconds: route.durationSeconds,
+    path: route.path,
+    approximate: false,
+    bill: null
+  };
+}
+
+/* Online payment needs the server, so the static site never offers it. */
+export async function paymentStatus() {
+  return { ok: false, error: 'Online payment isn\'t available here.' };
+}
+
+/* There is no order store yet, so lookups use the dummy orders in /data/sample-orders.json when it
+   exists (same answer as the server; delete the file to switch them off). */
 export async function trackOrder(orderId) {
-  return { ok: false, error: 'There\'s no order with the ID ' + orderId + '.' };
+  const notFound = { ok: false, error: 'There\'s no order with the ID ' + orderId + '.' };
+  try {
+    const response = await fetch('/data/sample-orders.json');
+    if (!response.ok) return notFound;
+    const order = ((await response.json()).orders || []).find((item) => item.id === orderId);
+    return order ? { ok: true, order } : notFound;
+  } catch (error) {
+    return notFound;
+  }
 }

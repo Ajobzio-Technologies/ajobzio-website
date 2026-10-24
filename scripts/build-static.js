@@ -14,7 +14,7 @@ const { SERVICE_DISTRICTS, STATE } = require('../src/config/service-area');
 const site = require('../src/config/site');
 const { icon } = require('../src/views/icons');
 const { HERO_SETS, listHeroImages } = require('../src/services/hero-images.service');
-const { BASIC_PAGES, PRIVACY_POLICY_DATE } = require('../src/controllers/pages.controller');
+const { BASIC_PAGES, PRIVACY_POLICY_DATE, TERMS_DATE } = require('../src/controllers/pages.controller');
 
 const DIST = path.join(ROOT, 'dist');
 
@@ -36,6 +36,8 @@ const PAGES = [
   { view: 'pages/privacy-policy', file: 'privacy-policy.html', title: 'Privacy Policy', effectiveDate: PRIVACY_POLICY_DATE },
   /* The old /privacy link: same policy. */
   { view: 'pages/privacy-policy', file: 'privacy.html', title: 'Privacy Policy', effectiveDate: PRIVACY_POLICY_DATE },
+  { view: 'pages/quote', file: 'quote.html', title: 'Confirm your quote' },
+  { view: 'pages/terms', file: 'terms.html', title: 'Terms of Service', effectiveDate: TERMS_DATE },
   ...Object.entries(BASIC_PAGES).map(([slug, title]) => ({ view: 'pages/basic', file: slug + '.html', title })),
   { view: 'errors/404', file: '404.html', title: 'Page not found' }
 ];
